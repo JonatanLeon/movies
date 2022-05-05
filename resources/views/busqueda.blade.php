@@ -53,7 +53,7 @@ $paginas = ceil($total / $limite);
                 <div class="card-body border rounded" style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
                     <div class="row">
                         <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1" id="columna-1">
-                            <img class="img-fluid d-xl-flex align-items-xl-start" src="{{asset('img/placeholder_poster.jpg')}}">
+                            <img class="img-fluid d-xl-flex align-items-xl-start" src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}">
                         </div>
                         <div class="col">
                             <div>

@@ -1,3 +1,20 @@
+<style>
+    [aria-current] .page-link {
+        background-color: #d63384 !important;
+        border-color: #d63384 !important;
+    }
+
+    [rel='prev'], [rel='next'] {
+        background-color: #ffffff !important;
+        color: #d63384 !important;
+    }
+
+    .pagination > li :not([rel='prev'],[rel='next'],[aria-current] .page-link) {
+        background-color: #ffffff !important;
+        color: #d63384 !important;
+    }
+</style>
+
 @if ($paginator->hasPages())
     <nav>
         <ul class="pagination">
