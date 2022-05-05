@@ -8,7 +8,7 @@ use App\Models\Pelicula;
 class MovieController extends Controller
 {
     public function buscarPelicula(Request $request) {
-        if ($request->buscar != "") $peliculas = Pelicula::where('titulo', 'like', '%'.$request->buscar.'%')->get();
+        if ($request->get("buscar") != "") $peliculas = Pelicula::where('titulo', 'like', '%'.$request->get("buscar").'%')->paginate(10);
         else return view('busqueda_error');
 
         if ($peliculas->count() != 0) return view('busqueda', compact('peliculas'));

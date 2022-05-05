@@ -23,7 +23,7 @@
                     <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
                 </ul>
             </div>
-            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="POST">
+            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">
               {{ csrf_field() }}
               <i class="fa fa-search" style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
               <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..." name="buscar">

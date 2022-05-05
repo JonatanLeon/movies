@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/busqueda', [MovieController::class, 'buscarPelicula']);
+Route::get('/busqueda', [MovieController::class, 'buscarPelicula']);
 
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $limite = 10;
 $total = $peliculas->count();
 $paginas = ceil($total / $limite);
@@ -29,7 +29,7 @@ $paginas = ceil($total / $limite);
                     <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
                 </ul>
             </div>
-            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="POST">
+            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">
                 {{ csrf_field() }}
                 <i class="fa fa-search" style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
                 <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..." name="buscar">
@@ -44,7 +44,7 @@ $paginas = ceil($total / $limite);
         </div>
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">
-        {!! $peliculas->links() !!}
+        {!! $peliculas->appends($_GET)->links() !!}
     </div>
     <section>
         @foreach ($peliculas as $pelicula)
@@ -71,7 +71,7 @@ $paginas = ceil($total / $limite);
         @endforeach
     </section>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">
-    {!! $peliculas->links() !!}
+    {!! $peliculas->appends($_GET)->links() !!}
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
