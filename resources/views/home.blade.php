@@ -33,7 +33,7 @@
     </nav>
     <div class="border-0 d-flex flex-column justify-content-center align-items-center p-4 py-5" style="background: url({{ asset('img/1164207.jpg')}}) center / cover;height: 500px;">
         <div class="row">
-            <div class="col-md-10 col-xl-8 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
+            <div class="col-md-10 col-xl-11 col-xxl-12 text-center d-flex d-sm-flex d-md-flex justify-content-center align-items-center mx-auto justify-content-md-start align-items-md-center justify-content-xl-center">
                 <div>
                     <h1 class="text-uppercase fw-bold mb-3" style="color: var(--bs-light);">¿No sabes qué ver?</h1>
                     <p class="mb-4" style="color: var(--bs-light);font-weight: bold;">Haz click en este botón y te encontraremos algo</p><button class="btn btn-primary fs-5 me-2 py-2 px-4" type="button" style="background: var(--bs-pink);border-color: var(--bs-pink);">Recomiéndame una película</button>
