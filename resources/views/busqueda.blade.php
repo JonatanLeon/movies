@@ -1,3 +1,10 @@
+<?php 
+$limite = 10;
+$total = $peliculas->count();
+$paginas = ceil($total / $limite);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,8 +43,11 @@
             <h2>Resultados</h2>
         </div>
     </div>
+    <div class="d-flex justify-content-center" style="margin-top: 30px;">
+        {!! $peliculas->links() !!}
+    </div>
     <section>
-        <?php foreach ($peliculas as $pelicula) : ?>
+        @foreach ($peliculas as $pelicula)
         <div class="container">
             <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
                 <div class="card-body border rounded" style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
@@ -48,16 +58,21 @@
                         <div class="col">
                             <div>
                                 <h4>{{$pelicula->titulo}}</h4>
-                                <h6 class="text-muted mb-2">{{$pelicula->director}}</h6>
-                                <p>{{$pelicula->sinopsis}}</p>
+                                <h6>{{$pelicula->director}}</h6>
+                                <?php $date = date_create($pelicula->estreno);?>
+                                <h6 class="text-muted mb-2">{{date_format($date, 'Y')}}</h6>
+                                <p>{{$pelicula->generos}}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <?php endforeach ?>
+        @endforeach
     </section>
+    <div class="d-flex justify-content-center" style="margin-top: 30px;">
+    {!! $peliculas->links() !!}
+    </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 <footer class="text-center bg-dark" style="margin-top: 92px; bottom: 0; width: 100%; height: 10%;">
