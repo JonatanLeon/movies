@@ -19,6 +19,13 @@ $paginas = ceil($total / $limite);
     <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
 </head>
 
+<style>
+a, a:hover, a:focus, a:active {
+text-decoration: none;
+color: inherit;
+}
+</style>
+
 <body>
     <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
         <div class="container-fluid"><a class="navbar-brand" href="/" style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -48,16 +55,17 @@ $paginas = ceil($total / $limite);
     </div>
     <section>
         @foreach ($peliculas as $pelicula)
+        <a href="{{route('pelicula_seleccionada', $pelicula->id)}}">
         <div class="container">
             <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
                 <div class="card-body border rounded" style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
                     <div class="row">
                         <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1" id="columna-1">
-                            <img class="img-fluid d-xl-flex align-items-xl-start" src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}">
+                            <img class="img-fluid d-xl-flex align-items-xl-start" src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}" >
                         </div>
                         <div class="col">
                             <div>
-                                <h4>{{$pelicula->titulo}}</h4>
+                                <h4 href="/pelicula">{{$pelicula->titulo}}</h4>
                                 <h6>{{$pelicula->director}}</h6>
                                 <?php $date = date_create($pelicula->estreno);?>
                                 <h6 class="text-muted mb-2">{{date_format($date, 'Y')}}</h6>
@@ -68,6 +76,7 @@ $paginas = ceil($total / $limite);
                 </div>
             </div>
         </div>
+        </a>
         @endforeach
     </section>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">

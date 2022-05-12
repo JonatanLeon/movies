@@ -19,4 +19,9 @@ class MovieController extends Controller
         $peliculas = Pelicula::orderBy('titulo')->paginate(10);
         return view('busqueda', compact('peliculas'));
     }
+
+    public function verPelicula($id) {
+        $peliculaRecogida = Pelicula::find($id);
+        return view('pelicula', compact('peliculaRecogida'));
+    }
 }

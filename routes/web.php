@@ -21,3 +21,5 @@ Route::get('/', function () {
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula']);
 
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);
+
+Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pelicula_seleccionada');
