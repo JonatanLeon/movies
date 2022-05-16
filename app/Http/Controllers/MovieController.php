@@ -24,4 +24,12 @@ class MovieController extends Controller
         $peliculaRecogida = Pelicula::find($id);
         return view('pelicula', compact('peliculaRecogida'));
     }
+
+    public function peliculaAleatoria() {
+        $listaIds = Pelicula::orderBy('id')->pluck('id');
+        $random = rand(0, $listaIds->count());
+        $idAleatorio = $listaIds[$random];
+        $peliculaRecogida = Pelicula::find($idAleatorio);
+        return view('pelicula', compact('peliculaRecogida'));
+    }
 }
