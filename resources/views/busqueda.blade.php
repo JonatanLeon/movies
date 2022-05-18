@@ -41,7 +41,10 @@ color: inherit;
                 <i class="fa fa-search" style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
                 <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..." name="buscar">
             </form>
-            <div style="margin: 10px;"><button class="btn btn-primary" type="button" style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</button><button class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</button></div>
+            <div style="margin: 10px;">
+                <a href="/registro" class="btn btn-primary" type="button" style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
+                <a href="/login" class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</a>
+            </div>
         </div>
     </nav>
     <div class="card"></div>
