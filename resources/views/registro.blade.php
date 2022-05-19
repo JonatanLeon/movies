@@ -13,7 +13,7 @@
     <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
 </head>
 
-<body>
+<body style="background:#abd7eb;">
     <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
         <div class="container-fluid"><a class="navbar-brand" href="/" style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -34,8 +34,8 @@
             </div>
         </div>
     </nav>
-    <section style="border-color: #abd7eb;background:#abd7eb;min-height: 750px;max-height: 3840px;">
-        <div class="container" style="background:#abd7eb;">
+    <section>
+        <div class="container">
             <div class="row register-form">
                 <div class="col-md-8 offset-md-2">
                     <form class="custom-form" action="/registro" method="post">
@@ -60,10 +60,5 @@
         </div>
     </section>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <footer class="text-center bg-dark">
-        <div class="container text-white py-4 py-lg-5">
-            <p class="text-muted mb-0">Copyright © 2022 Jonatan León Caparrós</p>
-        </div>
-    </footer>
 </body>
 </html>

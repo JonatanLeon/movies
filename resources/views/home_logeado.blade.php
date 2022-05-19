@@ -30,11 +30,7 @@
               <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..." name="buscar">
             </form>
             <div style="margin: 10px;">
-                @if(Route::is('/home'))
                 <a href="/login" class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Logout</a>
-                @endif
-                <a href="/registro" class="btn btn-primary" type="button" style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
-                <a href="/login" class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</a>
             </div>
         </div>
     </nav>

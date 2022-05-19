@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Iniciar sesión</title>
+    <title>Registro</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/Pretty-Registration-Form.css')}}">
     <link rel="stylesheet" href="{{ asset('css/Navigation-with-Search.css')}}">
@@ -30,7 +30,7 @@
             </form>
             <div style="margin: 10px;">
                 <a href="/registro" class="btn btn-primary" type="button" style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
-                <button class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</button>
+                <a href="/login" class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</a>
             </div>
         </div>
     </nav>
@@ -38,9 +38,9 @@
         <div class="container">
             <div class="row register-form">
                 <div class="col-md-8 offset-md-2">
-                    <form class="custom-form" action="/homelogged" method="post">
+                    <form class="custom-form" action="/registro" method="post">
                         {{ csrf_field() }}
-                        <h1>Iniciar sesión</h1>
+                        <h1>Registro de usuario</h1>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre </label></div>
                             <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre"></div>
@@ -49,7 +49,26 @@
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Contraseña </label></div>
                             <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass"></div>
                         </div>
-                        <input class="btn btn-light submit-button" type="submit" value="Entrar" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
+                        <div class="row form-group">
+                            <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Repetir contraseña </label></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass2"></div>
+                        </div>
+                        @if($registrado)
+                        <div>
+                            <h5 style="color: red;">El usuario ya está registrado</h5>
+                        </div>
+                        @endif
+                        @if($noRepetida)
+                        <div>
+                            <h5 style="color: red;">Las contraseñas no coinciden</h5>
+                        </div>
+                        @endif
+                        @if($corta)
+                        <div>
+                            <h5 style="color: red;">La contraseña debe tener 8 caracteres o más</h5>
+                        </div>
+                        @endif
+                        <input class="btn btn-light submit-button" type="submit" value="Registrarse" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
                     </form>
                 </div>
             </div>
