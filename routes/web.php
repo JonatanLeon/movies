@@ -4,21 +4,17 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::view('/', 'home');
 
 Route::get('/home', function () {
     return view('home');
 });
 
-Route::get('/registro', function () {
-    return view('registro');
-});
+Route::view('/home', 'home')->middleware('auth');
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::view('login', 'login');
+
+Route::view('registro', 'registro');
 
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula']);
 
@@ -28,7 +24,8 @@ Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pel
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
+Route::post('/intentologin', [LoginController::class, 'login']);
 
-Route::post('/homelogged', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::post('/registro', [LoginController::class, 'registrar']);
+Route::post('/registro/formulario', [LoginController::class, 'registrar']);

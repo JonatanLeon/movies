@@ -11,24 +11,25 @@ class LoginController extends Controller
 {
     public function login(Request $request) {
 
-        $nombre = $request->nombre;
-        $contrasenia = $request->pass;
-        $validado = false;
 
-        $usuarios = User::all();
-            foreach ($usuarios as $user) {
-                // Desencriptamos la contraseña para ver si coincide con la introducida
-                if ($nombre == $user->nombre && (password_verify($contrasenia, $user->pass))) {
-                    $validado = true;
-                }
-            }
+        $credentials = request()->only('nombre', 'password');
 
-        if ($validado) {
-            $request->session()->regenerate();
-            return redirect()->intended('/home');
+        if(Auth::attempt($credentials)) {
+            request()->session()->regenerate();
+
+            return redirect('/home');
         }
-        else return redirect('/login');
 
+        else return view('error_login');
+    }
+
+    public function logout(Request $request) {
+        Auth::logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('/');
     }
 
 
@@ -38,33 +39,35 @@ class LoginController extends Controller
         $repeContrasenia = $request->pass2;
         $registrado = false;
         $noRepetida = false;
-        $corta = false;
+        $passCorta = false;
         if (!is_null($usuarios = User::all())) {
             foreach ($usuarios as $usuario) {
                 if ($nombre == $usuario->nombre) {
                     $registrado = true;
-                    return view('error_registro', compact('registrado', 'noRepetida', 'corta'));
+                    return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
                 }
             }
         }
 
             if ($contrasenia != $repeContrasenia) {
                 $noRepetida = true;
-                return view('error_registro', compact('registrado', 'noRepetida', 'corta'));
             }
-            // Y luego se comprueba que la contraseña tenga 8 caracteres o mas
-            else if (strlen($contrasenia) < 8) {
-                $corta = true;
-                return view('error_registro', compact('registrado', 'noRepetida', 'corta'));
+
+            if (strlen($contrasenia) < 8) {
+                $passCorta = true;
+            }
+
+            if ($noRepetida == true || $passCorta == true) {
+                return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
             }
             else {
                 // Y si coinciden se registrara al usuario en la base de  datos
                 $usuario = new User();
                 $usuario->nombre = $nombre;
-                $usuario->pass = $contrasenia;
+                $usuario->password = $contrasenia;
                 // Encriptamos la contraseña en la base de datos
                 $pass_fuerte = password_hash($contrasenia, PASSWORD_DEFAULT);
-                $usuario->pass = $pass_fuerte;
+                $usuario->password = $pass_fuerte;
                 $usuario->save();
 
                 return view('login');

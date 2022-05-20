@@ -49,6 +49,9 @@
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Contraseña </label></div>
                             <div class="col-sm-6 input-column"><input class="form-control" type="password" name="password"></div>
                         </div>
+                        <div>
+                            <h5 style="color: red;">El nombre o la contraseña no son correctos</h5>
+                        </div>
                         <input class="btn btn-light submit-button" type="submit" value="Entrar" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
                     </form>
                 </div>

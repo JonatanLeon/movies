@@ -38,7 +38,7 @@
         <div class="container">
             <div class="row register-form">
                 <div class="col-md-8 offset-md-2">
-                    <form class="custom-form" action="/registro" method="post">
+                    <form class="custom-form" action="/registro/formulario" method="post">
                         {{ csrf_field() }}
                         <h1>Registro de usuario</h1>
                         <div class="row form-group">
@@ -55,7 +55,7 @@
                         </div>
                         @if($registrado)
                         <div>
-                            <h5 style="color: red;">El usuario ya está registrado</h5>
+                            <h5 style="color: red;">Ya existe un usuario con ese nombre</h5>
                         </div>
                         @endif
                         @if($noRepetida)
@@ -63,7 +63,7 @@
                             <h5 style="color: red;">Las contraseñas no coinciden</h5>
                         </div>
                         @endif
-                        @if($corta)
+                        @if($passCorta)
                         <div>
                             <h5 style="color: red;">La contraseña debe tener 8 caracteres o más</h5>
                         </div>

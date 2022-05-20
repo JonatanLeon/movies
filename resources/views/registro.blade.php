@@ -38,7 +38,7 @@
         <div class="container">
             <div class="row register-form">
                 <div class="col-md-8 offset-md-2">
-                    <form class="custom-form" action="/registro" method="post">
+                    <form class="custom-form" action="/registro/formulario" method="post">
                         {{ csrf_field() }}
                         <h1>Registro de usuario</h1>
                         <div class="row form-group">
