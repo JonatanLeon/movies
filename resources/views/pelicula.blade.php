@@ -77,6 +77,42 @@
                         </div>
                     </div>
                 </div>
+                <div class="col">
+                    <div class="row" style="margin-top: 34px;">
+                        <div class="col" style="border-bottom-color: var(--bs-pink);">
+                            <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
+                                <h1 style="color: var(--bs-pink);">Reseñas de usuarios</h1>
+                            </div>
+                        </div>
+                    </div>
+                    @if ($criticas->count()!=0)
+                    @foreach ($criticas as $critica)
+                    <div class="container">
+                        <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
+                            <div class="card-body border rounded" style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <h4>{{$critica->titulo}}</h4>
+                                            <h6>Nota: {{$critica->puntuacion}}/5</h6>
+                                            <h6 class="text-muted mb-2">Por: {{$critica->nombre_usuario}}</h6>
+                                            <p>{{$critica->texto}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="d-flex justify-content-center" style="margin-top: 30px;">
+                        {!! $criticas->appends($_GET)->links() !!}
+                    </div>
+                    @else
+                    <div style="margin-top: 34px;">
+                        <h3>Esta película aún no tiene reseñas</h3>
+                    </div>
+                    @endif
+                </div>
             </div>
         </div>
     </section>

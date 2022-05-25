@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pelicula;
+use App\Models\Critica;
+use App\Models\User;
+use App\Http\Controllers\ActionsController;
 
 /**
  * Controlador con todos los métodos relacionados con la búsqueda y listado de películas
@@ -27,7 +30,15 @@ class MovieController extends Controller
     // Muestra la página de la película seleccionada
     public function verPelicula($id) {
         $peliculaRecogida = Pelicula::find($id);
-        return view('pelicula', compact('peliculaRecogida'));
+        $criticas = Critica::where('id_pelicula', '=', $id)->paginate(5);
+        // Siempre que se cargue una película se recalcula su nota en la BBDD
+        // Por si un admin ha borrado una critica
+        // Si la película no tiene ninguna crítica se coge su nota por defecto
+        if (!$criticas->count()==0) {
+            $controller = new ActionsController;
+            $controller->recalcularNota($id);
+        }
+        return view('pelicula', compact('peliculaRecogida', 'criticas'));
     }
 
     // Muestra la página de una película aleatoria
@@ -36,6 +47,7 @@ class MovieController extends Controller
         $random = rand(0, $listaIds->count());
         $idAleatorio = $listaIds[$random];
         $peliculaRecogida = Pelicula::find($idAleatorio);
+        // Se evita que al refrescar cargue otra película
         return redirect('/pelicula/'.$peliculaRecogida->id);
     }
 }
