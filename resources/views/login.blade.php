@@ -24,11 +24,11 @@
                         <h1>Iniciar sesión</h1>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre"></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre" required></div>
                         </div>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Contraseña </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="password"></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="password" required></div>
                         </div>
                         <input class="btn btn-light submit-button" type="submit" value="Entrar" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
                     </form>

@@ -56,32 +56,27 @@ class LoginController extends Controller
         $registrado = false;
         $noRepetida = false;
         $passCorta = false;
-        $vacio = false;
 
         // Comprueba si el usuario está ya registrado
         if (!is_null($usuarios = User::all())) {
             foreach ($usuarios as $usuario) {
                 if ($nombre == $usuario->nombre) {
                     $registrado = true;
-                    return view('error_registro', compact('registrado', 'noRepetida', 'passCorta', 'vacio'));
+                    return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
                 }
             }
         }
         // Comprueba si la contraseña se ha repetido bien
-        if ($contrasenia != $repeContrasenia && (!(empty($request->pass)) && !(empty($request->pass2)))) {
+        if ($contrasenia != $repeContrasenia) {
            $noRepetida = true;
         }
         // Comprueba si la contraseña tiene 8 caracteres o más
         if (strlen($contrasenia) < 8) {
             $passCorta = true;
         }
-        // Comprueba si algún campo está vacío
-        if (empty($request->nombre) || (empty($request->pass)) || (empty($request->pass2)) ) {
-            $vacio = true;
-        }
         // Si se cumple alguna de las condiciones anteriores, no podrá registrarse y se informa del error
-        if ($noRepetida == true || $passCorta == true || $vacio == true) {
-            return view('error_registro', compact('registrado', 'noRepetida', 'passCorta', 'vacio'));
+        if ($noRepetida == true || $passCorta == true) {
+            return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
         }
 
         // Si todo está en orden, se registra el usuario en la BBDD

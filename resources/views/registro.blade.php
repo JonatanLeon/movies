@@ -24,15 +24,15 @@
                         <h1>Registro de usuario</h1>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre"></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre" required></div>
                         </div>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Contraseña </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass"></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass" placeholder="(Longitud mínima: 8)" required></div>
                         </div>
                         <div class="row form-group">
                             <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Repetir contraseña </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass2"></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass2" required></div>
                         </div>
                         <input class="btn btn-light submit-button" type="submit" value="Registrarse" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
                     </form>
