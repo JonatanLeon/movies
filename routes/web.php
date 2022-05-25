@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ActionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home');
@@ -23,6 +24,8 @@ Route::get('/peliculas', [MovieController::class, 'listarTodas']);
 Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pelicula_seleccionada');
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
+
+Route::post('/pelicula/critica/{id}', [ActionsController::class, 'publicarCritica'])->name('publicar.critica');
 
 Route::post('/intentologin', [LoginController::class, 'login']);
 

@@ -12,31 +12,16 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
-        <div class="container-fluid"><a class="navbar-brand" href="/" style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a><button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/peliculas" style="color: var(--bs-light);">Películas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Críticas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
-                </ul>
-            </div>
-            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">
-                {{ csrf_field() }}
-                <i class="fa fa-search" style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
-                <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..." name="buscar">
-            </form>
-            <div style="margin: 10px;">
-                <a href="/registro" class="btn btn-primary" type="button" style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
-                <a href="/login" class="btn btn-primary" type="button" style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar sesión</a>
-            </div>
-        </div>
-    </nav>
+    @include('templates.navbar')
     <section>
         <div class="container">
             <div class="row">
                 <div class="col-xl-4 col-xxl-3" style="padding-left: 0px;"><img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}" style="padding: 53px;padding-left: 23px;">
-                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir Reseña</button></div>
+                    @auth
+                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);" data-bs-toggle="modal" data-bs-target="#exampleModal">Escribir Reseña</button></div>
+                    @else
+                    <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir Reseña</a></div>
+                    @endauth
                     <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Guardar en lista</button></div>
                     <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Añadir a calendario</button></div>
                 </div>
@@ -95,6 +80,49 @@
             </div>
         </div>
     </section>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Escribe una reseña de {{$peliculaRecogida->titulo}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{route('publicar.critica', $peliculaRecogida->id)}}" method="post">
+            {{ csrf_field() }}
+            <div class="row form-group mb-3">
+                <div class="col-sm-20 input-column"><input class="form-control" type="text" placeholder="Título de la reseña" name="titulo" required></div>
+            </div>
+            <div class="row form-group mb-3">
+                <div class="col-sm-20 input-column">
+                    <textarea class="form-control" type="text" placeholder="Texto de la reseña" rows="6" name="texto" required></textarea>
+                </div>
+            </div>
+            <div class="row form-group mb-3">
+                <div class="col-sm-2 label-column">
+                    <label class="col-form-label">Puntuación:</label>
+                </div>
+                <div class="col-sm-2 input-column" id="divnota">
+                    <select class="form-select" name="puntuacion" required>
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <input class="btn btn-light submit-button" type="submit" value="Publicar reseña" style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;"/>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 <footer class="text-center bg-dark" style="margin-top: 92px; bottom: 0; width: 100%; height: 10%;">

@@ -68,6 +68,11 @@
                             <h5 style="color: red;">La contraseña debe tener 8 caracteres o más</h5>
                         </div>
                         @endif
+                        @if($vacio)
+                        <div>
+                            <h5 style="color: red;">No puede haber campos vacíos</h5>
+                        </div>
+                        @endif
                         <input class="btn btn-light submit-button" type="submit" value="Registrarse" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
                     </form>
                 </div>
