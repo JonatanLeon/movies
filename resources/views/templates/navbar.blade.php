@@ -4,7 +4,7 @@
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/peliculas" style="color: var(--bs-light);">Películas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Críticas</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Reseñas</a></li>
                 <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
             </ul>
         </div>

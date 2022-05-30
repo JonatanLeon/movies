@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\CriticasController;
 use Illuminate\Support\Facades\Route;
 
 // Página principal
@@ -35,4 +35,4 @@ Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pel
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
-Route::post('/pelicula/critica/{id}', [ActionsController::class, 'publicarCritica'])->name('publicar.critica');
+Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCritica'])->name('publicar.critica');

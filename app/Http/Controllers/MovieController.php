@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelicula;
 use App\Models\Critica;
 use App\Models\User;
-use App\Http\Controllers\ActionsController;
+use App\Http\Controllers\CriticasController;
 
 /**
  * Controlador con todos los métodos relacionados con la búsqueda y listado de películas
@@ -35,7 +35,7 @@ class MovieController extends Controller
         // Por si un admin ha borrado una critica
         // Si la película no tiene ninguna crítica se coge su nota por defecto
         if (!$criticas->count()==0) {
-            $controller = new ActionsController;
+            $controller = new CriticasController;
             $controller->recalcularNota($id);
         }
         return view('pelicula', compact('peliculaRecogida', 'criticas'));

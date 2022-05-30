@@ -16,7 +16,8 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-xl-4 col-xxl-3" style="padding-left: 0px;"><img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}" style="padding: 53px;padding-left: 23px;">
+                <div class="col-xl-4 col-xxl-3" style="padding-left: 0px;">
+                    <img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}" style="padding: 53px;padding-left: 23px;">
                     @auth
                     <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);" data-bs-toggle="modal" data-bs-target="#exampleModal">Escribir Reseña</button></div>
                     @else

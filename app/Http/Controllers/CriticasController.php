@@ -9,7 +9,7 @@ use App\Models\Pelicula;
 /**
  * Controlador que gobierna las acciones del usuario
  */
-class ActionsController extends Controller
+class CriticasController extends Controller
 {
     // Guarda una crítica en la BBDD y mostrarla en la página de la película
     public function publicarCritica(Request $request, $id) {
