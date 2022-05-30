@@ -3,6 +3,7 @@
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CriticasController;
+use App\Http\Controllers\PerfilController;
 use Illuminate\Support\Facades\Route;
 
 // Página principal
@@ -16,6 +17,10 @@ Route::view('/home', 'home')->middleware('auth');
 
 // Llevan a la ventana de login y a la de registro
 Route::view('login', 'login');
+
+Route::get('/perfil', [PerfilController::class, 'mostrarCriticas']);
+
+Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar_critica');
 
 Route::view('registro', 'registro');
 

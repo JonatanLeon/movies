@@ -19,7 +19,7 @@
                 <div class="col-xl-4 col-xxl-3" style="padding-left: 0px;">
                     <img class="img-fluid" src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}" style="padding: 53px;padding-left: 23px;">
                     @auth
-                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);" data-bs-toggle="modal" data-bs-target="#exampleModal">Escribir Reseña</button></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);" data-bs-toggle="modal" data-bs-target="#criticaModal">Escribir Reseña</button></div>
                     @else
                     <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary" type="button" style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir Reseña</a></div>
                     @endauth
@@ -119,7 +119,7 @@
     </section>
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="criticaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">

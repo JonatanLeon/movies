@@ -13,6 +13,7 @@ class CriticasController extends Controller
 {
     // Guarda una crítica en la BBDD y mostrarla en la página de la película
     public function publicarCritica(Request $request, $id) {
+        $pelicula = Pelicula::find($id);
         $critica = new Critica();
         $critica->titulo = $request->titulo;
         $critica->texto = $request->texto;
@@ -20,6 +21,7 @@ class CriticasController extends Controller
         $critica->id_pelicula = $id;
         $critica->id_usuario = Auth::user()->id;
         $critica->nombre_usuario = Auth::user()->nombre;
+        $critica->nombre_pelicula = $pelicula->titulo;
         $critica->save();
         // Se recalcula la nota con la nueva
         $this->recalcularNota($id);
