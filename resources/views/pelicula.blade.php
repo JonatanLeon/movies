@@ -9,6 +9,20 @@
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
     <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
+    <style>
+        #listaBoton {
+            border: 2px solid transparent;
+            width: 245px;
+            font-size: 20px;
+            background: var(--bs-white);
+            color: var(--bs-pink);
+            transition-duration: 1ms;
+        }
+
+        #listaBoton:hover {
+            border: 2px solid var(--bs-pink);
+        }
+    </style>
 </head>
 
 <body>
@@ -25,16 +39,21 @@
                             type="button"
                             style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                             data-bs-toggle="modal" data-bs-target="#criticaModal">Escribir Reseña</button></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                            type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                            data-bs-toggle="modal" data-bs-target="#listaModal">Guardar
+                            en lista</button></div>
                     @else
                     <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
                             type="button"
                             style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir
                             Reseña</a></div>
-                    @endauth
-                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                    <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
                             type="button"
                             style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Guardar
-                            en lista</button></div>
+                            en lista</a></div>
+                    @endauth
                     <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                             type="button"
                             style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Añadir
@@ -136,7 +155,7 @@
         </div>
     </section>
 
-    <!-- Modal -->
+    <!-- Escribir reseña -->
     <div class="modal fade" id="criticaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -178,6 +197,33 @@
                                 style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="listaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Tus listas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @auth
+                    @foreach ($listas as $lista)
+                    <div class="container text-center" style="margin-bottom: 15px;">
+                        <a id="listaBoton" href="#" class="btn btn-primary" type="button">{{$lista->nombre}}</a>
+                    </div>
+                    @endforeach
+                    @endauth
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <input class="btn btn-light submit-button" type="submit" value="Crear nueva lista"
+                        style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
                 </div>
             </div>
         </div>

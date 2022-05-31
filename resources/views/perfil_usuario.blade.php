@@ -30,12 +30,20 @@
             <div class="col-md-8 col-xl-3 text-center mx-auto">
                 <h2>Perfil de {{$usuario->nombre}}</h2>
                 <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a href="/login" class="btn btn-primary" type="button"
+                    <a href="#" class="btn btn-primary" type="button"
                         style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
                         perfil</a>
                 </div>
-                <div class="container-fluid">
-                    <h4 style="color: var(--bs-red);">Desactivar cuenta</h4>
+                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                    <a href="#" class="btn btn-primary" type="button"
+                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                        data-bs-toggle="modal" data-bs-target="#crearLista">Crear
+                        lista</a>
+                </div>
+                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                    <a href="#" class="btn btn-primary" type="button"
+                        style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);">Desactivar
+                        cuenta</a>
                 </div>
             </div>
             <div class="col">
@@ -77,6 +85,37 @@
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Crear lista -->
+    <div class="modal fade" id="crearLista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nueva lista de películas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/perfil/crearlista/" method="post">
+                        {{ csrf_field() }}
+                        <div class="row form-group mb-3">
+                            <div class="col-sm-20 input-column"><input class="form-control" type="text"
+                                    placeholder="Nombre de la lista" name="nombre" required></div>
+                        </div>
+                        <div class="row form-group mb-3">
+                            <div class="col-sm-20 input-column">
+                                <textarea class="form-control" type="text" placeholder="Descripción de la lista"
+                                    rows="6" name="descripcion" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <input class="btn btn-light submit-button" type="submit" value="Crear lista"
+                                style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

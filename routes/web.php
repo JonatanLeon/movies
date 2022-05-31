@@ -4,8 +4,10 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CriticasController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ListasController;
 use Illuminate\Support\Facades\Route;
 
+// Variables para mostrar las vistas de login y registro
 $registrado = false;
 $noRepetida = false;
 $passCorta = false;
@@ -25,6 +27,7 @@ Route::view('login', 'login', compact('error'));
 
 Route::view('registro', 'registro', compact('registrado', 'noRepetida', 'passCorta'));
 
+// Gestión de perfil
 Route::get('/perfil', [PerfilController::class, 'mostrarCriticas']);
 
 Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar.critica');
@@ -32,6 +35,8 @@ Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritic
 Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->name('modificar.critica');
 
 Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
+
+Route::post('/perfil/crearlista/', [ListasController::class, 'crearLista']);
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
