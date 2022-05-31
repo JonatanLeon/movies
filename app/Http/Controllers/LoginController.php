@@ -18,9 +18,9 @@ class LoginController extends Controller
      */
     public function login(Request $request) {
 
-        // Recoge las credenciales deñ formulario de inicio de sesión
+        // Recoge las credenciales del formulario de inicio de sesión
         $credentials = request()->only('nombre', 'password');
-
+        $error = false;
         // Comprueba si hay un usuario con las mismas credenciales en la BBDD
         if(Auth::attempt($credentials)) {
             // Crea una sesión para ese usuario
@@ -29,7 +29,10 @@ class LoginController extends Controller
             return redirect('/home');
         }
 
-        else return view('error_login');
+        else {
+            $error = true;
+            return view('login', compact('error'));
+        }
     }
 
     /**
@@ -62,7 +65,7 @@ class LoginController extends Controller
             foreach ($usuarios as $usuario) {
                 if ($nombre == $usuario->nombre) {
                     $registrado = true;
-                    return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
+                    return view('registro', compact('registrado', 'noRepetida', 'passCorta'));
                 }
             }
         }
@@ -76,11 +79,12 @@ class LoginController extends Controller
         }
         // Si se cumple alguna de las condiciones anteriores, no podrá registrarse y se informa del error
         if ($noRepetida == true || $passCorta == true) {
-            return view('error_registro', compact('registrado', 'noRepetida', 'passCorta'));
+            return view('registro', compact('registrado', 'noRepetida', 'passCorta'));
         }
 
         // Si todo está en orden, se registra el usuario en la BBDD
         else {
+            $error = false;
             $usuario = new User();
             $usuario->nombre = $nombre;
             $usuario->password = $contrasenia;
@@ -89,7 +93,7 @@ class LoginController extends Controller
             $usuario->password = $pass_fuerte;
             $usuario->save();
 
-            return view('login');
+            return view('login', compact('error'));
         }
     }
 }

@@ -14,7 +14,35 @@
 </head>
 
 <body style="background:#abd7eb;">
-    @include('templates.navbar')
+    <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
+        <div class="container-fluid"><a class="navbar-brand" href="/"
+                style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a><button
+                data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span
+                    class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/peliculas"
+                            style="color: var(--bs-light);">Películas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Críticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
+                </ul>
+            </div>
+            <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">
+                {{ csrf_field() }}
+                <i class="fa fa-search"
+                    style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
+                <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..."
+                    name="buscar">
+            </form>
+            <div style="margin: 10px;">
+                <a href="/registro" class="btn btn-primary" type="button"
+                    style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
+                <a href="/login" class="btn btn-primary" type="button"
+                    style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar
+                    sesión</a>
+            </div>
+        </div>
+    </nav>
     <section>
         <div class="container">
             <div class="row register-form">
@@ -23,18 +51,40 @@
                         {{ csrf_field() }}
                         <h1>Registro de usuario</h1>
                         <div class="row form-group">
-                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre" required></div>
+                            <div class="col-sm-4 label-column"><label class="col-form-label"
+                                    for="name-input-field">Nombre </label></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="text" name="nombre"
+                                    required></div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-sm-4 label-column"><label class="col-form-label" for="pawssword-input-field">Contraseña </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass" placeholder="(Longitud mínima: 8)" required></div>
+                            <div class="col-sm-4 label-column"><label class="col-form-label"
+                                    for="pawssword-input-field">Contraseña </label></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password"
+                                    placeholder="(Longitud mínima: 8)" name="pass" required></div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Repetir contraseña </label></div>
-                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass2" required></div>
+                            <div class="col-sm-4 label-column"><label class="col-form-label"
+                                    for="repeat-pawssword-input-field">Repetir contraseña </label></div>
+                            <div class="col-sm-6 input-column"><input class="form-control" type="password" name="pass2"
+                                    required></div>
                         </div>
-                        <input class="btn btn-light submit-button" type="submit" value="Registrarse" style="background: var(--bs-pink);border-color: var(--bs-pink);"/>
+                        @if($registrado)
+                        <div>
+                            <h5 style="color: red;">Ya existe un usuario con ese nombre</h5>
+                        </div>
+                        @endif
+                        @if($noRepetida)
+                        <div>
+                            <h5 style="color: red;">Las contraseñas no coinciden</h5>
+                        </div>
+                        @endif
+                        @if($passCorta)
+                        <div>
+                            <h5 style="color: red;">La contraseña debe tener 8 caracteres o más</h5>
+                        </div>
+                        @endif
+                        <input class="btn btn-light submit-button" type="submit" value="Registrarse"
+                            style="background: var(--bs-pink);border-color: var(--bs-pink);" />
                     </form>
                 </div>
             </div>
@@ -42,4 +92,5 @@
     </section>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
+
 </html>

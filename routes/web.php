@@ -6,6 +6,11 @@ use App\Http\Controllers\CriticasController;
 use App\Http\Controllers\PerfilController;
 use Illuminate\Support\Facades\Route;
 
+$registrado = false;
+$noRepetida = false;
+$passCorta = false;
+$error = false;
+
 // Página principal
 Route::view('/', 'home');
 
@@ -16,13 +21,17 @@ Route::get('/home', function () {
 Route::view('/home', 'home')->middleware('auth');
 
 // Llevan a la ventana de login y a la de registro
-Route::view('login', 'login');
+Route::view('login', 'login', compact('error'));
+
+Route::view('registro', 'registro', compact('registrado', 'noRepetida', 'passCorta'));
 
 Route::get('/perfil', [PerfilController::class, 'mostrarCriticas']);
 
-Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar_critica');
+Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar.critica');
 
-Route::view('registro', 'registro');
+Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->name('modificar.critica');
+
+Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
@@ -35,6 +44,8 @@ Route::post('/registro/formulario', [LoginController::class, 'registrar']);
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula']);
 
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);
+
+Route::get('/criticas', [CriticasController::class, 'listarTodas']);
 
 Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pelicula_seleccionada');
 

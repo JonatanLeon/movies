@@ -40,4 +40,9 @@ class CriticasController extends Controller
         $pelicula->nota_media = bcdiv($notaMedia, '1', 1);
         $pelicula->save();
     }
+
+    public function listarTodas() {
+        $criticas = Critica::orderBy('titulo')->paginate(10);
+        return view('listado_criticas', compact('criticas'));
+    }
 }
