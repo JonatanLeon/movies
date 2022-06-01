@@ -25,6 +25,7 @@
 
 <body>
     @include('templates.navbar')
+    @include('sweetalert::alert')
     <div class="container py-4 py-xl-5">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-3 text-center mx-auto">
@@ -49,13 +50,13 @@
             <div class="col">
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a class="nav-link active" href="#">Reseñas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Listas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/perfil/listas/">Listas</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Calendario</a></li>
                 </ul>
                 @if ($criticas->count()!=0)
                 @foreach ($criticas as $critica)
                 <a href="{{route('ir.critica', $critica->id)}}">
-                    <div class="container" data-bs-toggle="modal" data-bs-target="#criticaModal">
+                    <div class="container">
                         <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
                             <div class="card-body border rounded"
                                 style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
@@ -86,36 +87,7 @@
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- Crear lista -->
-    <div class="modal fade" id="crearLista" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Nueva lista de películas</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/perfil/crearlista/" method="post">
-                        {{ csrf_field() }}
-                        <div class="row form-group mb-3">
-                            <div class="col-sm-20 input-column"><input class="form-control" type="text"
-                                    placeholder="Nombre de la lista" name="nombre" required></div>
-                        </div>
-                        <div class="row form-group mb-3">
-                            <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Descripción de la lista"
-                                    rows="6" name="descripcion" required></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <input class="btn btn-light submit-button" type="submit" value="Crear lista"
-                                style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('templates.modal_lista')
 </body>
 
 </html>

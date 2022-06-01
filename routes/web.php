@@ -28,7 +28,9 @@ Route::view('login', 'login', compact('error'));
 Route::view('registro', 'registro', compact('registrado', 'noRepetida', 'passCorta'));
 
 // Gestión de perfil
-Route::get('/perfil', [PerfilController::class, 'mostrarCriticas']);
+Route::get('/perfil/criticas/', [PerfilController::class, 'mostrarCriticas']);
+
+Route::get('/perfil/listas/', [PerfilController::class, 'mostrarListas']);
 
 Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar.critica');
 
@@ -36,11 +38,10 @@ Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCriti
 
 Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
 
-Route::post('/perfil/crearlista/', [ListasController::class, 'crearListaMandarPerfil'])->name('lista.perfil');
+// Si falla esta ruta puede ser porque falta la barra del final
+Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->name('ir.lista');
 
-Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->name('lista.pelicula');
-
-Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista']);
+Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaMandarPerfilLista']);
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
@@ -61,3 +62,7 @@ Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pel
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
 Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCritica'])->name('publicar.critica');
+
+Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->name('lista.pelicula');
+
+Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista']);

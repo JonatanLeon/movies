@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/perfil/crearlista/" method="post">
+                <form action="/perfil/listas/crearlista/" method="post">
                     {{ csrf_field() }}
                     <div class="row form-group mb-3">
                         <div class="col-sm-20 input-column"><input class="form-control" type="text"

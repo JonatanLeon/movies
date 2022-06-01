@@ -23,12 +23,12 @@
             background: var(--bs-pink);
             color: var(--bs-white);
         }
-
     </style>
 </head>
 
 <body>
     @include('templates.navbar')
+    @include('sweetalert::alert')
     <section>
         <div class="container">
             <div class="row">
@@ -37,24 +37,24 @@
                         src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}"
                         style="padding: 53px;padding-left: 23px;">
                     @auth
-                        <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
-                                type="button"
-                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
-                                data-bs-toggle="modal" data-bs-target="#criticaModal">Escribir Reseña</button></div>
-                        <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
-                                type="button"
-                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
-                                data-bs-toggle="modal" data-bs-target="#listaModal">Guardar
-                                en lista</button></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                            type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                            data-bs-toggle="modal" data-bs-target="#criticaModal">Escribir Reseña</button></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                            type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                            data-bs-toggle="modal" data-bs-target="#listaModal">Guardar
+                            en lista</button></div>
                     @else
-                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
-                                type="button"
-                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir
-                                Reseña</a></div>
-                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
-                                type="button"
-                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Guardar
-                                en lista</a></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
+                            type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir
+                            Reseña</a></div>
+                    <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
+                            type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Guardar
+                            en lista</a></div>
                     @endauth
                     <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                             type="button"
@@ -125,33 +125,33 @@
                         </div>
                     </div>
                     @if ($criticas->count() != 0)
-                        @foreach ($criticas as $critica)
-                            <div class="container">
-                                <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
-                                    <div class="card-body border rounded"
-                                        style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div>
-                                                    <h4>{{ $critica->titulo }}</h4>
-                                                    <h6>Nota: {{ $critica->puntuacion }}/5</h6>
-                                                    <h6 class="text-muted mb-2">Por: {{ $critica->nombre_usuario }}
-                                                    </h6>
-                                                    <p>{{ $critica->texto }}</p>
-                                                </div>
-                                            </div>
+                    @foreach ($criticas as $critica)
+                    <div class="container">
+                        <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
+                            <div class="card-body border rounded"
+                                style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <h4>{{ $critica->titulo }}</h4>
+                                            <h6>Nota: {{ $critica->puntuacion }}/5</h6>
+                                            <h6 class="text-muted mb-2">Por: {{ $critica->nombre_usuario }}
+                                            </h6>
+                                            <p>{{ $critica->texto }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                        <div class="d-flex justify-content-center" style="margin-top: 30px;">
-                            {!! $criticas->appends($_GET)->links() !!}
                         </div>
+                    </div>
+                    @endforeach
+                    <div class="d-flex justify-content-center" style="margin-top: 30px;">
+                        {!! $criticas->appends($_GET)->links() !!}
+                    </div>
                     @else
-                        <div style="margin-top: 34px;">
-                            <h3>Esta película aún no tiene reseñas</h3>
-                        </div>
+                    <div style="margin-top: 34px;">
+                        <h3>Esta película aún no tiene reseñas</h3>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -177,7 +177,8 @@
                         </div>
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Texto de la reseña" rows="6" name="texto" required></textarea>
+                                <textarea class="form-control" type="text" placeholder="Texto de la reseña" rows="6"
+                                    name="texto" required></textarea>
                             </div>
                         </div>
                         <div class="row form-group mb-3">
@@ -216,17 +217,16 @@
                 </div>
                 <div class="modal-body">
                     @auth
-                        @foreach ($listas as $lista)
-                            <div class="container text-center" style="margin-bottom: 15px;">
-                                <form action='/pelicula/guardarlista/' method="post">
-                                    {{ csrf_field() }}
-                                    <input value={{ $lista->id }} name="idLista" hidden="true">
-                                    <input value={{ $peliculaRecogida->id }} name="idPelicula" hidden="true">
-                                    <input id="listaBoton" value="{{ $lista->nombre }}" class="btn btn-primary"
-                                        type="submit">
-                                </form>
-                            </div>
-                        @endforeach
+                    @foreach ($listas as $lista)
+                    <div class="container text-center" style="margin-bottom: 15px;">
+                        <form action='/pelicula/guardarlista/' method="post">
+                            {{ csrf_field() }}
+                            <input value={{ $lista->id }} name="idLista" hidden="true">
+                            <input value={{ $peliculaRecogida->id }} name="idPelicula" hidden="true">
+                            <input id="listaBoton" value="{{ $lista->nombre }}" class="btn btn-primary" type="submit">
+                        </form>
+                    </div>
+                    @endforeach
                     @endauth
                 </div>
                 <div class="modal-footer">
@@ -256,8 +256,8 @@
                         </div>
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Descripción de la lista" rows="6" name="descripcion"
-                                    required></textarea>
+                                <textarea class="form-control" type="text" placeholder="Descripción de la lista"
+                                    rows="6" name="descripcion" required></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

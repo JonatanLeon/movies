@@ -20,7 +20,7 @@
         </form>
         <div style="margin: 10px;">
             @auth
-            <a href="/perfil" class="btn btn-primary" type="button"
+            <a href="/perfil/criticas/" class="btn btn-primary" type="button"
                 style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Mi
                 perfil</a>
             <a href="/logout" class="btn btn-primary" type="button"

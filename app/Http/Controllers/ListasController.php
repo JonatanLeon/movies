@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Lista;
+use App\Models\ListaPelicula;
+use RealRashid\SweetAlert\Facades\Alert;
+
 use Illuminate\Support\Facades\Auth;
 
 class ListasController extends Controller
@@ -17,20 +20,24 @@ class ListasController extends Controller
         $lista->save();
     }
 
-    public function crearListaMandarPerfil(Request $request) {
+    public function crearListaMandarPerfilLista(Request $request) {
         $this->crearLista($request);
-
-        return redirect('/perfil');
+        Alert::success('Hecho', 'Lista creada');
+        return redirect('/perfil/listas/');
     }
 
     public function crearListaMandarPelicula(Request $request, $idPelicula) {
         $this->crearLista($request);
+        Alert::success('Hecho', 'Lista creada');
         return redirect('/pelicula/'.$idPelicula);
     }
 
     public function guardarEnLista(Request $request) {
-       echo $request->idLista;
-       echo '<br>';
-       echo $request->idPelicula;
+       $listaPelicula = new ListaPelicula();
+       $listaPelicula->id_lista = $request->idLista;
+       $listaPelicula->id_pelicula = $request->idPelicula;
+       $listaPelicula->save();
+       Alert::success('Hecho', 'Pelicula añadida a lista');
+       return redirect('/pelicula/'.$request->idPelicula);
     }
 }
