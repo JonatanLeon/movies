@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Perfil usuario</title>
+    <title>{{$critica->titulo}}</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/Features-Cards.css')}}">

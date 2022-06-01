@@ -15,7 +15,22 @@ class ListasController extends Controller
         $lista->id_usuario = Auth::user()->id;
 
         $lista->save();
+    }
+
+    public function crearListaMandarPerfil(Request $request) {
+        $this->crearLista($request);
 
         return redirect('/perfil');
+    }
+
+    public function crearListaMandarPelicula(Request $request, $idPelicula) {
+        $this->crearLista($request);
+        return redirect('/pelicula/'.$idPelicula);
+    }
+
+    public function guardarEnLista(Request $request) {
+       echo $request->idLista;
+       echo '<br>';
+       echo $request->idPelicula;
     }
 }

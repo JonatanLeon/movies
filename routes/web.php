@@ -36,7 +36,11 @@ Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCriti
 
 Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
 
-Route::post('/perfil/crearlista/', [ListasController::class, 'crearLista']);
+Route::post('/perfil/crearlista/', [ListasController::class, 'crearListaMandarPerfil'])->name('lista.perfil');
+
+Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->name('lista.pelicula');
+
+Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista']);
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
