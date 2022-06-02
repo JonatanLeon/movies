@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="{{ asset('css/Features-Cards.css')}}">
     <link rel="stylesheet" href="{{ asset('css/Navigation-with-Search.css')}}">
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
-    <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
-    <link rel="stylesheet" href="{{asset('js/jquery-ui.min.css')}}">
-    <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.css')}}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.structure.css')}}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.theme.min.css')}}">
     <style>
         a,
         a:hover,
@@ -80,14 +80,14 @@
                     <h5 class="modal-title" id="exampleModalLabel">Añadir película</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="#" method="post">
+                <div class="modal-body ui-front">
+                    <form action="#" method="post" class="busquedaPeli">
                         {{ csrf_field() }}
                         <div class="row form-group mb-3">
-                            <div class="col-sm-20 input-column"><input class="search form-control p-3" type="text"
-                                    placeholder="Buscar..." name="nombre" required>
+                            <div class="col-sm-20 input-column"><input id="auto" class="search form-control p-3"
+                                    type="text" placeholder="Buscar..." name="nombre" required>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" style="margin-top: 25px;">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <input class="btn btn-light submit-button" type="submit" value="Añadir"
                                     style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
@@ -97,15 +97,26 @@
             </div>
         </div>
     </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
-    <script>
-        var pelis = ['hola', 'adios'];
-
-        $('#search').autocomplete({
-            source: pelis;
-        });
-    </script>
 </body>
+<script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
+<script src="{{ asset('lib\jquery-3.6.0.js')}}" type="text/javascript"></script>
+<script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js')}}" type="text/javascript"></script>
+<script type="text/javascript">
+    var array = ["hola", "adios"];
+    $("#auto").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{route('buscar')}}",
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data)
+                }
+            });
+        }
+    });
+</script>
 
 </html>

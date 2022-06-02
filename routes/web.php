@@ -51,7 +51,7 @@ Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('/registro/formulario', [LoginController::class, 'registrar']);
 
 // Buscador y vista de películas
-Route::get('/busqueda', [MovieController::class, 'buscarPelicula']);
+Route::get('/busqueda', [MovieController::class, 'buscarPelicula'])->name('buscar');
 
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);
 

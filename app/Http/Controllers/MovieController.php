@@ -16,9 +16,22 @@ class MovieController extends Controller
 {
     // Método para buscar una película por su título en la barra de búsqueda
     public function buscarPelicula(Request $request) {
-        $peliculas = Pelicula::where('titulo', 'like', '%'.$request->get("buscar").'%')->paginate(10);
+        if($request->get("buscar")) {
+            $buscar = $request->get("buscar");
+            $peliculas = Pelicula::where('titulo', 'like', '%'.$buscar.'%')->paginate(10);
 
-        return view('busqueda', compact('peliculas'));
+            return view('busqueda', compact('peliculas'));
+        } else {
+            $term = $request->get("term");
+            $peliculas = Pelicula::where('titulo', 'like', '%'.$term.'%')->get();
+            $data = [];
+            foreach($peliculas as $pelicula) {
+                $data[] = [
+                    'label' => $pelicula->titulo
+                ];
+            }
+            return $data;
+        }
     }
     // Lista todas las películas en el botón de la barra superior
     public function listarTodas() {
