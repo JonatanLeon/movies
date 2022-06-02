@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Perfil usuario</title>
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/Features-Cards.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/Navigation-with-Search.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
-    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.css')}}">
-    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.structure.css')}}">
-    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.theme.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Features-Cards.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/Navigation-with-Search.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.structure.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.theme.min.css') }}">
     <style>
         a,
         a:hover,
@@ -22,19 +22,21 @@
             color: inherit;
             cursor: pointer;
         }
+
     </style>
 </head>
 
 <body>
     @include('templates.navbar')
+    @include('sweetalert::alert')
     <div class="container py-4 py-xl-5">
         <div class="col">
             <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
                 <h1 style="padding-top: 0px;width: 867px;color: var(--bs-pink);">
-                    {{$lista->nombre}}</h1>
+                    {{ $lista->nombre }}</h1>
             </div>
             <div style="margin-top: 15px;">
-                <p style="font-size: 20px;">{{$lista->descripcion}}</p>
+                <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
             </div>
             <div class="row">
                 <div class="col" style="margin-top: 15px;">
@@ -58,21 +60,22 @@
                         Lista</a>
                 </div>
             </div>
-            @if ($peliculas->count()!=0)
-            @foreach ($peliculas as $pelicula)
-            <!-- Cards de las películas -->
-            @include('templates.card_pelicula')
-            @endforeach
-            <div class="d-flex justify-content-center" style="margin-top: 30px;">
-                {!! $peliculas->appends($_GET)->links() !!}
-            </div>
+            @if ($peliculas->count() != 0)
+                @foreach ($peliculas as $pelicula)
+                    <!-- Cards de las películas -->
+                    @include('templates.card_pelicula')
+                @endforeach
+                <div class="d-flex justify-content-center" style="margin-top: 30px;">
+                    {!! $peliculas->appends($_GET)->links() !!}
+                </div>
             @else
-            <div style="margin-top: 34px;">
-                <h3>Aún no has añadido ninguna película a esta lista</h3>
-            </div>
+                <div style="margin-top: 34px;">
+                    <h3>Aún no has añadido ninguna película a esta lista</h3>
+                </div>
             @endif
         </div>
     </div>
+    <!-- Modal de añadir pelicula -->
     <div class="modal fade" id="modalBuscador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -81,16 +84,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ui-front">
-                    <form action="#" method="post" class="busquedaPeli">
+                    <form action='/pelicula/guardarlista/' method="post" class="busquedaPeli">
                         {{ csrf_field() }}
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column"><input id="auto" class="search form-control p-3"
-                                    type="text" placeholder="Buscar..." name="nombre" required>
+                                    type="text" placeholder="Buscar..." name="pelicula" required>
+                                    <input value={{ $lista->id }} name="idLista" hidden="true">
                             </div>
                             <div class="modal-footer" style="margin-top: 25px;">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <input class="btn btn-light submit-button" type="submit" value="Añadir"
-                                    style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                                    name="insertarEnLista" style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
                             </div>
                     </form>
                 </div>
@@ -98,15 +102,15 @@
         </div>
     </div>
 </body>
-<script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
-<script src="{{ asset('lib\jquery-3.6.0.js')}}" type="text/javascript"></script>
-<script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js')}}" type="text/javascript"></script>
+<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
+<script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     var array = ["hola", "adios"];
     $("#auto").autocomplete({
         source: function(request, response) {
             $.ajax({
-                url: "{{route('buscar')}}",
+                url: "{{ route('buscar') }}",
                 dataType: 'json',
                 data: {
                     term: request.term

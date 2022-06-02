@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Lista;
+use App\Models\Pelicula;
 use App\Models\ListaPelicula;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\QueryException;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -33,11 +35,27 @@ class ListasController extends Controller
     }
 
     public function guardarEnLista(Request $request) {
-       $listaPelicula = new ListaPelicula();
-       $listaPelicula->id_lista = $request->idLista;
-       $listaPelicula->id_pelicula = $request->idPelicula;
-       $listaPelicula->save();
-       Alert::success('Hecho', 'Pelicula añadida a lista');
-       return redirect('/pelicula/'.$request->idPelicula);
+        if(!$request->get("insertarEnLista")) {
+            $listaPelicula = new ListaPelicula();
+            $listaPelicula->id_lista = $request->idLista;
+            $listaPelicula->id_pelicula = $request->idPelicula;
+            $listaPelicula->save();
+            Alert::success('Hecho', 'Pelicula añadida a lista');
+            return redirect('/pelicula/'.$request->idPelicula);
+        } else {
+            $listaPelicula = new ListaPelicula();
+            $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+            $listaPelicula->id_lista = $request->idLista;
+            $listaPelicula->id_pelicula = $pelicula->id;
+
+            try {
+                $listaPelicula->save();
+                Alert::success('Hecho', 'Pelicula añadida a lista');
+                return redirect('/perfil/paginalista/'.$request->idLista);
+            } catch(QueryException $e) {
+                Alert::error('Error', 'Esa película ya está en la lista');
+                return redirect('/perfil/paginalista/'.$request->idLista);
+            }
+        }
     }
 }
