@@ -58,4 +58,45 @@ class ListasController extends Controller
             }
         }
     }
+
+    public function quitarDeLista(Request $request) {
+        $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+        try {
+            ListaPelicula::where('id_pelicula', '=', $pelicula->id)->where('id_lista', '=', $request->idLista)->forceDelete();
+            Alert::success('Hecho', 'Pelicula quitada de la lista');
+            return redirect('/perfil/paginalista/'.$request->idLista);
+        } catch(\Exception $e) {
+            Alert::error('Error', 'No existe esa película en esta lista');
+            return redirect('/perfil/paginalista/'.$request->idLista);
+        }
+    }
+
+    public function modificarLista(Request $request, $idLista) {
+        $lista = Lista::find($idLista);
+        $lista->nombre = $request->nombre;
+        $lista->descripcion = $request->descripcion;
+        $lista->save();
+        Alert::success('Hecho', 'Lista editada');
+        return redirect('/perfil/paginalista/'.$lista->id);
+    }
+
+    public function buscarEnLista(Request $request, $idLista) {
+        $term = $request->get("term");
+        $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')
+        ->where('lista_peliculas.id_lista', '=', $idLista)->where('peliculas.titulo', 'like', '%'.$term.'%')->get();
+        $data = [];
+        foreach($peliculas as $pelicula) {
+            $data[] = [
+                'label' => $pelicula->titulo
+            ];
+        }
+        return $data;
+    }
+
+    public function borrarLista(Request $request, $idLista) {
+        ListaPelicula::where('id_lista', '=', $idLista)->forceDelete();
+        Lista::find($idLista)->delete();
+        Alert::success('Hecho', 'Lista eliminada');
+        return redirect('/perfil/listas/');
+    }
 }
