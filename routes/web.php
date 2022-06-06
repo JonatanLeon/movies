@@ -53,6 +53,8 @@ Route::post('/registro/formulario', [LoginController::class, 'registrar']);
 // Buscador y vista de películas
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula'])->name('buscar');
 
+Route::get('/busqueda/quitar/{id}', [ListaController::class, 'quitarPelicula'])->name('buscar.quitar');
+
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);
 
 Route::get('/criticas', [CriticasController::class, 'listarTodas']);
@@ -66,3 +68,5 @@ Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCriti
 Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->name('lista.pelicula');
 
 Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista']);
+
+Route::post('/pelicula/borrardeLista/', [ListasController::class, 'quitarPelicula']);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelicula;
 use App\Models\Critica;
 use App\Models\Lista;
+use App\Models\ListaPelicula;
 use App\Http\Controllers\CriticasController;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,13 +16,13 @@ use Illuminate\Support\Facades\Auth;
 class MovieController extends Controller
 {
     // Método para buscar una película por su título en la barra de búsqueda
-    public function buscarPelicula(Request $request) {
+    public function buscarPelicula(Request $request, $idLista) {
         if($request->get("buscar")) {
             $buscar = $request->get("buscar");
             $peliculas = Pelicula::where('titulo', 'like', '%'.$buscar.'%')->paginate(10);
 
             return view('busqueda', compact('peliculas'));
-        } else {
+        } else if ($request->get("term")) {
             $term = $request->get("term");
             $peliculas = Pelicula::where('titulo', 'like', '%'.$term.'%')->get();
             $data = [];
@@ -33,6 +34,7 @@ class MovieController extends Controller
             return $data;
         }
     }
+
     // Lista todas las películas en el botón de la barra superior
     public function listarTodas() {
         $peliculas = Pelicula::orderBy('titulo')->paginate(10);

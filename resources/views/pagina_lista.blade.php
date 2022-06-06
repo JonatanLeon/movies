@@ -22,7 +22,6 @@
             color: inherit;
             cursor: pointer;
         }
-
     </style>
 </head>
 
@@ -45,7 +44,7 @@
                         película</a>
                 </div>
                 <div class="col" style="margin-top: 15px;">
-                    <a href="#" class="btn btn-primary" type="button"
+                    <a data-bs-toggle="modal" data-bs-target="#modalQuitar" class="btn btn-primary" type="button"
                         style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Quitar
                         película</a>
                 </div>
@@ -61,17 +60,17 @@
                 </div>
             </div>
             @if ($peliculas->count() != 0)
-                @foreach ($peliculas as $pelicula)
-                    <!-- Cards de las películas -->
-                    @include('templates.card_pelicula')
-                @endforeach
-                <div class="d-flex justify-content-center" style="margin-top: 30px;">
-                    {!! $peliculas->appends($_GET)->links() !!}
-                </div>
+            @foreach ($peliculas as $pelicula)
+            <!-- Cards de las películas -->
+            @include('templates.card_pelicula')
+            @endforeach
+            <div class="d-flex justify-content-center" style="margin-top: 30px;">
+                {!! $peliculas->appends($_GET)->links() !!}
+            </div>
             @else
-                <div style="margin-top: 34px;">
-                    <h3>Aún no has añadido ninguna película a esta lista</h3>
-                </div>
+            <div style="margin-top: 34px;">
+                <h3>Aún no has añadido ninguna película a esta lista</h3>
+            </div>
             @endif
         </div>
     </div>
@@ -87,15 +86,45 @@
                     <form action='/pelicula/guardarlista/' method="post" class="busquedaPeli">
                         {{ csrf_field() }}
                         <div class="row form-group mb-3">
-                            <div class="col-sm-20 input-column"><input id="auto" class="search form-control p-3"
+                            <div class="col-sm-20 input-column"><input id="todas" class="search form-control p-3"
                                     type="text" placeholder="Buscar..." name="pelicula" required>
-                                    <input value={{ $lista->id }} name="idLista" hidden="true">
+                                <input value={{ $lista->id }} name="idLista" hidden="true">
                             </div>
                             <div class="modal-footer" style="margin-top: 25px;">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <input class="btn btn-light submit-button" type="submit" value="Añadir"
-                                    name="insertarEnLista" style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                                    name="insertarEnLista"
+                                    style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
                             </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quitar pelicula -->
+    <div class="modal fade" id="modalQuitar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Quitar película</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ui-front">
+                    <form action='/pelicula/guardarlista/' method="post" class="busquedaPeli">
+                        {{ csrf_field() }}
+                        <div class="row form-group mb-3">
+                            <div class="col-sm-20 input-column"><input id="quitar" class="search form-control p-3"
+                                    type="text" placeholder="Buscar..." name="pelicula" required>
+                                <input value={{ $lista->id }} name="idLista" hidden="true">
+                            </div>
+                            <div class="modal-footer" style="margin-top: 25px;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <input class="btn btn-light submit-button" type="submit" value="Quitar"
+                                    name="insertarEnLista"
+                                    style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -106,11 +135,24 @@
 <script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
 <script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-    var array = ["hola", "adios"];
-    $("#auto").autocomplete({
+    $("#todas").autocomplete({
         source: function(request, response) {
             $.ajax({
                 url: "{{ route('buscar') }}",
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data)
+                }
+            });
+        }
+    });
+    $("#quitar").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ route('buscar.quitar', $lista->id) }}",
                 dataType: 'json',
                 data: {
                     term: request.term

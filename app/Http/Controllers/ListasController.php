@@ -58,4 +58,18 @@ class ListasController extends Controller
             }
         }
     }
+
+    public function quitarPelicula(Request $request, $idLista) {
+        echo "llega aqui";
+        $term = $request->get("term");
+        $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')
+        ->where('lista_peliculas.id_lista', '=', $idLista, 'and', 'peliculas.titulo', 'like', '%'.$term.'%')->get();
+        $data = [];
+        foreach($peliculas as $pelicula) {
+            $data[] = [
+                'label' => $pelicula->titulo
+            ];
+        }
+        return $data;
+    }
 }
