@@ -51,7 +51,7 @@
                 <ul class="nav nav-tabs">
                     <li class="nav-item"><a class="nav-link active" href="#">Reseñas</a></li>
                     <li class="nav-item"><a class="nav-link" href="/perfil/listas/">Listas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Calendario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/perfil/calendario/">Calendario</a></li>
                 </ul>
                 @if ($criticas->count()!=0)
                 @foreach ($criticas as $critica)

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Critica;
 use App\Models\Pelicula;
 use App\Models\Lista;
+use App\Models\Calendario;
+use App\Models\CalendarioPelicula;
 
 class PerfilController extends Controller
 {
@@ -51,5 +53,15 @@ class PerfilController extends Controller
         $lista = Lista::find($idLista);
         $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $idLista)->paginate(10);
         return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
+    }
+
+    public function mostrarCalendario() {
+        $usuario = Auth::user();
+        $fechas = CalendarioPelicula::select('fecha')->distinct()->orderBy('fecha', 'desc')->paginate(15);
+        $calendario = Calendario::where('id_usuario', '=', Auth::user()->id)->first();
+        $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->get();
+        $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
+        ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
+        return view('perfil_calendario', compact('usuario', 'fechas', 'peliculas', 'calenPeliculas'));
     }
 }

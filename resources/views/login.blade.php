@@ -15,6 +15,7 @@
 
 <body style="background:#abd7eb;">
     @include('templates.navbar')
+    @include('sweetalert::alert')
     <section>
         <div class="container">
             <div class="row register-form">

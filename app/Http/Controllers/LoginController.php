@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Calendario;
+use RealRashid\SweetAlert\Facades\Alert;
 
 /**
  * Contiene todos los métodos necesarios para iniciar sesión
@@ -92,7 +94,10 @@ class LoginController extends Controller
             $pass_fuerte = password_hash($contrasenia, PASSWORD_DEFAULT);
             $usuario->password = $pass_fuerte;
             $usuario->save();
-
+            $calendario = new Calendario();
+            $calendario->id_usuario = $usuario->id;
+            $calendario->save();
+            Alert::success('Hecho', 'Usuario registrado');
             return view('login', compact('error'));
         }
     }

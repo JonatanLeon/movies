@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Critica;
 use App\Models\Pelicula;
+use RealRashid\SweetAlert\Facades\Alert;
 /**
  * Controlador que gobierna las acciones del usuario
  */
@@ -25,7 +26,7 @@ class CriticasController extends Controller
         $critica->save();
         // Se recalcula la nota con la nueva
         $this->recalcularNota($id);
-
+        Alert::success('Hecho', 'Crítica publicada');
         return redirect('/pelicula/'.$id);
     }
     // Hace media con las notas de todas las críticas de esa película

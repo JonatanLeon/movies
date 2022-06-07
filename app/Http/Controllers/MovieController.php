@@ -33,6 +33,11 @@ class MovieController extends Controller
             return $data;
         }
     }
+
+    public function buscarPorNombre(Request $request) {
+        $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+        return redirect('/pelicula/'.$pelicula->id);
+    }
     // Lista todas las películas en el botón de la barra superior
     public function listarTodas() {
         $peliculas = Pelicula::orderBy('titulo')->paginate(10);
