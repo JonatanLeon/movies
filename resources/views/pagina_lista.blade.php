@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Perfil usuario</title>
+    <title>{{ $lista->nombre }}</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Features-Cards.css') }}">
@@ -22,7 +22,6 @@
             color: inherit;
             cursor: pointer;
         }
-
     </style>
 </head>
 
@@ -38,28 +37,33 @@
             <div style="margin-top: 15px;">
                 <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
             </div>
-            <div class="row">
-                <div class="col" style="margin-top: 15px;">
-                    <a data-bs-toggle="modal" data-bs-target="#modalBuscador" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Añadir
-                        película</a>
-                </div>
-                <div class="col" style="margin-top: 15px;">
-                    <a data-bs-toggle="modal" data-bs-target="#modalQuitar" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Quitar
-                        película</a>
-                </div>
-                <div class="col" style="margin-top: 15px;">
-                    <a data-bs-toggle="modal" data-bs-target="#editarLista" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
-                        Lista</a>
-                </div>
-                <div class="col" style="margin-top: 15px;">
-                    <a data-bs-toggle="modal" data-bs-target="#confirmacionBorrar" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);font-size: 20px;">Borrar
-                        Lista</a>
-                </div>
-            </div>
+            @auth
+                @if (auth()->user()->id == $lista->id_usuario || auth()->user()->role == 'admin')
+                    <div class="row">
+                        <div class="col" style="margin-top: 15px;">
+                            <a data-bs-toggle="modal" data-bs-target="#modalBuscador" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Añadir
+                                película</a>
+                        </div>
+                        <div class="col" style="margin-top: 15px;">
+                            <a data-bs-toggle="modal" data-bs-target="#modalQuitar" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Quitar
+                                película</a>
+                        </div>
+                        <div class="col" style="margin-top: 15px;">
+                            <a data-bs-toggle="modal" data-bs-target="#editarLista" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
+                                Lista</a>
+                        </div>
+                        <div class="col" style="margin-top: 15px;">
+                            <a data-bs-toggle="modal" data-bs-target="#confirmacionBorrar" class="btn btn-primary"
+                                type="button"
+                                style="width: 245px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);font-size: 20px;">Borrar
+                                Lista</a>
+                        </div>
+                    </div>
+                @endif
+            @endauth
             @if ($peliculas->count() != 0)
                 @foreach ($peliculas as $pelicula)
                     <!-- Cards de las películas -->
@@ -70,7 +74,7 @@
                 </div>
             @else
                 <div style="margin-top: 34px;">
-                    <h3>Aún no has añadido ninguna película a esta lista</h3>
+                    <h3>Esta lista no tiene ninguna película todavía</h3>
                 </div>
             @endif
         </div>
@@ -149,8 +153,7 @@
                         </div>
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Descripción de la lista" rows="6" name="descripcion"
-                                    required>{{ $lista->descripcion }}</textarea>
+                                <textarea class="form-control" type="text" placeholder="Descripción de la lista" rows="6" name="descripcion" required>{{ $lista->descripcion }}</textarea>
                             </div>
                         </div>
                         <div class="modal-footer">

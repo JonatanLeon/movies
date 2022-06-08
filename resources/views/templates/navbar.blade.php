@@ -8,7 +8,12 @@
                 <li class="nav-item"><a class="nav-link" href="/peliculas" style="color: var(--bs-light);">Películas</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="/criticas" style="color: var(--bs-light);">Reseñas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Listas</a></li>
+                <li class="nav-item"><a class="nav-link" href="/listas" style="color: var(--bs-light);">Listas</a></li>
+                @auth
+                @if (auth()->user()->role == "admin")
+                <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Usuarios</a></li>
+                @endif
+                @endauth
             </ul>
         </div>
         <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">

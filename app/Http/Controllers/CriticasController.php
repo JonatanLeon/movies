@@ -46,4 +46,26 @@ class CriticasController extends Controller
         $criticas = Critica::orderBy('titulo')->paginate(10);
         return view('listado_criticas', compact('criticas'));
     }
+
+    public function buscarCritica(Request $request) {
+        $term = $request->get("term");
+        $criticas = Critica::where('titulo', 'like', '%'.$term.'%')->get();
+        $data = [];
+        foreach($criticas as $critica) {
+            $data[] = [
+                'label' => $critica->titulo
+            ];
+        }
+        return $data;
+    }
+
+    public function mostrarCriticaBuscador(Request $request) {
+        try {
+            $critica = Critica::where('titulo', '=', $request->critica)->first();
+            return redirect('/perfil/paginacritica/'.$critica->id);
+        } catch (\Exception $e) {
+            Alert::error('Error', 'No se ha encontrado la reseña especificada');
+            return redirect('/criticas');
+        }
+    }
 }

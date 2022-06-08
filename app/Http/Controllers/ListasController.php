@@ -13,12 +13,29 @@ use Illuminate\Support\Facades\Auth;
 
 class ListasController extends Controller
 {
+    public function listarTodas() {
+        $listas = Lista::orderBy('nombre')->paginate(10);
+        return view('listado_listas', compact('listas'));
+    }
+
+    public function buscarLista(Request $request) {
+        $term = $request->get("term");
+        $listas = Lista::where('nombre', 'like', '%'.$term.'%')->get();
+        $data = [];
+        foreach($listas as $lista) {
+            $data[] = [
+                'label' => $lista->nombre
+            ];
+        }
+        return $data;
+    }
+
     public function crearLista(Request $request) {
         $lista = new Lista();
         $lista->nombre = $request->nombre;
         $lista->descripcion = $request->descripcion;
         $lista->id_usuario = Auth::user()->id;
-
+        $lista->nombre_usuario = Auth::user()->nombre;
         $lista->save();
     }
 
@@ -97,6 +114,20 @@ class ListasController extends Controller
         ListaPelicula::where('id_lista', '=', $idLista)->forceDelete();
         Lista::find($idLista)->delete();
         Alert::success('Hecho', 'Lista eliminada');
-        return redirect('/perfil/listas/');
+        if (auth()->user()->role == "admin") {
+            return redirect('/listas');
+        } else {
+            return redirect('/perfil/listas/');
+        }
+    }
+
+    public function mostrarListaBuscador(Request $request) {
+        try {
+            $lista = Lista::where('nombre', '=', $request->lista)->first();
+            return redirect('/perfil/paginalista/'.$lista->id);
+        } catch (\Exception $e) {
+            Alert::error('Error', 'No se ha encontrado la lista especificada');
+            return redirect('/listas');
+        }
     }
 }

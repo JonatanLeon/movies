@@ -25,16 +25,10 @@ class LoginController extends Controller
         $error = false;
         // Comprueba si hay un usuario con las mismas credenciales en la BBDD
         if(Auth::attempt($credentials)) {
-            if(Auth::user()->role == "user") {
             // Crea una sesión para ese usuario
             request()->session()->regenerate();
 
             return redirect('/home');
-            } else {
-            request()->session()->regenerate();
-
-            return redirect('/login/admin/');
-            }
         }
 
         else {

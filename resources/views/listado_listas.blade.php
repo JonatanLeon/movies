@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Reseñas</title>
+    <title>Listas</title>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dh-card-image-left-dark.css') }}">
@@ -30,15 +30,15 @@
 <body>
     @include('templates.navbar')
     @include('sweetalert::alert')
-    @if ($criticas->count() != 0)
+    @if ($listas->count() != 0)
         <div class="row mb-5" style="margin-top: 38px;">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <div class="row form-group">
                     <div style="margin-bottom: 20px;">
-                        <form action="{{ route('ir.critica', 0) }}" method="get">
+                        <form action="{{ route('ir.lista', 0) }}" method="get">
                             {{ csrf_field() }}
-                            <input id="auto" class="form-control" type="search" name="critica"
-                                placeholder="Buscar reseñas..." style="height: 43px;border-color: var(--bs-pink);">
+                            <input id="auto" class="form-control" type="search" name="lista"
+                                placeholder="Buscar listas..." style="height: 43px;border-color: var(--bs-pink);">
                         </form>
                     </div>
                 </div>
@@ -46,9 +46,9 @@
         </div>
     @endif
     <section>
-        @if ($criticas->count() != 0)
-            @foreach ($criticas as $critica)
-                <a href="{{ route('ir.critica', $critica->id) }}">
+        @if ($listas->count() != 0)
+            @foreach ($listas as $lista)
+                <a href="{{ route('ir.lista', $lista->id) }}">
                     <div class="container">
                         <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
                             <div class="card-body border rounded"
@@ -56,9 +56,9 @@
                                 <div class="row">
                                     <div class="col">
                                         <div>
-                                            <h4>{{ $critica->titulo }}</h4>
-                                            <h6>Pelicula: {{ $critica->nombre_pelicula }}</h6>
-                                            <h6 class="text-muted mb-2">Por: {{ $critica->nombre_usuario }}</h6>
+                                            <h4>{{ $lista->nombre }}</h4>
+                                            <h6 class="text-muted mb-2">Por: {{ $lista->nombre_usuario }}</h6>
+                                            <p>{{ $lista->descripcion }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -71,20 +71,20 @@
             <div class="card"></div>
             <div class="row mb-5" style="margin-top: 38px;">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2>No hay reseñas publicadas</h2>
+                    <h2>No hay listas publicadas</h2>
                 </div>
             </div>
         @endif
     </section>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">
-        {!! $criticas->appends($_GET)->links() !!}
+        {!! $listas->appends($_GET)->links() !!}
     </div>
 </body>
 <script type="text/javascript">
     $("#auto").autocomplete({
         source: function(request, response) {
             $.ajax({
-                url: "{{ route('buscar.critica') }}",
+                url: "{{ route('buscar.lista') }}",
                 dataType: 'json',
                 data: {
                     term: request.term

@@ -21,7 +21,7 @@ Route::get('/home', function () {
     return view('home');
 });
 // Página principal con logeo
-Route::view('/home', 'home')->middleware('auth');
+Route::view('/home', 'home')->middleware('auth.user');
 
 // Llevan a la ventana de login y a la de registro
 Route::view('login', 'login', compact('error'));
@@ -31,55 +31,61 @@ Route::get('/login/admin/', [LoginController::class, 'loginAdmin'])->middleware(
 Route::view('registro', 'registro', compact('registrado', 'noRepetida', 'passCorta'));
 
 // Gestión de perfil
-Route::get('/perfil/criticas/', [PerfilController::class, 'mostrarCriticas']);
+Route::get('/perfil/criticas/', [PerfilController::class, 'mostrarCriticas'])->middleware('auth.user');
 
-Route::get('/perfil/listas/', [PerfilController::class, 'mostrarListas']);
+Route::get('/perfil/listas/', [PerfilController::class, 'mostrarListas'])->middleware('auth.user');
 
-Route::get('/perfil/calendario/', [PerfilController::class, 'mostrarCalendario']);
+Route::get('/perfil/calendario/', [PerfilController::class, 'mostrarCalendario'])->middleware('auth.user');
 
-Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->name('borrar.critica');
+Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->middleware('auth.user')->name('borrar.critica');
 
-Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->name('modificar.critica');
+Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->middleware('auth.user')->name('modificar.critica');
 
-Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
+// Si fallan estas rutas puede ser porque falta la barra del final
+Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->middleware('auth.user')->name('ir.critica');
 
-// Si falla esta ruta puede ser porque falta la barra del final
-Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->name('ir.lista');
+Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->middleware('auth.user')->name('ir.lista');
 
-Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaMandarPerfilLista']);
+Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaMandarPerfilLista'])->middleware('auth.user');
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
 
-Route::get('/logout', [LoginController::class, 'logout']);
+Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth.user');
 
 Route::post('/registro/formulario', [LoginController::class, 'registrar']);
 
 // Buscador y vista de películas
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula'])->name('buscar');
 
-Route::get('/busqueda/quitar/{id}', [ListasController::class, 'buscarEnLista'])->name('buscar.quitar');
+Route::get('/busqueda/criticas/', [CriticasController::class, 'buscarCritica'])->name('buscar.critica');
+
+Route::get('/busqueda/listas/', [ListasController::class, 'buscarLista'])->name('buscar.lista');
+
+Route::get('/busqueda/quitar/{id}', [ListasController::class, 'buscarEnLista'])->middleware('auth.user')->name('buscar.quitar');
 
 Route::get('/peliculas', [MovieController::class, 'listarTodas']);
 
 Route::get('/criticas', [CriticasController::class, 'listarTodas']);
 
+Route::get('/listas', [ListasController::class, 'listarTodas']);
+
 Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pelicula_seleccionada');
 
-Route::post('/pelicula/nombre/', [MovieController::class, 'buscarPorNombre'])->name('buscar.nombre');
+Route::post('/pelicula/nombre/', [MovieController::class, 'buscarPorNombre'])->middleware('auth.user')->name('buscar.nombre');
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
-Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCritica'])->name('publicar.critica');
+Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCritica'])->middleware('auth.user')->name('publicar.critica');
 
-Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->name('lista.pelicula');
+Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->middleware('auth.user')->name('lista.pelicula');
 
-Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista']);
+Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista'])->middleware('auth.user');
 
-Route::post('/pelicula/borrardelista/', [ListasController::class, 'quitarDeLista']);
+Route::post('/pelicula/borrardelista/', [ListasController::class, 'quitarDeLista'])->middleware('auth.user');
 
-Route::post('/pelicula/editarlista/{id}', [ListasController::class, 'modificarLista'])->name('modificar.lista');
+Route::post('/pelicula/editarlista/{id}', [ListasController::class, 'modificarLista'])->middleware('auth.user')->name('modificar.lista');
 
-Route::get('/pelicula/borrarlista/{id}', [ListasController::class, 'borrarLista'])->name('borrar.lista');
+Route::get('/pelicula/borrarlista/{id}', [ListasController::class, 'borrarLista'])->middleware('auth.user')->name('borrar.lista');
 
-Route::post('/pelicula/insertarcalendario/{id}', [CalendarController::class, 'insertarEnCalendario'])->name('insertar.calendario');
+Route::post('/pelicula/insertarcalendario/{id}', [CalendarController::class, 'insertarEnCalendario'])->middleware('auth.user')->name('insertar.calendario');
