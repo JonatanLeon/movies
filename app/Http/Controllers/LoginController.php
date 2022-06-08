@@ -21,20 +21,30 @@ class LoginController extends Controller
     public function login(Request $request) {
 
         // Recoge las credenciales del formulario de inicio de sesión
-        $credentials = request()->only('nombre', 'password');
+        $credentials = request()->only('nombre', 'password', 'role');
         $error = false;
         // Comprueba si hay un usuario con las mismas credenciales en la BBDD
         if(Auth::attempt($credentials)) {
+            if(Auth::user()->role == "user") {
             // Crea una sesión para ese usuario
             request()->session()->regenerate();
 
             return redirect('/home');
+            } else {
+            request()->session()->regenerate();
+
+            return redirect('/login/admin/');
+            }
         }
 
         else {
             $error = true;
             return view('login', compact('error'));
         }
+    }
+
+    public function loginAdmin(Request $request) {
+        return 'Admin';
     }
 
     /**
@@ -93,6 +103,7 @@ class LoginController extends Controller
             // Encriptamos la contraseña en la base de datos
             $pass_fuerte = password_hash($contrasenia, PASSWORD_DEFAULT);
             $usuario->password = $pass_fuerte;
+            $usuario->role = "user";
             $usuario->save();
             $calendario = new Calendario();
             $calendario->id_usuario = $usuario->id;

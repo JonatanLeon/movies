@@ -65,13 +65,13 @@
                     <li class="nav-item"><a class="nav-link active" href="#">Calendario</a></li>
                 </ul>
                 @if ($calenPeliculas->count() != 0)
-                    @foreach ($fechas as $fecha)
+                    @foreach ($meses as $mes)
                         <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
                             <h2 style="margin-top: 20px;width: 400px;color: var(--bs-pink);">
-                                {{ date('d F Y', strtotime($fecha->fecha)) }}</h2>
+                                {{ date('F Y', strtotime($mes->mes)) }}</h2>
                         </div>
                         @foreach ($calenPeliculas as $calen)
-                            @if ($calen->fecha == $fecha->fecha)
+                            @if ($calen->mes == $mes->mes)
                                 @foreach ($peliculas as $pelicula)
                                     @if ($pelicula->id == $calen->id_pelicula && $calen->mostrado != true)
                                         <?php $calen->mostrado = true; ?>
@@ -82,6 +82,11 @@
                                                     <div class="card-body border rounded"
                                                         style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
                                                         <div class="row">
+                                                            <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
+                                                                id="columna-1">
+                                                                <h5 class="text-center">Day</h5>
+                                                                <h1 class="text-center">{{date('d', strtotime($calen->fecha))}}</h1>
+                                                            </div>
                                                             <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
                                                                 id="columna-1">
                                                                 <img class="img-fluid d-xl-flex align-items-xl-start"
@@ -107,7 +112,7 @@
                         @endforeach
                     @endforeach
                     <div class="d-flex justify-content-center" style="margin-top: 30px;">
-                        {!! $fechas->appends($_GET)->links() !!}
+                        {!! $meses->appends($_GET)->links() !!}
                     </div>
                 @else
                     <div style="margin-top: 34px;">
@@ -165,3 +170,4 @@
     });
 </script>
 </html>
+

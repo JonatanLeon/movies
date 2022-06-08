@@ -57,11 +57,11 @@ class PerfilController extends Controller
 
     public function mostrarCalendario() {
         $usuario = Auth::user();
-        $fechas = CalendarioPelicula::select('fecha')->distinct()->orderBy('fecha', 'desc')->paginate(15);
+        $meses = CalendarioPelicula::select('mes')->distinct()->orderBy('mes', 'desc')->paginate(15);
         $calendario = Calendario::where('id_usuario', '=', Auth::user()->id)->first();
-        $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->get();
+        $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->orderby('fecha', 'desc')->get();
         $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
         ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
-        return view('perfil_calendario', compact('usuario', 'fechas', 'peliculas', 'calenPeliculas'));
+        return view('perfil_calendario', compact('usuario', 'peliculas', 'calenPeliculas', 'meses'));
     }
 }

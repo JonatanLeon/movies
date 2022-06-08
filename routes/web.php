@@ -26,6 +26,8 @@ Route::view('/home', 'home')->middleware('auth');
 // Llevan a la ventana de login y a la de registro
 Route::view('login', 'login', compact('error'));
 
+Route::get('/login/admin/', [LoginController::class, 'loginAdmin'])->middleware('auth.admin');
+
 Route::view('registro', 'registro', compact('registrado', 'noRepetida', 'passCorta'));
 
 // Gestión de perfil
