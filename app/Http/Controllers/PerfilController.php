@@ -142,4 +142,39 @@ class PerfilController extends Controller
         Alert::success('Sugerencia enviada', 'Un administrador valorará tu sugerencia');
         return redirect()->back();
     }
+
+    public function editarPerfil(Request $request, $idUsuario) {
+        $nombre = $request->nombre;
+        $contrasenia = $request->password;
+        $repeContrasenia = $request->password2;
+
+        $noRepetida = false;
+        $passCorta = false;
+
+        if ($contrasenia != $repeContrasenia) {
+           $noRepetida = true;
+        }
+        if (strlen($contrasenia) < 8) {
+            $passCorta = true;
+        }
+        if ($noRepetida == true) {
+            Alert::error('Error', 'La contraseña debe tener al menos 8 caracteres');
+            return redirect()->back();
+        } else if ($passCorta == true) {
+            Alert::error('Error', 'Los campos de contraseña no coinciden');
+            return redirect()->back();
+        }
+
+        else {
+            $usuario = User::find($idUsuario);
+            $usuario->nombre = $nombre;
+            $usuario->password = $contrasenia;
+            $pass_fuerte = password_hash($contrasenia, PASSWORD_DEFAULT);
+            $usuario->password = $pass_fuerte;
+            $usuario->role = "user";
+            $usuario->save();
+            Alert::success('Hecho', 'Usuario editado correctamente');
+            return redirect()->back();
+        }
+    }
 }

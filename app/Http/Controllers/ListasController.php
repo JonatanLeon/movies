@@ -111,13 +111,12 @@ class ListasController extends Controller
     }
 
     public function borrarLista(Request $request, $idLista) {
-        ListaPelicula::where('id_lista', '=', $idLista)->forceDelete();
         Lista::find($idLista)->delete();
         Alert::success('Hecho', 'Lista eliminada');
         if (auth()->user()->role == "admin") {
             return redirect('/listas');
         } else {
-            return redirect('/perfil/listas/');
+            return redirect('/perfil/listas/'.Auth::user()->id);
         }
     }
 

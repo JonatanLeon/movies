@@ -60,6 +60,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->middleware('auth.user
 
 Route::post('/registro/formulario', [LoginController::class, 'registrar']);
 
+Route::post('/perfil/editarperfil/{id}', [PerfilController::class, 'editarperfil'])->middleware('auth.user')->name('editar.perfil');
+
 // Buscador y vista de películas
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula'])->name('buscar');
 

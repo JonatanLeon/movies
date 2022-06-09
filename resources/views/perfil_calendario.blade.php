@@ -38,7 +38,8 @@
                 @auth
                     <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                         <a href="#" class="btn btn-primary" type="button"
-                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                            data-bs-toggle="modal" data-bs-target="#editarUsuario">Editar
                             perfil</a>
                     </div>
                     @if (auth()->user()->id == $usuario->id)
@@ -162,6 +163,8 @@
     @include('templates.modal_confirmacion')
     <!-- Modal de sugerencias -->
     @include('templates.modal_sugerencia')
+    <!-- Modal de editar perfil -->
+    @include('templates.modal_editar_perfil')
 </body>
 <script type="text/javascript">
     $("#auto").autocomplete({
