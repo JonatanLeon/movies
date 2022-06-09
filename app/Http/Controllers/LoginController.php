@@ -44,7 +44,7 @@ class LoginController extends Controller
     /**
      * Método para cerrar sesión
      */
-    public function logout(Request $request) {
+    public function logout() {
         // Cierra la sesión
         Auth::logout();
         request()->session()->invalidate();

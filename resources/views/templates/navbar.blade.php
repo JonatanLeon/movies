@@ -11,7 +11,8 @@
                 <li class="nav-item"><a class="nav-link" href="/listas" style="color: var(--bs-light);">Listas</a></li>
                 @auth
                 @if (auth()->user()->role == "admin")
-                <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-light);">Usuarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/usuarios" style="color: var(--bs-light);">Usuarios</a></li>
+                <li class="nav-item"><a class="nav-link" href="/sugerencias" style="color: var(--bs-light);">Sugerencias</a></li>
                 @endif
                 @endauth
             </ul>
@@ -25,7 +26,7 @@
         </form>
         <div style="margin: 10px;">
             @auth
-            <a href="/perfil/criticas/" class="btn btn-primary" type="button"
+            <a href="{{ route('ir.usuario.criticas', auth()->user()->id) }}" class="btn btn-primary" type="button"
                 style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Mi
                 perfil</a>
             <a href="/logout" class="btn btn-primary" type="button"

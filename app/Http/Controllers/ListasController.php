@@ -42,7 +42,7 @@ class ListasController extends Controller
     public function crearListaMandarPerfilLista(Request $request) {
         $this->crearLista($request);
         Alert::success('Hecho', 'Lista creada');
-        return redirect('/perfil/listas/');
+        return redirect('/perfil/listas/'.Auth::user()->id);
     }
 
     public function crearListaMandarPelicula(Request $request, $idPelicula) {

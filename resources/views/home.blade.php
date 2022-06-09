@@ -15,6 +15,7 @@
 
 <body>
     @include('templates.navbar')
+    @include('sweetalert::alert')
     <div class="border-0 d-flex flex-column justify-content-center align-items-center p-4 py-5"
         style="background: url({{ asset('img/1164207.jpg')}}) center / cover;height: 500px;">
         <div class="row">

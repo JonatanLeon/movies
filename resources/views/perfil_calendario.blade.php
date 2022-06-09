@@ -35,34 +35,41 @@
         <div class="row mb-5">
             <div class="col-md-8 col-xl-3 text-center mx-auto">
                 <h2>Perfil de {{ $usuario->nombre }}</h2>
-                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a href="#" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
-                        perfil</a>
-                </div>
-                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a href="#" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
-                        data-bs-toggle="modal" data-bs-target="#crearLista">Crear
-                        lista</a>
-                </div>
-                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a href="#" class="btn btn-primary" type="button"
-                        style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-yellow);color: var(--bs-red)"
-                        data-bs-toggle="modal" data-bs-target="#modalBuscador">Añadir a
-                        diario</a>
-                </div>
-                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a href="#" class="btn btn-primary" type="button"
-                        style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);">Desactivar
-                        cuenta</a>
-                </div>
+                @auth
+                    <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                        <a href="#" class="btn btn-primary" type="button"
+                            style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Editar
+                            perfil</a>
+                    </div>
+                    @if (auth()->user()->id == $usuario->id)
+                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                            <a href="#" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                                data-bs-toggle="modal" data-bs-target="#modalSugerencia">Enviar
+                                sugerencia</a>
+                        </div>
+                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                            <a href="#" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-yellow);color: var(--bs-red)"
+                                data-bs-toggle="modal" data-bs-target="#modalBuscador">Añadir a
+                                diario</a>
+                        </div>
+                    @endif
+                    <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                        <a class="btn btn-primary" type="button"
+                            style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
+                            data-bs-toggle="modal" data-bs-target="#confirmacionDesactivar">Desactivar
+                            cuenta</a>
+                    </div>
+                @endauth
             </div>
             <div class="col">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item"><a class="nav-link" href="/perfil/criticas/">Reseñas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/perfil/listas/">Listas</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Calendario</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ route('ir.usuario.criticas', $usuario->id) }}">Reseñas</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ route('ir.usuario.listas', $usuario->id) }}">Listas</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Diario</a></li>
                 </ul>
                 @if ($calenPeliculas->count() != 0)
                     @foreach ($meses as $mes)
@@ -85,7 +92,8 @@
                                                             <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
                                                                 id="columna-1">
                                                                 <h5 class="text-center">Day</h5>
-                                                                <h1 class="text-center">{{date('d', strtotime($calen->fecha))}}</h1>
+                                                                <h1 class="text-center">
+                                                                    {{ date('d', strtotime($calen->fecha)) }}</h1>
                                                             </div>
                                                             <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
                                                                 id="columna-1">
@@ -115,7 +123,7 @@
                         {!! $meses->appends($_GET)->links() !!}
                     </div>
                 @else
-                    <div style="margin-top: 34px;">
+                    <div style="margin-top: 34px;text-align: center;">
                         <h3>No hay películas en el diario</h3>
                     </div>
                 @endif
@@ -123,8 +131,6 @@
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Crear lista -->
-    @include('templates.modal_lista')
     <!-- Modal de añadir pelicula -->
     <div class="modal fade" id="modalBuscador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -152,6 +158,10 @@
             </div>
         </div>
     </div>
+    <!-- Modal de desactivar cuenta -->
+    @include('templates.modal_confirmacion')
+    <!-- Modal de sugerencias -->
+    @include('templates.modal_sugerencia')
 </body>
 <script type="text/javascript">
     $("#auto").autocomplete({
@@ -169,5 +179,5 @@
         }
     });
 </script>
-</html>
 
+</html>

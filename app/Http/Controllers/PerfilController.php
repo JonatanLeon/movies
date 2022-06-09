@@ -4,19 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\LoginController;
 use App\Models\Critica;
+use App\Models\User;
 use App\Models\Pelicula;
 use App\Models\Lista;
+use App\Models\ListaPelicula;
 use App\Models\Calendario;
 use App\Models\CalendarioPelicula;
+use App\Models\Sugerencia;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class PerfilController extends Controller
 {
-    public function mostrarCriticas() {
-        $usuario = Auth::user();
+    public function mostrarCriticas(Request $request, $idUsuario) {
+        if ($idUsuario == Auth::user()->id) {
+            $usuario = Auth::user();
+        } else if ($idUsuario == 0) {
+            $usuario = User::where('nombre', '=', $request->usuario)->first();
+        } else {
+            $usuario = User::find($idUsuario);
+        }
         $criticas = Critica::where('id_usuario', '=', $usuario->id)->paginate(10);
         return view('perfil_criticas', compact('usuario', 'criticas'));
+    }
+
+
+    public function mostrarListas($idUsuario) {
+        $usuario = User::find($idUsuario);
+        $listas = Lista::where('id_usuario', '=', $usuario->id)->paginate(10);
+        return view('perfil_listas', compact('usuario', 'listas'));
+    }
+
+    public function mostrarCalendario($idUsuario) {
+        $usuario = User::find($idUsuario);
+        $calendario = Calendario::where('id_usuario', '=', $idUsuario)->first();
+        $meses = CalendarioPelicula::select('mes')->where('id_calendario', '=', $calendario->id)->distinct()->orderBy('mes', 'desc')->paginate(15);
+        $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->orderby('fecha', 'desc')->get();
+        $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
+        ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
+        return view('perfil_calendario', compact('usuario', 'peliculas', 'calenPeliculas', 'meses'));
     }
 
     public function borrarCritica($idCritica) {
@@ -72,12 +99,6 @@ class PerfilController extends Controller
         }
     }
 
-    public function mostrarListas() {
-        $usuario = Auth::user();
-        $listas = Lista::where('id_usuario', '=', $usuario->id)->paginate(10);
-        return view('perfil_listas', compact('usuario', 'listas'));
-    }
-
     public function cargarLista(Request $request, $idLista) {
         $usuario = Auth::user();
         if ($idLista != 0) {
@@ -96,13 +117,29 @@ class PerfilController extends Controller
         }
     }
 
-    public function mostrarCalendario() {
-        $usuario = Auth::user();
-        $meses = CalendarioPelicula::select('mes')->distinct()->orderBy('mes', 'desc')->paginate(15);
-        $calendario = Calendario::where('id_usuario', '=', Auth::user()->id)->first();
-        $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->orderby('fecha', 'desc')->get();
-        $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
-        ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
-        return view('perfil_calendario', compact('usuario', 'peliculas', 'calenPeliculas', 'meses'));
+    public function desactivarCuenta($idUsuario) {
+        $usuario = User::find($idUsuario);
+        if (Auth::user()->id == $idUsuario) {
+            Auth::logout();
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
+            $usuario->delete();
+            Alert::success('Hecho', 'Usuario eliminado');
+            return redirect('/');
+        } else {
+            $usuario->delete();
+            Alert::success('Hecho', 'Usuario eliminado');
+            return redirect('/usuarios');
+        }
+    }
+
+    public function enviarSugerencia(Request $request, $idUsuario) {
+        $sugerencia = new Sugerencia();
+        $sugerencia->texto = $request->pelicula;
+        $sugerencia->id_usuario = $idUsuario;
+        $sugerencia->nombre_usuario = Auth::user()->nombre;
+        $sugerencia->save();
+        Alert::success('Sugerencia enviada', 'Un administrador valorará tu sugerencia');
+        return redirect()->back();
     }
 }
