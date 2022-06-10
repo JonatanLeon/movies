@@ -39,6 +39,14 @@
                     <img class="img-fluid"
                         src="data:image/png;base64,{{ chunk_split(base64_encode($peliculaRecogida->poster)) }}"
                         style="padding: 53px;padding-left: 23px;">
+                    <div class="container-fluid" style="margin-bottom: 14px;">
+                        <div class="card" style="width: 245px;border-color: var(--bs-pink);">
+                            <div class="card-body border rounded" style="border-color: var(--bs-pink);">
+                                <h1 class="card-title" style="color: var(--bs-pink);">Nota:
+                                    {{ $peliculaRecogida->nota_media }}/5</h1>
+                            </div>
+                        </div>
+                    </div>
                     @auth
                         <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                                 type="button"
@@ -110,17 +118,6 @@
                                 <div>
                                     <h4 class="text-muted mb-2">Productora</h4>
                                     <p>{{ $peliculaRecogida->productora }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-                            <div class="container-fluid"
-                                style="padding-top: 0px;margin-bottom: 14px;padding-right: 0px;padding-left: 0px;">
-                                <div class="card" style="border-color: var(--bs-pink);">
-                                    <div class="card-body border rounded" style="border-color: var(--bs-pink);">
-                                        <h1 class="card-title" style="color: var(--bs-pink);">Nota:
-                                            {{ $peliculaRecogida->nota_media }}/5</h1>
-                                    </div>
                                 </div>
                             </div>
                         </div>
