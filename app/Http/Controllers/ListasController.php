@@ -110,14 +110,12 @@ class ListasController extends Controller
         return $data;
     }
 
-    public function borrarLista(Request $request, $idLista) {
-        Lista::find($idLista)->delete();
+    public function borrarLista($idLista) {
+        $lista = Lista::find($idLista);
+        $idUsuario = $lista->id_usuario;
+        $lista->delete();
         Alert::success('Hecho', 'Lista eliminada');
-        if (auth()->user()->role == "admin") {
-            return redirect('/listas');
-        } else {
-            return redirect('/perfil/listas/'.Auth::user()->id);
-        }
+        return redirect('/perfil/listas/'.$idUsuario);
     }
 
     public function mostrarListaBuscador(Request $request) {

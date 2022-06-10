@@ -45,4 +45,32 @@ class AdminController extends Controller
         }
         return $data;
     }
+
+    public function insertarPelicula(Request $request) {
+        //try {
+            $pelicula = new Pelicula();
+            $pelicula->titulo = $request->titulo;
+            $pelicula->estreno = date("Y-m-d", strtotime($request->estreno));
+            $pelicula->director = $request->director;
+            $pelicula->generos = $request->generos;
+            $pelicula->duracion = $request->duracion;
+            $pelicula->pais = $request->pais;
+            $pelicula->productora = $request->productora;
+            $pelicula->reparto = $request->reparto;
+            $pelicula->sinopsis = $request->sinopsis;
+            $path = $request->poster->path();
+            $poster = file_get_contents($_FILES[$request->poster->path()]['tmp_name']);
+            //$pelicula->poster = base64_decode($request->ruta);
+            echo $path;
+            $pelicula->poster = $poster;
+            $pelicula->nota_media = 0;
+            $pelicula->save();
+            Alert::success('Hecho', 'Película añadida');
+        //} catch (\Exception $e) {
+          //  Alert::error('Error', 'Revisa los cmapos de la película');
+        //} finally {
+            //return redirect()->back();
+            return view('home');
+        //}
+    }
 }
