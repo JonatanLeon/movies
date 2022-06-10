@@ -9,6 +9,7 @@ use App\Models\Pelicula;
 use App\Models\User;
 use App\Models\Sugerencia;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\QueryException;
 
 class AdminController extends Controller
 {
@@ -47,8 +48,14 @@ class AdminController extends Controller
     }
 
     public function insertarPelicula(Request $request) {
-        //try {
-            $pelicula = new Pelicula();
+        try {
+            if ($request->get("editar")) {
+                $pelicula = Pelicula::find($request->id);
+            } else {
+                $pelicula = new Pelicula();
+                Sugerencia::find($request->sugerencia)->delete();
+                $pelicula->nota_media = 0;
+            }
             $pelicula->titulo = $request->titulo;
             $pelicula->estreno = date("Y-m-d", strtotime($request->estreno));
             $pelicula->director = $request->director;
@@ -58,19 +65,27 @@ class AdminController extends Controller
             $pelicula->productora = $request->productora;
             $pelicula->reparto = $request->reparto;
             $pelicula->sinopsis = $request->sinopsis;
-            $path = $request->poster->path();
-            $poster = file_get_contents($_FILES[$request->poster->path()]['tmp_name']);
-            //$pelicula->poster = base64_decode($request->ruta);
-            echo $path;
-            $pelicula->poster = $poster;
-            $pelicula->nota_media = 0;
+            if ($request->poster != null) {
+                $path = file_get_contents($request->poster->path());
+                $poster = $path;
+                $pelicula->poster = $poster;
+            }
             $pelicula->save();
-            Alert::success('Hecho', 'Película añadida');
-        //} catch (\Exception $e) {
-          //  Alert::error('Error', 'Revisa los cmapos de la película');
-        //} finally {
-            //return redirect()->back();
-            return view('home');
-        //}
+            if ($request->get("editar")) {
+                Alert::success('Hecho', 'Película editada');
+            } else {
+                Alert::success('Hecho', 'Película añadida');
+            }
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Ha habido un error en los datos introducidos');
+        } finally {
+            return redirect()->back();
+        }
+    }
+
+    public function borrarSugerencia($idSugerencia) {
+        Sugerencia::find($idSugerencia)->delete();
+        Alert::success('Hecho', 'Sugerencia eliminada');
+        return redirect()->back();
     }
 }

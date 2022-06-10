@@ -54,6 +54,18 @@
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                                 data-bs-toggle="modal" data-bs-target="#desplegarCalendario">Añadir
                                 a calendario</button></div>
+                        @if (auth()->user()->role == 'admin')
+                            <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                                    type="button"
+                                    style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red);"
+                                    data-bs-toggle="modal" data-bs-target="#editarPelicula">Editar película</button>
+                            </div>
+                            <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
+                                    type="button"
+                                    style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red);"
+                                    data-bs-toggle="modal" data-bs-target="#desplegarCalendario">Borrar película</button>
+                            </div>
+                        @endif
                     @else
                         <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
                                 type="button"
@@ -77,7 +89,7 @@
                                 style="padding-top: 0px;padding-right: 0px;padding-left: 13px;">
                                 <div>
                                     <h4 class="text-muted mb-2">Estreno</h4>
-                                    <p>{{ $peliculaRecogida->estreno }}</p>
+                                    <p>{{ date('d/m/Y', strtotime($peliculaRecogida->estreno)) }}</p>
                                 </div>
                                 <div>
                                     <h4 class="text-muted mb-2">Director</h4>
@@ -292,8 +304,8 @@
                         {{ csrf_field() }}
                         <div class="row form-group">
                             <div class="input-group date" id="datepicker" style="margin-bottom: 20px;">
-                                <input type="text" class="form-control" value="{{$fechaActual}}"
-                                   name="fecha" aria-describedby="button-addon2" required>
+                                <input type="text" class="form-control" value="{{ $fechaActual }}" name="fecha"
+                                    aria-describedby="button-addon2" required>
                                 <button class="btn btn-outline-secondary fa fa-calendar" type="button"
                                     id="button-addon2"></button>
                             </div>
@@ -308,6 +320,8 @@
             </div>
         </div>
     </div>
+    <!-- Editar pelicula -->
+    @include('templates.form_pelicula')
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 <script type="text/javascript">

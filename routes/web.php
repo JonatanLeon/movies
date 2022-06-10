@@ -51,6 +51,8 @@ Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaM
 
 Route::post('/perfil/enviarsugerencia/{id}', [PerfilController::class, 'enviarSugerencia'])->middleware('auth.user')->name('enviar.sugerencia');
 
+Route::get('/perfil/borrarsugerencia/{id}', [AdminController::class, 'borrarSugerencia'])->middleware('auth.user')->name('borrar.sugerencia');
+
 Route::post('/perfil/insertarpelicula/', [AdminController::class, 'insertarPelicula'])->middleware('auth.user');
 
 Route::get('/perfil/desactivar/{id}', [PerfilController::class, 'desactivarCuenta'])->middleware('auth.user')->name('desactivar.cuenta');
