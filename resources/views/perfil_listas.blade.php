@@ -66,6 +66,8 @@
                     <li class="nav-item"><a class="nav-link active" href="#">Listas</a></li>
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('ir.usuario.calendario', $usuario->id) }}">Diario</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ route('ir.usuario.favoritas', $usuario->id) }}">Favoritas</a></li>
                 </ul>
                 @if ($listas->count() != 0)
                     @foreach ($listas as $lista)

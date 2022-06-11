@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.structure.css') }}">
     <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.theme.min.css') }}">
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js') }}" type="text/javascript"></script>
     <style>
         a,
         a:hover,
@@ -51,18 +49,22 @@
                         </div>
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a href="#" class="btn btn-primary" type="button"
-                                style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red)"
-                                data-bs-toggle="modal" data-bs-target="#modalBuscador">Añadir a
-                                diario</a>
+                                style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red);"
+                                data-bs-toggle="modal" data-bs-target="#modalFavorita">Añadir a Favoritas</a>
+                        </div>
+                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                            <a href="#" class="btn btn-primary" type="button"
+                                style="width: 245px;background: var(--bs-red);font-size: 20px;border-color: var(--bs-yellow);color: var(--bs-white);"
+                                data-bs-toggle="modal" data-bs-target="#modalQuitarFavorita">Quitar de Favoritas</a>
                         </div>
                     @endif
-                    <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                        <a class="btn btn-primary" type="button"
-                            style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
-                            data-bs-toggle="modal" data-bs-target="#confirmacionDesactivar">Desactivar
-                            cuenta</a>
-                    </div>
                 @endauth
+                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                    <a class="btn btn-primary" type="button"
+                        style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
+                        data-bs-toggle="modal" data-bs-target="#confirmacionDesactivar">Desactivar
+                        cuenta</a>
+                </div>
             </div>
             <div class="col">
                 <ul class="nav nav-tabs">
@@ -70,80 +72,36 @@
                             href="{{ route('ir.usuario.criticas', $usuario->id) }}">Reseñas</a></li>
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('ir.usuario.listas', $usuario->id) }}">Listas</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Diario</a></li>
                     <li class="nav-item"><a class="nav-link"
-                            href="{{ route('ir.usuario.favoritas', $usuario->id) }}">Favoritas</a></li>
+                            href="{{ route('ir.usuario.calendario', $usuario->id) }}">Diario</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Favoritas</a></li>
                 </ul>
-                @if ($calenPeliculas->count() != 0)
-                    @foreach ($meses as $mes)
-                        <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
-                            <h2 style="margin-top: 20px;width: 400px;color: var(--bs-pink);">
-                                {{ date('F Y', strtotime($mes->mes)) }}</h2>
-                        </div>
-                        @foreach ($calenPeliculas as $calen)
-                            @if ($calen->mes == $mes->mes)
-                                @foreach ($peliculas as $pelicula)
-                                    @if ($pelicula->id == $calen->id_pelicula && $calen->mostrado != true)
-                                        <?php $calen->mostrado = true; ?>
-                                        <a href="{{ route('pelicula_seleccionada', $pelicula->id) }}">
-                                            <div class="container">
-                                                <div class="card border rounded-circle"
-                                                    style="margin-top: 34px;box-shadow: 0px 0px;">
-                                                    <div class="card-body border rounded"
-                                                        style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
-                                                        <div class="row">
-                                                            <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
-                                                                id="columna-1">
-                                                                <h5 class="text-center">Day</h5>
-                                                                <h1 class="text-center">
-                                                                    {{ date('d', strtotime($calen->fecha)) }}</h1>
-                                                            </div>
-                                                            <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1"
-                                                                id="columna-1">
-                                                                <img class="img-fluid d-xl-flex align-items-xl-start"
-                                                                    src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}">
-                                                            </div>
-                                                            <div class="col">
-                                                                <div>
-                                                                    <h4 href="/pelicula">{{ $pelicula->titulo }}</h4>
-                                                                    <h6>{{ $pelicula->director }}</h6>
-                                                                    <?php $date = date_create($pelicula->estreno); ?>
-                                                                    <h6 class="text-muted mb-2">
-                                                                        {{ date_format($date, 'Y') }}</h6>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    @endif
-                                @endforeach
-                            @endif
-                        @endforeach
+                @if ($peliculasFavoritas->count() != 0)
+                    @foreach ($peliculasFavoritas as $pelicula)
+                        @include('templates.card_pelicula')
                     @endforeach
                     <div class="d-flex justify-content-center" style="margin-top: 30px;">
-                        {!! $meses->appends($_GET)->links() !!}
+                        {!! $peliculasFavoritas->appends($_GET)->links() !!}
                     </div>
                 @else
                     <div style="margin-top: 34px;text-align: center;">
-                        <h3>No hay películas en el diario</h3>
+                        <h3>No hay ninguna película en Favoritas</h3>
                     </div>
                 @endif
             </div>
         </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <!-- Modal de añadir pelicula -->
-    <div class="modal fade" id="modalBuscador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Añadir a favoritas -->
+    <div class="modal fade" id="modalFavorita" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">¿Qué película quieres añadir?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Añadir a Favoritas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ui-front">
-                    <form action='/pelicula/nombre/' method="post" class="busquedaPeli">
+                    <form action='{{ route('marcar.favorita.perfil', 0) }}' method="post" class="busquedaPeli">
                         {{ csrf_field() }}
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column"><input id="auto" class="search form-control p-3"
@@ -161,18 +119,60 @@
             </div>
         </div>
     </div>
-    <!-- Modal de desactivar cuenta -->
+    <!-- Quitar de favoritas -->
+    <div class="modal fade" id="modalQuitarFavorita" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Quitar de Favoritas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ui-front">
+                    <form action='{{ route('quitar.favorita.perfil', 0) }}' method="post" class="busquedaPeli">
+                        {{ csrf_field() }}
+                        <div class="row form-group mb-3">
+                            <div class="col-sm-20 input-column"><input id="quitar" class="search form-control p-3"
+                                    type="text" placeholder="Buscar..." name="pelicula" required>
+                            </div>
+                            <div class="modal-footer" style="margin-top: 25px;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <input class="btn btn-light submit-button" type="submit" value="Quitar"
+                                    style="background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirmar desactivación -->
     @include('templates.modal_confirmacion')
     <!-- Modal de sugerencias -->
     @include('templates.modal_sugerencia')
     <!-- Modal de editar perfil -->
     @include('templates.modal_editar_perfil')
 </body>
+<script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
+<script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     $("#auto").autocomplete({
         source: function(request, response) {
             $.ajax({
                 url: "{{ route('buscar') }}",
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data)
+                }
+            });
+        }
+    });
+    $("#quitar").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ route('buscar.quitar.fav', auth()->user()->id) }}",
                 dataType: 'json',
                 data: {
                     term: request.term

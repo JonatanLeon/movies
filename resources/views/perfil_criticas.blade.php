@@ -45,12 +45,12 @@
                                 sugerencia</a>
                         </div>
                     @endif
-                <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                    <a class="btn btn-primary" type="button"
-                        style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
-                        data-bs-toggle="modal" data-bs-target="#confirmacionDesactivar">Desactivar
-                        cuenta</a>
-                </div>
+                    <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                        <a class="btn btn-primary" type="button"
+                            style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
+                            data-bs-toggle="modal" data-bs-target="#confirmacionDesactivar">Desactivar
+                            cuenta</a>
+                    </div>
                 @endauth
             </div>
             <div class="col">
@@ -60,6 +60,8 @@
                             href="{{ route('ir.usuario.listas', $usuario->id) }}">Listas</a></li>
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('ir.usuario.calendario', $usuario->id) }}">Diario</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ route('ir.usuario.favoritas', $usuario->id) }}">Favoritas</a></li>
                 </ul>
                 @if ($criticas->count() != 0)
                     @foreach ($criticas as $critica)

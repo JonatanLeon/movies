@@ -38,6 +38,8 @@ Route::get('/perfil/listas/{id}', [PerfilController::class, 'mostrarListas'])->m
 
 Route::get('/perfil/calendario/{id}', [PerfilController::class, 'mostrarCalendario'])->middleware('auth.user')->name('ir.usuario.calendario');
 
+Route::get('/perfil/favoritas/{id}', [PerfilController::class, 'mostrarFavoritas'])->middleware('auth.user')->name('ir.usuario.favoritas');
+
 Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->middleware('auth.user')->name('borrar.critica');
 
 Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->middleware('auth.user')->name('modificar.critica');
@@ -56,6 +58,12 @@ Route::get('/perfil/borrarsugerencia/{id}', [AdminController::class, 'borrarSuge
 Route::post('/perfil/insertarpelicula/', [AdminController::class, 'insertarPelicula'])->middleware('auth.user');
 
 Route::get('/perfil/desactivar/{id}', [PerfilController::class, 'desactivarCuenta'])->middleware('auth.user')->name('desactivar.cuenta');
+
+Route::post('/perfil/marcarfav/{id}', [PerfilController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.favorita.perfil');
+
+Route::post('/perfil/quitarfav/{id}', [PerfilController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.favorita.perfil');
+
+Route::get('/busqueda/quitarfav/{id}', [PerfilController::class, 'buscarEnFavs'])->middleware('auth.user')->name('buscar.quitar.fav');
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
@@ -94,6 +102,10 @@ Route::get('/pelicula/{id}', [MovieController::class, 'verPelicula'])->name('pel
 Route::post('/pelicula/nombre/', [MovieController::class, 'buscarPorNombre'])->middleware('auth.user')->name('buscar.nombre');
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
+
+Route::get('/pelicula/fav/{id}', [PerfilController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.fav');
+
+Route::get('/pelicula/quitarfav/{id}', [PerfilController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.fav');
 
 Route::get('/pelicula/borrar/{id}', [AdminController::class, 'borrarPelicula'])->middleware('auth.admin')->name('borrar.peli');
 

@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('lib/bootstrap-datepicker.min.css') }}">
     <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('lib\bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
     <style>
         #listaBoton {
             border: 2px solid var(--bs-pink);
@@ -48,6 +46,27 @@
                         </div>
                     </div>
                     @auth
+                        @if ($favorita->id_usuario == auth()->user()->id && $favorita->id_pelicula == $peliculaRecogida->id)
+                            <div class="container-fluid" style="margin-bottom: 14px;"><a
+                                    href="{{ route('quitar.fav', $peliculaRecogida->id) }}" class="btn btn-primary"
+                                    type="button"
+                                    style="width: 245px;background: var(--bs-red);font-size: 20px;border-color: var(--bs-red);">Quitar
+                                    de favoritos <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                    </svg></a></div>
+                        @else
+                            <div class="container-fluid" style="margin-bottom: 14px;"><a
+                                    href="{{ route('marcar.fav', $peliculaRecogida->id) }}" class="btn btn-primary"
+                                    type="button"
+                                    style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Marcar
+                                    como favorita <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                    </svg></a></div>
+                        @endif
                         <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                                 type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
@@ -300,11 +319,9 @@
                     <form action="{{ route('insertar.calendario', $peliculaRecogida->id) }}" method="post">
                         {{ csrf_field() }}
                         <div class="row form-group">
-                            <div class="input-group date" id="datepicker" style="margin-bottom: 20px;">
-                                <input type="text" class="form-control" value="{{ $fechaActual }}" name="fecha"
+                            <div class="input-group date" style="margin-bottom: 20px;">
+                                <input type="date" class="form-control" value="{{ $fechaActual }}" name="fecha"
                                     aria-describedby="button-addon2" required>
-                                <button class="btn btn-outline-secondary fa fa-calendar" type="button"
-                                    id="button-addon2"></button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -333,24 +350,13 @@
                     <button type="button" class="btn btn-secondary"
                         style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;"
                         data-bs-dismiss="modal">No</button>
-                    <a href="{{ route('borrar.peli', $peliculaRecogida->id) }}" type="button" class="btn btn-primary"
+                    <a href="{{ route('borrar.peli', $peliculaRecogida->id) }}" type="button"
+                        class="btn btn-primary"
                         style="background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);">Sí</a>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script type="text/javascript">
-    $(function() {
-        $('#datepicker').datepicker({
-            format: "dd/mm/yyyy"
-        });
-    });
-</script>
-<footer class="text-center bg-dark" style="margin-top: 92px; bottom: 0; width: 100%; height: 10%;">
-    <div class="container text-white py-4 py-lg-5">
-        <p class="text-muted mb-0">Copyright © 2022 Jonatan León Caparrós</p>
-    </div>
-</footer>
 
 </html>

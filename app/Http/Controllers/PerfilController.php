@@ -13,6 +13,7 @@ use App\Models\ListaPelicula;
 use App\Models\Calendario;
 use App\Models\CalendarioPelicula;
 use App\Models\Sugerencia;
+use App\Models\Favorita;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class PerfilController extends Controller
@@ -176,5 +177,58 @@ class PerfilController extends Controller
             Alert::success('Hecho', 'Usuario editado correctamente');
             return redirect()->back();
         }
+    }
+
+    public function mostrarFavoritas($idUsuario) {
+        $usuario = User::find($idUsuario);
+        $peliculasFavoritas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')->where('favoritas.id_usuario', '=', $idUsuario)->paginate(10);
+        return view('perfil_favoritas', compact('usuario', 'peliculasFavoritas'));
+    }
+
+    public function marcarFavorita(Request $request, $idPelicula) {
+        if ($idPelicula == 0) {
+            try {
+                $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+                $idPelicula = $pelicula->id;
+            } catch(\Exception $e) {
+                Alert::error('Error', 'El nombre de esa película no existe');
+                return redirect()->back();
+            }
+        }
+        $fav = new Favorita();
+        $fav->id_usuario = Auth::user()->id;
+        $fav->id_pelicula = $idPelicula;
+        $fav->save();
+        Alert::success('Hecho', 'Película guardada en Favoritas');
+        return redirect()->back();
+    }
+
+    public function buscarEnFavs(Request $request, $idUsuario) {
+        $term = $request->get("term");
+        $peliculas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')
+        ->where('favoritas.id_usuario', '=', $idUsuario)->where('peliculas.titulo', 'like', '%'.$term.'%')->get();
+        $data = [];
+        foreach($peliculas as $pelicula) {
+            $data[] = [
+                'label' => $pelicula->titulo
+            ];
+        }
+        return $data;
+    }
+
+    public function quitarFavorita(Request $request, $idPelicula) {
+        if ($idPelicula == 0) {
+            try {
+                $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+                $idPelicula = $pelicula->id;
+            } catch(\Exception $e) {
+                Alert::error('Error', 'El nombre de esa película no existe');
+                return redirect()->back();
+            }
+        }
+        $fav = Favorita::where('id_usuario', '=', Auth::user()->id)->where('id_pelicula', '=', $idPelicula)->delete();
+        Alert::success('Hecho', 'Película quitada de Favoritas');
+        return redirect()->back();
+
     }
 }

@@ -26,7 +26,7 @@ class CriticasController extends Controller
         $critica->save();
         // Se recalcula la nota con la nueva
         $this->recalcularNota($id);
-        Alert::success('Hecho', 'Crítica publicada');
+        Alert::success('Hecho', 'Reseña publicada');
         return redirect('/pelicula/'.$id);
     }
     // Hace media con las notas de todas las críticas de esa película

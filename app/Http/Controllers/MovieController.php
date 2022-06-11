@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pelicula;
 use App\Models\Critica;
 use App\Models\Lista;
+use App\Models\Favorita;
 use App\Http\Controllers\CriticasController;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,11 +47,17 @@ class MovieController extends Controller
 
     // Muestra la página de la película seleccionada
     public function verPelicula($id) {
+        $favorita = new Favorita();
         $listas = new Lista();
         $peliculaRecogida = Pelicula::find($id);
         $criticas = Critica::where('id_pelicula', '=', $id)->paginate(5);
         if (Auth::user()) {
             $listas = Lista::where('id_usuario', '=', Auth::user()->id)->get();
+            if (!($favorita = Favorita::where('id_usuario', '=', Auth::user()->id)->where('id_pelicula', '=', $id)->first())) {
+                $favorita = new Favorita();
+                $favorita->id_usuario = 0;
+                $favorita->id_pelicula = 0;
+            }
         }
         // Siempre que se cargue una película se recalcula su nota en la BBDD
         // Por si un admin ha borrado una critica
@@ -59,7 +66,7 @@ class MovieController extends Controller
             $controller = new CriticasController;
             $controller->recalcularNota($id);
         }
-        return view('pelicula', compact('peliculaRecogida', 'criticas', 'listas'));
+        return view('pelicula', compact('peliculaRecogida', 'criticas', 'listas', 'favorita'));
     }
 
     // Muestra la página de una película aleatoria
