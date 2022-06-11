@@ -21,6 +21,9 @@
         a:active {
             text-decoration: none;
             color: inherit;
+        }
+
+        .card-body {
             cursor: pointer;
         }
     </style>
@@ -78,7 +81,59 @@
                 </ul>
                 @if ($peliculasFavoritas->count() != 0)
                     @foreach ($peliculasFavoritas as $pelicula)
-                        @include('templates.card_pelicula')
+                        <div class="container">
+                            <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
+                                <div class="card-body border rounded" data-bs-toggle="modal"
+                                    data-bs-target="#borrar{{ $pelicula->id }}"
+                                    style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                                    <div class="row">
+                                        <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1" id="columna-1">
+                                            <img class="img-fluid d-xl-flex align-items-xl-start"
+                                                src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}">
+                                        </div>
+                                        <div class="col">
+                                            <div>
+                                                <h4 href="/pelicula">{{ $pelicula->titulo }}</h4>
+                                                <h6>{{ $pelicula->director }}</h6>
+                                                <?php $date = date_create($pelicula->estreno); ?>
+                                                <h6 class="text-muted mb-2">{{ date_format($date, 'Y') }}</h6>
+                                                <p>{{ $pelicula->generos }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Confirmación Borrar -->
+                        <div class="modal fade" id="borrar{{ $pelicula->id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5>{{ $pelicula->titulo }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>¿Quitarla de favoritos?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div style="margin-left: 50px;">
+                                            <a href="{{route('pelicula_seleccionada', $pelicula->id)}}" type="button"
+                                                class="btn btn-primary"
+                                                style="background: var(--bs-pink);border-color: var(--bs-pink);color: var(--bs-white);">Página
+                                                de la película</a>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary"
+                                            style="background: #535252;border-color: #535252;color: #FFFFFF;"
+                                            data-bs-dismiss="modal">No</button>
+                                        <a href="{{ route('quitar.fav', $pelicula->id) }}" type="button"
+                                            class="btn btn-primary"
+                                            style="background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);">Sí</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                     <div class="d-flex justify-content-center" style="margin-top: 30px;">
                         {!! $peliculasFavoritas->appends($_GET)->links() !!}
@@ -120,7 +175,8 @@
         </div>
     </div>
     <!-- Quitar de favoritas -->
-    <div class="modal fade" id="modalQuitarFavorita" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalQuitarFavorita" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
