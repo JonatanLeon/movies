@@ -71,7 +71,7 @@
                             <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                                     type="button"
                                     style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red);"
-                                    data-bs-toggle="modal" data-bs-target="#desplegarCalendario">Borrar película</button>
+                                    data-bs-toggle="modal" data-bs-target="#borrarPelicula">Borrar película</button>
                             </div>
                         @endif
                     @else
@@ -319,7 +319,26 @@
     </div>
     <!-- Editar pelicula -->
     @include('templates.form_pelicula')
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Confirmación Borrar -->
+    <div class="modal fade" id="borrarPelicula" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">¿Seguro que quieres borrarla?
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;"
+                        data-bs-dismiss="modal">No</button>
+                    <a href="{{ route('borrar.peli', $peliculaRecogida->id) }}" type="button" class="btn btn-primary"
+                        style="background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);">Sí</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     $(function() {

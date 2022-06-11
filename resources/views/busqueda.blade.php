@@ -24,6 +24,7 @@
 
 <body>
     @include('templates.navbar')
+    @include('sweetalert::alert')
     @if ($peliculas->count()!=0)
     <div class="card"></div>
     <div class="row mb-5" style="margin-top: 38px;">

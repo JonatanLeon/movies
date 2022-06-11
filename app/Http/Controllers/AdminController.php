@@ -53,7 +53,9 @@ class AdminController extends Controller
                 $pelicula = Pelicula::find($request->id);
             } else {
                 $pelicula = new Pelicula();
-                Sugerencia::find($request->sugerencia)->delete();
+                if(!$request->get("crear")) {
+                    Sugerencia::find($request->sugerencia)->delete();
+                }
                 $pelicula->nota_media = 0;
             }
             $pelicula->titulo = $request->titulo;
@@ -79,7 +81,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             Alert::error('Error', 'Ha habido un error en los datos introducidos');
         } finally {
-            return redirect()->back();
+            return redirect('/pelicula/'.$pelicula->id);
         }
     }
 
@@ -87,5 +89,11 @@ class AdminController extends Controller
         Sugerencia::find($idSugerencia)->delete();
         Alert::success('Hecho', 'Sugerencia eliminada');
         return redirect()->back();
+    }
+
+    public function borrarPelicula($idPelicula) {
+        Pelicula::find($idPelicula)->delete();
+        Alert::success('Hecho', 'Película eliminada');
+        return redirect('/peliculas');
     }
 }

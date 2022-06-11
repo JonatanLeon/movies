@@ -95,6 +95,8 @@ Route::post('/pelicula/nombre/', [MovieController::class, 'buscarPorNombre'])->m
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
+Route::get('/pelicula/borrar/{id}', [AdminController::class, 'borrarPelicula'])->middleware('auth.admin')->name('borrar.peli');
+
 Route::post('/pelicula/critica/{id}', [CriticasController::class, 'publicarCritica'])->middleware('auth.user')->name('publicar.critica');
 
 Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMandarPelicula'])->middleware('auth.user')->name('lista.pelicula');
