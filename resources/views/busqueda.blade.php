@@ -29,7 +29,17 @@
     <div class="card"></div>
     <div class="row mb-5" style="margin-top: 38px;">
         <div class="col-md-8 col-xl-6 text-center mx-auto">
-            <h2>Resultados</h2>
+            @if ($radio == "director")
+            <h2>Resultados por director</h2>
+            @elseif ($radio == "generos")
+            <h2>Resultados por género</h2>
+            @elseif ($radio == "reparto")
+            <h2>Resultados por reparto</h2>
+            @elseif ($radio == "anio")
+            <h2>Resultados por año de estreno</h2>
+            @elseif ($radio == "titulo")
+            <h2>Resultados por título</h2>
+            @endif
         </div>
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">

@@ -22,6 +22,10 @@
             color: inherit;
             cursor: pointer;
         }
+
+        .card-body {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -35,6 +39,9 @@
                     {{ $lista->nombre }}</h1>
             </div>
             <div style="margin-top: 15px;">
+                <a href="{{ route('ir.usuario.criticas', $lista->id_usuario) }}">
+                    <h5 id ="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
+                </a>
                 <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
             </div>
             @auth
@@ -67,7 +74,63 @@
             @if ($peliculas->count() != 0)
                 @foreach ($peliculas as $pelicula)
                     <!-- Cards de las películas -->
-                    @include('templates.card_pelicula')
+                    <div class="container">
+                        <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
+                            <div class="card-body border rounded" data-bs-toggle="modal"
+                                data-bs-target="#borrar{{ $pelicula->id }}"
+                                style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-3 col-xl-2 col-xxl-1" id="columna-1">
+                                        <img class="img-fluid d-xl-flex align-items-xl-start"
+                                            src="data:image/png;base64,{{ chunk_split(base64_encode($pelicula->poster)) }}">
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <h4 href="/pelicula">{{ $pelicula->titulo }}</h4>
+                                            <h6>{{ $pelicula->director }}</h6>
+                                            <?php $date = date_create($pelicula->estreno); ?>
+                                            <h6 class="text-muted mb-2">{{ date_format($date, 'Y') }}</h6>
+                                            <p>{{ $pelicula->generos }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Confirmación Borrar de la Card -->
+                    <div class="modal fade" id="borrar{{ $pelicula->id }}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5>{{ $pelicula->titulo }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Quitarla de la lista?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <div style="margin-left: 50px;">
+                                        <a href="{{ route('pelicula_seleccionada', $pelicula->id) }}" type="button"
+                                            class="btn btn-primary"
+                                            style="background: var(--bs-pink);border-color: var(--bs-pink);color: var(--bs-white);">Página
+                                            de la película</a>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary"
+                                        style="background: #535252;border-color: #535252;color: #FFFFFF;"
+                                        data-bs-dismiss="modal">No</button>
+                                    <form action="/pelicula/borrardelista/{{ $pelicula->id }}" method="post">
+                                        {{ csrf_field() }}
+                                        <input value={{ $lista->id }} name="idLista" hidden="true">
+                                        <input type="submit" class="btn btn-primary"
+                                            style="background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
+                                            value="Sí">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
                 <div class="d-flex justify-content-center" style="margin-top: 30px;">
                     {!! $peliculas->appends($_GET)->links() !!}
@@ -116,7 +179,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body ui-front">
-                    <form action='/pelicula/borrardelista/' method="post" class="busquedaPeli">
+                    <form action="/pelicula/borrardelista/{{ 0 }}" method="post" class="busquedaPeli">
                         {{ csrf_field() }}
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column"><input id="quitar" class="search form-control p-3"

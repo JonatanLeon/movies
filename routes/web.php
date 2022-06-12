@@ -77,6 +77,8 @@ Route::post('/perfil/editarperfil/{id}', [PerfilController::class, 'editarperfil
 // Buscador y vista de películas
 Route::get('/busqueda', [MovieController::class, 'buscarPelicula'])->name('buscar');
 
+Route::post('/busqueda/avanzada', [MovieController::class, 'busquedaAvanzada'])->name('busqueda.avanzada');
+
 Route::get('/busqueda/criticas/', [CriticasController::class, 'buscarCritica'])->name('buscar.critica');
 
 Route::get('/busqueda/listas/', [ListasController::class, 'buscarLista'])->name('buscar.lista');
@@ -93,7 +95,7 @@ Route::get('/criticas', [CriticasController::class, 'listarTodas']);
 
 Route::get('/listas', [ListasController::class, 'listarTodas']);
 
-Route::get('/usuarios', [AdminController::class, 'listarUsuarios'])->middleware('auth.admin');
+Route::get('/usuarios', [AdminController::class, 'listarUsuarios']);
 
 Route::get('/sugerencias', [AdminController::class, 'listarSugerencias'])->middleware('auth.admin');
 
@@ -115,7 +117,9 @@ Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMa
 
 Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista'])->middleware('auth.user');
 
-Route::post('/pelicula/borrardelista/', [ListasController::class, 'quitarDeLista'])->middleware('auth.user');
+Route::post('/pelicula/borrardelista/{id}', [ListasController::class, 'quitarDeLista'])->middleware('auth.user');
+
+Route::get('/pelicula/borrardelista/card/{id}', [ListasController::class, 'quitarConCard'])->middleware('auth.user');
 
 Route::post('/pelicula/editarlista/{id}', [ListasController::class, 'modificarLista'])->middleware('auth.user')->name('modificar.lista');
 

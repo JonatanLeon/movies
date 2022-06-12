@@ -17,11 +17,12 @@ class MovieController extends Controller
 {
     // Método para buscar una película por su título en la barra de búsqueda
     public function buscarPelicula(Request $request) {
+        $radio = "titulo";
         if($request->get("buscar")) {
             $buscar = $request->get("buscar");
             $peliculas = Pelicula::where('titulo', 'like', '%'.$buscar.'%')->paginate(10);
 
-            return view('busqueda', compact('peliculas'));
+            return view('busqueda', compact('peliculas', 'radio'));
         } else {
             $term = $request->get("term");
             $peliculas = Pelicula::where('titulo', 'like', '%'.$term.'%')->get();
@@ -35,14 +36,34 @@ class MovieController extends Controller
         }
     }
 
+    public function busquedaAvanzada(Request $request) {
+        $radio = $request->gridRadios;
+        switch($radio) {
+            case "director":
+                $peliculas = Pelicula::where('director', 'like', '%'.$request->criterio.'%')->paginate(10);
+                break;
+            case "generos":
+                $peliculas = Pelicula::where('generos', 'like', '%'.$request->criterio.'%')->paginate(10);
+                break;
+            case "reparto":
+                $peliculas = Pelicula::where('reparto', 'like', '%'.$request->criterio.'%')->paginate(10);
+                break;
+            case "anio":
+                $peliculas = Pelicula::where('estreno', 'like', '%'.$request->criterio.'%')->paginate(10);
+                break;
+        }
+        return view('busqueda', compact('peliculas', 'radio'));
+    }
+
     public function buscarPorNombre(Request $request) {
         $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
         return redirect('/pelicula/'.$pelicula->id);
     }
     // Lista todas las películas en el botón de la barra superior
     public function listarTodas() {
+        $radio = "";
         $peliculas = Pelicula::orderBy('titulo')->paginate(10);
-        return view('busqueda', compact('peliculas'));
+        return view('busqueda', compact('peliculas', 'radio'));
     }
 
     // Muestra la página de la película seleccionada

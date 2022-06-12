@@ -76,8 +76,13 @@ class ListasController extends Controller
         }
     }
 
-    public function quitarDeLista(Request $request) {
-        $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+    public function quitarDeLista(Request $request, $idPelicula) {
+        if ($idPelicula == 0) {
+            $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
+        }
+        else {
+            $pelicula = Pelicula::find($idPelicula);
+        }
         try {
             ListaPelicula::where('id_pelicula', '=', $pelicula->id)->where('id_lista', '=', $request->idLista)->forceDelete();
             Alert::success('Hecho', 'Pelicula quitada de la lista');
@@ -86,6 +91,10 @@ class ListasController extends Controller
             Alert::error('Error', 'No existe esa película en esta lista');
             return redirect('/perfil/paginalista/'.$request->idLista);
         }
+    }
+
+    public function quitarConCard($idPelicula) {
+        ListaPelicula::where('id_pelicula', '=', $idPelicula)->where('id_lista', '=', $request->idLista)->forceDelete();
     }
 
     public function modificarLista(Request $request, $idLista) {

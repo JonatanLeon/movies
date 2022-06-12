@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
     <div class="container-fluid"><a class="navbar-brand" href="/"
             style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a>
@@ -13,22 +14,27 @@
                 <li class="nav-item"><a class="nav-link" href="/listas"
                         style="color: var(--bs-light);">Listas</a></li>
                 @auth
+                    <li class="nav-item"><a class="nav-link" href="/usuarios"
+                            style="color: var(--bs-light);">Usuarios</a></li>
                     @if (auth()->user()->role == 'admin')
-                        <li class="nav-item"><a class="nav-link" href="/usuarios"
-                                style="color: var(--bs-light);">Usuarios</a></li>
                         <li class="nav-item"><a class="nav-link" href="/sugerencias"
                                 style="color: var(--bs-light);">Sugerencias</a></li>
                         <li class="nav-item"><a class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#insertPeliNueva" style="color: var(--bs-white);border-color: var(--bs-white);
-                        background-color: var(--bs-pink);font-weight: bold;">Añadir película</a></li>
+                                data-bs-target="#insertPeliNueva"
+                                style="color: var(--bs-white);border-color: var(--bs-white);
+                                                                                            background-color: var(--bs-pink);font-weight: bold;">Añadir
+                                película</a>
+                        </li>
                     @endif
                 @endauth
             </ul>
         </div>
+        <div>
+            <i data-bs-toggle="modal" data-bs-target="#filtrar" class="bi bi-filter-square-fill"
+                style="color: var(--bs-white);font-size: 42px;margin-right: 14px;cursor: pointer;"></i>
+        </div>
         <form class="d-flex" style="margin-right: 16px;" action="/busqueda" method="get">
             {{ csrf_field() }}
-            <i class="fa fa-search"
-                style="margin: 2px;color: var(--bs-gray-300);font-size: 42px;margin-right: 14px;margin-top: 0px;margin-bottom: 0px;margin-left: 0px;"></i>
             <input class="form-control" type="search" style="height: 43px;" placeholder="Buscar películas..."
                 name="buscar">
         </form>
@@ -129,6 +135,82 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <input name="crear" class="btn btn-light submit-button" type="submit" value="Confirmar"
                         style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal filtrar -->
+<div class="modal fade" id="filtrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Búsqueda avanzada
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/busqueda/avanzada" method="post">
+                {{ csrf_field() }}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="criterio" name="criterio"
+                                placeholder="Buscar...">
+                        </div>
+                    </div>
+                    <fieldset class="form-group" style="margin-top: 20px;">
+                        <div class="col-sm-10">
+                            <p>Filtrar por:</p>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
+                                        value="director" checked>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Director
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                        value="generos">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Géneros
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                        value="reparto">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Reparto
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                        value="anio">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Año
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        style="background: #535252;border-color: #535252;color: #FFFFFF;"
+                        data-bs-dismiss="modal">Cerrar</button>
+                    <input href="#" type="submit" class="btn btn-primary"
+                        style="background: var(--bs-pink);border-color: var(--bs-pink);color: var(--bs-white);"
+                        value="Buscar">
                 </div>
             </form>
         </div>

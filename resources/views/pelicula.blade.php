@@ -24,6 +24,19 @@
             background: var(--bs-pink);
             color: var(--bs-white);
         }
+
+        a,
+        a:hover,
+        a:focus,
+        a:active {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .card-body {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -51,7 +64,7 @@
                                     href="{{ route('quitar.fav', $peliculaRecogida->id) }}" class="btn btn-primary"
                                     type="button"
                                     style="width: 245px;background: var(--bs-red);font-size: 20px;border-color: var(--bs-red);">Quitar
-                                    de favoritos <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    de Favoritas <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
                                             d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
@@ -80,7 +93,7 @@
                                 type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                                 data-bs-toggle="modal" data-bs-target="#desplegarCalendario">Añadir
-                                a calendario</button></div>
+                                a diario</button></div>
                         @if (auth()->user()->role == 'admin')
                             <div class="container-fluid" style="margin-bottom: 14px;"><button class="btn btn-primary"
                                     type="button"
@@ -164,20 +177,23 @@
                         @foreach ($criticas as $critica)
                             <div class="container">
                                 <div class="card border rounded-circle" style="margin-top: 34px;box-shadow: 0px 0px;">
-                                    <div class="card-body border rounded"
-                                        style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div>
-                                                    <h4>{{ $critica->titulo }}</h4>
-                                                    <h6>Nota: {{ $critica->puntuacion }}/5</h6>
-                                                    <h6 class="text-muted mb-2">Por: {{ $critica->nombre_usuario }}
-                                                    </h6>
-                                                    <p>{{ $critica->texto }}</p>
+                                    <a href="{{ route('ir.critica', $critica->id) }}">
+                                        <div class="card-body border rounded"
+                                            style="background: #ffffff;box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div>
+                                                        <h4>{{ $critica->titulo }}</h4>
+                                                        <h6>Nota: {{ $critica->puntuacion }}/5</h6>
+                                                        <h6 class="text-muted mb-2">Por:
+                                                            {{ $critica->nombre_usuario }}
+                                                        </h6>
+                                                        <p>{{ $critica->texto }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         @endforeach
