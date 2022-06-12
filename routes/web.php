@@ -45,9 +45,9 @@ Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritic
 Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->middleware('auth.user')->name('modificar.critica');
 
 // Si fallan estas rutas puede ser porque falta la barra del final
-Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->middleware('auth.user')->name('ir.critica');
+Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
 
-Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->middleware('auth.user')->name('ir.lista');
+Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->name('ir.lista');
 
 Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaMandarPerfilLista'])->middleware('auth.user');
 

@@ -39,10 +39,13 @@
                     {{ $lista->nombre }}</h1>
             </div>
             <div style="margin-top: 15px;">
-                <a href="{{ route('ir.usuario.criticas', $lista->id_usuario) }}">
-                    <h5 id ="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
-                </a>
-                <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
+                @auth
+                    <a href="{{ route('ir.usuario.criticas', $lista->id_usuario) }}">
+                        <h5 id="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
+                    </a>
+                @else
+                    <h5 id="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
+                @endauth <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
             </div>
             @auth
                 @if (auth()->user()->id == $lista->id_usuario || auth()->user()->role == 'admin')
