@@ -23,6 +23,7 @@ class CriticasController extends Controller
         $critica->id_usuario = Auth::user()->id;
         $critica->nombre_usuario = Auth::user()->nombre;
         $critica->nombre_pelicula = $pelicula->titulo;
+        $critica->fecha = date('Y-m-d H:i:s');
         $critica->save();
         // Se recalcula la nota con la nueva
         $this->recalcularNota($id);
@@ -43,7 +44,7 @@ class CriticasController extends Controller
     }
 
     public function listarTodas() {
-        $criticas = Critica::orderBy('titulo')->paginate(10);
+        $criticas = Critica::orderBy('fecha', 'desc')->paginate(10);
         return view('listado_criticas', compact('criticas'));
     }
 

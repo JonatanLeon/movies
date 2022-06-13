@@ -26,7 +26,7 @@ class PerfilController extends Controller
         } else {
             $usuario = User::find($idUsuario);
         }
-        $criticas = Critica::where('id_usuario', '=', $usuario->id)->paginate(10);
+        $criticas = Critica::where('id_usuario', '=', $usuario->id)->orderBy('fecha', 'desc')->paginate(10);
         return view('perfil_criticas', compact('usuario', 'criticas'));
     }
 

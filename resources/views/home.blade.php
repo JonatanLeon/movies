@@ -12,6 +12,19 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
     <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
 </head>
+<style>
+    a,
+    a:hover,
+    a:focus,
+    a:active {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-body {
+        cursor: pointer;
+    }
+</style>
 
 <body>
     @include('templates.navbar')
@@ -34,6 +47,7 @@
             </div>
         </div>
     </div>
+    @if (!auth()->user())
     <div class="container py-4 py-xl-5">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
@@ -103,6 +117,64 @@
         </div>
         <footer class="text-center bg-dark"></footer>
     </div>
+    @else
+    <div class="container py-4 py-xl-5">
+        <div class="row mb-5">
+            <div class="col-md-8 col-xl-6 text-center mx-auto">
+                <h2>¿Qué quieres consultar?</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="{{ route('ir.usuario.criticas', auth()->user()->id) }}">
+                    <div class="card">
+                        <div class="card-body p-4 border rounded"
+                            style="background-color: var(--bs-blue);border-color: var(--bs-blue);color: var(--bs-white);box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                            <h4 class="card-title"><i class="bi bi-chat-right-dots" style="margin-right: 20px;"></i>Mis
+                                reseñas</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('ir.usuario.listas', auth()->user()->id) }}">
+                    <div class="card">
+                        <div class="card-body p-4 border rounded"
+                            style="background-color: var(--bs-orange);border-color: var(--bs-orange);color: var(--bs-white);box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                            <h4 class="card-title"><i class="bi bi-list-ul" style="margin-right: 20px;"></i>Mis listas
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('ir.usuario.calendario', auth()->user()->id) }}">
+                    <div class="card">
+                        <div class="card-body p-4 border rounded"
+                            style="background-color: var(--bs-green);border-color: var(--bs-green);color: var(--bs-white);box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                            <h4 class="card-title"><i class="bi bi-calendar-date" style="margin-right: 20px;"></i>Mi
+                                diario
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('ir.usuario.favoritas', auth()->user()->id) }}">
+                    <div class="card">
+                        <div class="card-body p-4 border rounded"
+                            style="background-color: var(--bs-red);border-color: var(--bs-red);color: var(--bs-white);box-shadow: 5px 5px 5px rgba(33,37,41,0.5);">
+                            <h4 class="card-title"><i class="bi bi-heart-fill" style="margin-right: 20px;"></i>Mis
+                                favoritas
+                            </h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <footer class="text-center bg-dark"></footer>
+    </div>
+    @endif
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 <footer class="text-center bg-dark">

@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/dh-card-image-left-dark.css')}}">
     <link rel="stylesheet" href="{{ asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.structure.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.theme.min.css') }}">
     <script src="{{ asset('bootstrap/js/bootstrap.min.js')}}"></script>
 </head>
 
@@ -26,7 +29,6 @@
     @include('templates.navbar')
     @include('sweetalert::alert')
     @if ($peliculas->count()!=0)
-    <div class="card"></div>
     <div class="row mb-5" style="margin-top: 38px;">
         <div class="col-md-8 col-xl-6 text-center mx-auto">
             @if ($radio == "director")
@@ -40,6 +42,19 @@
             @elseif ($radio == "titulo")
             <h2>Resultados por título</h2>
             @endif
+        </div>
+    </div>
+    <div class="row mb-5" style="margin-top: 38px;">
+        <div class="col-md-8 col-xl-6 text-center mx-auto">
+            <div class="row form-group">
+                <div style="margin-bottom: 20px;">
+                    <form action='/pelicula/nombre/' method="post">
+                        {{ csrf_field() }}
+                        <input id="auto" class="form-control" type="search" name="pelicula"
+                            placeholder="Escribe aquí parte del nombre de la película..." style="height: 43px;border-color: var(--bs-pink);">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">
@@ -63,5 +78,22 @@
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
-
+<script src="{{ asset('lib\jquery-3.6.0.js') }}" type="text/javascript"></script>
+<script src="{{ asset('lib\jquery-ui-1.13.1\jquery-ui.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+    $("#auto").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ route('buscar') }}",
+                dataType: 'json',
+                data: {
+                    term: request.term
+                },
+                success: function(data) {
+                    response(data)
+                }
+            });
+        }
+    });
+</script>
 </html>

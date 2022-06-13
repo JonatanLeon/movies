@@ -75,12 +75,13 @@ class AdminController extends Controller
             $pelicula->save();
             if ($request->get("editar")) {
                 Alert::success('Hecho', 'Película editada');
+                return redirect('/pelicula/'.$pelicula->id);
             } else {
                 Alert::success('Hecho', 'Película añadida');
+                return redirect('/pelicula/'.$pelicula->id);
             }
         } catch (\Exception $e) {
             Alert::error('Error', 'Ha habido un error en los datos introducidos');
-        } finally {
             return redirect('/pelicula/'.$pelicula->id);
         }
     }

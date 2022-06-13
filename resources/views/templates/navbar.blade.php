@@ -6,26 +6,23 @@
                 class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/peliculas"
-                        style="color: var(--bs-light);">Películas</a>
+                <li class="nav-item"><a class="nav-link" href="/peliculas" style="color: var(--bs-light);">Películas</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="/criticas"
-                        style="color: var(--bs-light);">Reseñas</a></li>
-                <li class="nav-item"><a class="nav-link" href="/listas"
-                        style="color: var(--bs-light);">Listas</a></li>
+                <li class="nav-item"><a class="nav-link" href="/criticas" style="color: var(--bs-light);">Reseñas</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/listas" style="color: var(--bs-light);">Listas</a></li>
                 @auth
-                    <li class="nav-item"><a class="nav-link" href="/usuarios"
-                            style="color: var(--bs-light);">Usuarios</a></li>
-                    @if (auth()->user()->role == 'admin')
-                        <li class="nav-item"><a class="nav-link" href="/sugerencias"
-                                style="color: var(--bs-light);">Sugerencias</a></li>
-                        <li class="nav-item"><a class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#insertPeliNueva"
-                                style="color: var(--bs-white);border-color: var(--bs-white);
+                <li class="nav-item"><a class="nav-link" href="/usuarios" style="color: var(--bs-light);">Usuarios</a>
+                </li>
+                @if (auth()->user()->role == 'admin')
+                <li class="nav-item"><a class="nav-link" href="/sugerencias"
+                        style="color: var(--bs-light);">Sugerencias</a></li>
+                <li class="nav-item"><a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPeliNueva"
+                        style="color: var(--bs-white);border-color: var(--bs-white);
                                                                                             background-color: var(--bs-pink);font-weight: bold;">Añadir
-                                película</a>
-                        </li>
-                    @endif
+                        película</a>
+                </li>
+                @endif
                 @endauth
             </ul>
         </div>
@@ -40,18 +37,18 @@
         </form>
         <div style="margin: 10px;">
             @auth
-                <a href="{{ route('ir.usuario.criticas', auth()->user()->id) }}" class="btn btn-primary" type="button"
-                    style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Mi
-                    perfil</a>
-                <a href="/logout" class="btn btn-primary" type="button"
-                    style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Cerrar
-                    sesión</a>
+            <a href="{{ route('ir.usuario.criticas', auth()->user()->id) }}" class="btn btn-primary" type="button"
+                style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Mi
+                perfil</a>
+            <a href="/logout" class="btn btn-primary" type="button"
+                style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Cerrar
+                sesión</a>
             @else
-                <a href="/registro" class="btn btn-primary" type="button"
-                    style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
-                <a href="/login" class="btn btn-primary" type="button"
-                    style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar
-                    sesión</a>
+            <a href="/registro" class="btn btn-primary" type="button"
+                style="background: rgba(255,193,7,0);border-color: var(--bs-body-bg);margin-right: 16px;font-weight: bold;">Registrarse</a>
+            <a href="/login" class="btn btn-primary" type="button"
+                style="background: var(--bs-warning);border-color: var(--bs-body-bg);font-weight: bold;">Iniciar
+                sesión</a>
             @endauth
         </div>
     </div>
@@ -71,8 +68,8 @@
                 <div class="modal-body">
                     {{ csrf_field() }}
                     <div class="row form-group mb-3">
-                        <div class="col-sm-20 input-column"><input class="form-control" type="text"
-                                placeholder="Título" name="titulo" required></div>
+                        <div class="col-sm-20 input-column"><input class="form-control" type="text" placeholder="Título"
+                                name="titulo" required></div>
                     </div>
                     <div class="row form-group mb-3">
                         <div class="col-sm-20 input-column">
@@ -121,7 +118,8 @@
                     <div class="row form-group mb-3">
                         <div class="col-sm-20 input-column">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Sinopsis" name="sinopsis" required></textarea>
+                                <textarea class="form-control" type="text" placeholder="Sinopsis" name="sinopsis"
+                                    required></textarea>
                             </div>
                         </div>
                     </div>
