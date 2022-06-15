@@ -80,13 +80,6 @@ class MovieController extends Controller
                 $favorita->id_pelicula = 0;
             }
         }
-        // Siempre que se cargue una película se recalcula su nota en la BBDD
-        // Por si un admin ha borrado una critica
-        // Si la película no tiene ninguna crítica se coge su nota por defecto
-        if (!$criticas->count()==0) {
-            $controller = new CriticasController;
-            $controller->recalcularNota($id);
-        }
         return view('pelicula', compact('peliculaRecogida', 'criticas', 'listas', 'favorita'));
     }
 

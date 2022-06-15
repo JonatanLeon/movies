@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CriticasController;
 use App\Models\Critica;
 use App\Models\User;
 use App\Models\Pelicula;
@@ -50,16 +51,20 @@ class PerfilController extends Controller
     public function borrarCritica($idCritica) {
         try {
             $critica = Critica::find($idCritica);
+            $idPelicula = $critica->id_pelicula;
+            $idUsuario = $critica->id_usuario;
             $critica->delete();
+            $controller = new CriticasController;
+            $controller->recalcularNota($idPelicula);
             Alert::success('Hecho', 'Reseña borrada');
-            if(auth()->user()->role == "admin") {
+            if(auth()->user()->role == "admin" && auth()->user()->id != $idUsuario) {
                 return redirect('/criticas');
             } else {
-                return redirect('/perfil/criticas/');
+                return redirect('/perfil/criticas/'.Auth::user()->id);
             }
         } catch (\Exception $e) {
             Alert::error('Error', 'No se ha podido borrar la reseña');
-            return redirect('/perfil/criticas/');
+            return redirect('/perfil/criticas/'.Auth::user()->id);
         }
     }
 

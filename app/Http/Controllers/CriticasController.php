@@ -24,22 +24,31 @@ class CriticasController extends Controller
         $critica->nombre_usuario = Auth::user()->nombre;
         $critica->nombre_pelicula = $pelicula->titulo;
         $critica->fecha = date('Y-m-d H:i:s');
-        $critica->save();
-        // Se recalcula la nota con la nueva
-        $this->recalcularNota($id);
-        Alert::success('Hecho', 'Reseña publicada');
-        return redirect('/pelicula/'.$id);
+        if (Critica::where('id_pelicula', '=', $critica->id_pelicula)->where('id_usuario', '=', $critica->id_usuario)->first()) {
+            Alert::Error('Error', 'Ya existe una reseña tuya de esta película');
+            return redirect('/pelicula/'.$id);
+        } else {
+            $critica->save();
+            // Se recalcula la nota con la nueva
+            $this->recalcularNota($id);
+            Alert::success('Hecho', 'Reseña publicada');
+            return redirect('/pelicula/'.$id);
+        }
     }
     // Hace media con las notas de todas las críticas de esa película
     public function recalcularNota($idPelicula) {
         $pelicula = Pelicula::find($idPelicula);
         $notaMedia = 0;
         $criticas = Critica::where('id_pelicula', '=', $idPelicula)->get();
-        foreach ($criticas as $critica) {
-            $notaMedia += $critica->puntuacion;
+        if ($criticas->count() > 0) {
+            foreach ($criticas as $critica) {
+                $notaMedia += $critica->puntuacion;
+            }
+            $notaMedia /= $criticas->count();
+            $pelicula->nota_media = bcdiv($notaMedia, '1', 1);
+        } else {
+            $pelicula->nota_media = 0;
         }
-        $notaMedia /= $criticas->count();
-        $pelicula->nota_media = bcdiv($notaMedia, '1', 1);
         $pelicula->save();
     }
 
