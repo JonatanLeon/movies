@@ -65,6 +65,10 @@ Route::post('/perfil/quitarfav/{id}', [PerfilController::class, 'quitarFavorita'
 
 Route::get('/busqueda/quitarfav/{id}', [PerfilController::class, 'buscarEnFavs'])->middleware('auth.user')->name('buscar.quitar.fav');
 
+Route::post('/perfil/quitarcalendario/', [PerfilController::class, 'quitarDeCalendario'])->middleware('auth.user')->name('quitar.calendario');
+
+Route::get('/busqueda/quitarcalendario/{id}', [PerfilController::class, 'buscarEnCalendario'])->middleware('auth.user')->name('buscar.quitar.calendario');
+
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
 
