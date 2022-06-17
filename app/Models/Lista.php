@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Lista extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'id',
+        'id_usuario',
+        'nombre',
+        'descripcion',
+        'nombre_usuario',
+    ];
+    protected $table = 'listas';
     public $timestamps = false;
 }

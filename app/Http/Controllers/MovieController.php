@@ -71,7 +71,11 @@ class MovieController extends Controller
         $favorita = new Favorita();
         $listas = new Lista();
         $peliculaRecogida = Pelicula::find($id);
-        $criticas = Critica::where('id_pelicula', '=', $id)->paginate(5);
+        $criticas = Critica::join('usuarios', 'usuarios.id', '=', 'criticas.id_usuario')
+        ->select('criticas.id','criticas.id_usuario',
+        'criticas.titulo', 'criticas.texto','criticas.puntuacion', 'criticas.fecha', 'usuarios.nombre as nombre_usuario')
+        ->where('id_pelicula', '=', $id)
+        ->paginate(5);
         if (Auth::user()) {
             $listas = Lista::where('id_usuario', '=', Auth::user()->id)->get();
             if (!($favorita = Favorita::where('id_usuario', '=', Auth::user()->id)->where('id_pelicula', '=', $id)->first())) {

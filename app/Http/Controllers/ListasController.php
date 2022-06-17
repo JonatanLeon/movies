@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Lista;
+use App\Models\User;
 use App\Models\Pelicula;
 use App\Models\ListaPelicula;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -14,7 +15,10 @@ use Illuminate\Support\Facades\Auth;
 class ListasController extends Controller
 {
     public function listarTodas() {
-        $listas = Lista::orderBy('nombre')->paginate(10);
+        $listas = Lista::join('usuarios', 'usuarios.id', '=', 'listas.id_usuario')
+        ->select('listas.id','listas.id_usuario', 'listas.nombre', 'listas.descripcion', 'usuarios.nombre as nombre_usuario')
+        ->orderBy('nombre')
+        ->paginate(10);
         return view('listado_listas', compact('listas'));
     }
 
@@ -35,7 +39,6 @@ class ListasController extends Controller
         $lista->nombre = $request->nombre;
         $lista->descripcion = $request->descripcion;
         $lista->id_usuario = Auth::user()->id;
-        $lista->nombre_usuario = Auth::user()->nombre;
         $lista->save();
     }
 
@@ -77,14 +80,15 @@ class ListasController extends Controller
     }
 
     public function cargarLista(Request $request, $idLista) {
-        $usuario = Auth::user();
         if ($idLista != 0) {
             $lista = Lista::find($idLista);
+            $usuario = User::find($lista->id_usuario);
             $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $idLista)->paginate(10);
             return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
         } else {
             try {
                 $lista = Lista::where('nombre', '=', $request->lista)->first();
+                $usuario = User::find($lista->id_usuario);
                 $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $lista->id)->paginate(10);
             return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
             } catch (\Exception $e) {

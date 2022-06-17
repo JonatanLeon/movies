@@ -85,13 +85,17 @@
                             href="{{ route('ir.usuario.favoritas', $usuario->id) }}">Favoritas</a></li>
                 </ul>
                 @if ($calenPeliculas->count() != 0)
+                <?php $mesUsado = null;?>
                     @foreach ($meses as $mes)
+                        @if(date('F Y', strtotime($mes->fecha)) != $mesUsado)
                         <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
                             <h2 style="margin-top: 20px;width: 400px;color: var(--bs-pink);">
-                                {{ date('F Y', strtotime($mes->mes)) }}</h2>
+                                {{ date('F Y', strtotime($mes->fecha)) }}</h2>
                         </div>
+                        <?php $mesUsado = date('F Y', strtotime($mes->fecha))?>
+                        @endif
                         @foreach ($calenPeliculas as $calen)
-                            @if ($calen->mes == $mes->mes)
+                            @if ($calen->fecha == $mes->fecha)
                                 @foreach ($peliculas as $pelicula)
                                     @if ($pelicula->id == $calen->id_pelicula && $calen->mostrado != true)
                                         <?php $calen->mostrado = true; ?>

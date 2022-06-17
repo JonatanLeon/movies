@@ -41,10 +41,10 @@
             <div style="margin-top: 15px;">
                 @auth
                     <a href="{{ route('ir.usuario.criticas', $lista->id_usuario) }}">
-                        <h5 id="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
+                        <h5 id="propietario" class="text-muted mb-2">De: {{ $usuario->nombre }}</h5>
                     </a>
                 @else
-                    <h5 id="propietario" class="text-muted mb-2">De: {{ $lista->nombre_usuario }}</h5>
+                    <h5 id="propietario" class="text-muted mb-2">De: {{ $usuario->nombre }}</h5>
                 @endauth <p style="font-size: 20px;">{{ $lista->descripcion }}</p>
             </div>
             @auth

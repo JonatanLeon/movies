@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Critica;
 use App\Models\Pelicula;
+use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 /**
  * Controlador que gobierna las acciones del usuario
@@ -21,8 +22,6 @@ class CriticasController extends Controller
         $critica->puntuacion = $request->puntuacion;
         $critica->id_pelicula = $id;
         $critica->id_usuario = Auth::user()->id;
-        $critica->nombre_usuario = Auth::user()->nombre;
-        $critica->nombre_pelicula = $pelicula->titulo;
         $critica->fecha = date('Y-m-d H:i:s');
         if (Critica::where('id_pelicula', '=', $critica->id_pelicula)->where('id_usuario', '=', $critica->id_usuario)->first()) {
             Alert::Error('Error', 'Ya existe una reseña tuya de esta película');
@@ -53,7 +52,13 @@ class CriticasController extends Controller
     }
 
     public function listarTodas() {
-        $criticas = Critica::orderBy('fecha', 'desc')->paginate(10);
+        $criticas = Critica::join('peliculas', 'peliculas.id', '=', 'criticas.id_pelicula')
+        ->join('usuarios', 'usuarios.id', '=', 'criticas.id_usuario')
+        ->select('criticas.id','criticas.id_usuario',
+        'criticas.titulo', 'criticas.texto','criticas.puntuacion', 'criticas.fecha', 'peliculas.titulo as nombre_pelicula',
+        'usuarios.nombre as nombre_usuario')
+        ->orderBy('fecha')
+        ->paginate(10);
         return view('listado_criticas', compact('criticas'));
     }
 
@@ -80,14 +85,15 @@ class CriticasController extends Controller
     }
 
     public function cargarCritica(Request $request, $idCritica) {
-        $usuario = Auth::user();
         if ($idCritica != 0) {
             $critica = Critica::find($idCritica);
+            $usuario = User::find($critica->id_usuario);
             $peliculaRecogida = Pelicula::find($critica->id_pelicula);
             return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
         } else {
             try {
                 $critica = Critica::where('titulo', '=', $request->critica)->first();
+                $usuario = User::find($critica->id_usuario);
                 $peliculaRecogida = Pelicula::find($critica->id_pelicula);
                 return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
             } catch (\Exception $e) {
