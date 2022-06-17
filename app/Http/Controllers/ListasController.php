@@ -76,6 +76,24 @@ class ListasController extends Controller
         }
     }
 
+    public function cargarLista(Request $request, $idLista) {
+        $usuario = Auth::user();
+        if ($idLista != 0) {
+            $lista = Lista::find($idLista);
+            $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $idLista)->paginate(10);
+            return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
+        } else {
+            try {
+                $lista = Lista::where('nombre', '=', $request->lista)->first();
+                $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $lista->id)->paginate(10);
+            return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
+            } catch (\Exception $e) {
+                Alert::error('Error', 'No se ha encontrado la lista especificada');
+                return redirect('/listas');
+            }
+        }
+    }
+
     public function quitarDeLista(Request $request, $idPelicula) {
         if ($idPelicula == 0) {
             $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
@@ -91,10 +109,6 @@ class ListasController extends Controller
             Alert::error('Error', 'No existe esa película en esta lista');
             return redirect('/perfil/paginalista/'.$request->idLista);
         }
-    }
-
-    public function quitarConCard($idPelicula) {
-        ListaPelicula::where('id_pelicula', '=', $idPelicula)->where('id_lista', '=', $request->idLista)->forceDelete();
     }
 
     public function modificarLista(Request $request, $idLista) {

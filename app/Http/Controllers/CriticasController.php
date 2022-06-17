@@ -78,4 +78,54 @@ class CriticasController extends Controller
             return redirect('/criticas');
         }
     }
+
+    public function cargarCritica(Request $request, $idCritica) {
+        $usuario = Auth::user();
+        if ($idCritica != 0) {
+            $critica = Critica::find($idCritica);
+            $peliculaRecogida = Pelicula::find($critica->id_pelicula);
+            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
+        } else {
+            try {
+                $critica = Critica::where('titulo', '=', $request->critica)->first();
+                $peliculaRecogida = Pelicula::find($critica->id_pelicula);
+                return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
+            } catch (\Exception $e) {
+                Alert::error('Error', 'No se ha encontrado la reseña especificada');
+                return redirect('/criticas');
+            }
+        }
+    }
+
+    public function modificarCritica(Request $request, $idCritica) {
+        try {
+            $usuario = Auth::user();
+            $critica = Critica::find($idCritica);
+            $peliculaRecogida = Pelicula::find($critica->id_pelicula);
+            $critica->titulo = $request->titulo;
+            $critica->texto = $request->texto;
+            $critica->puntuacion = $request->puntuacion;
+            $critica->save();
+            Alert::success('Hecho', 'Reseña modificada');
+            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
+        } catch (\Exception $e) {
+            Alert::error('Error', 'No se ha podido modificar la reseña');
+            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
+        }
+    }
+
+    public function borrarCritica($idCritica) {
+        try {
+            $critica = Critica::find($idCritica);
+            $idPelicula = $critica->id_pelicula;
+            $idUsuario = $critica->id_usuario;
+            $critica->delete();
+            $controller = new CriticasController;
+            $controller->recalcularNota($idPelicula);
+            Alert::success('Hecho', 'Reseña borrada');
+        } catch (\Exception $e) {
+            Alert::error('Error', 'No se ha podido borrar la reseña');
+        }
+        return redirect('/perfil/criticas/'.$idUsuario);
+    }
 }

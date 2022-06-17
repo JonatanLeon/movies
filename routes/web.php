@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CriticasController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ListasController;
+use App\Http\Controllers\FavController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -40,14 +41,14 @@ Route::get('/perfil/calendario/{id}', [PerfilController::class, 'mostrarCalendar
 
 Route::get('/perfil/favoritas/{id}', [PerfilController::class, 'mostrarFavoritas'])->middleware('auth.user')->name('ir.usuario.favoritas');
 
-Route::get('/perfil/borrarcritica/{id}', [PerfilController::class, 'borrarCritica'])->middleware('auth.user')->name('borrar.critica');
+Route::get('/perfil/borrarcritica/{id}', [CriticasController::class, 'borrarCritica'])->middleware('auth.user')->name('borrar.critica');
 
-Route::post('/perfil/modcritica/{id}', [PerfilController::class, 'modificarCritica'])->middleware('auth.user')->name('modificar.critica');
+Route::post('/perfil/modcritica/{id}', [CriticasController::class, 'modificarCritica'])->middleware('auth.user')->name('modificar.critica');
 
 // Si fallan estas rutas puede ser porque falta la barra del final
-Route::get('/perfil/paginacritica/{id}', [PerfilController::class, 'cargarCritica'])->name('ir.critica');
+Route::get('/perfil/paginacritica/{id}', [CriticasController::class, 'cargarCritica'])->name('ir.critica');
 
-Route::get('/perfil/paginalista/{id}', [PerfilController::class, 'cargarLista'])->name('ir.lista');
+Route::get('/perfil/paginalista/{id}', [ListasController::class, 'cargarLista'])->name('ir.lista');
 
 Route::post('/perfil/listas/crearlista/', [ListasController::class, 'crearListaMandarPerfilLista'])->middleware('auth.user');
 
@@ -59,15 +60,15 @@ Route::post('/perfil/insertarpelicula/', [AdminController::class, 'insertarPelic
 
 Route::get('/perfil/desactivar/{id}', [PerfilController::class, 'desactivarCuenta'])->middleware('auth.user')->name('desactivar.cuenta');
 
-Route::post('/perfil/marcarfav/{id}', [PerfilController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.favorita.perfil');
+Route::post('/perfil/marcarfav/{id}', [FavController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.favorita.perfil');
 
-Route::post('/perfil/quitarfav/{id}', [PerfilController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.favorita.perfil');
+Route::post('/perfil/quitarfav/{id}', [FavController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.favorita.perfil');
 
-Route::get('/busqueda/quitarfav/{id}', [PerfilController::class, 'buscarEnFavs'])->middleware('auth.user')->name('buscar.quitar.fav');
+Route::get('/busqueda/quitarfav/{id}', [FavController::class, 'buscarEnFavs'])->middleware('auth.user')->name('buscar.quitar.fav');
 
-Route::post('/perfil/quitarcalendario/', [PerfilController::class, 'quitarDeCalendario'])->middleware('auth.user')->name('quitar.calendario');
+Route::post('/perfil/quitarcalendario/', [CalendarController::class, 'quitarDeCalendario'])->middleware('auth.user')->name('quitar.calendario');
 
-Route::get('/busqueda/quitarcalendario/{id}', [PerfilController::class, 'buscarEnCalendario'])->middleware('auth.user')->name('buscar.quitar.calendario');
+Route::get('/busqueda/quitarcalendario/{id}', [CalendarController::class, 'buscarEnCalendario'])->middleware('auth.user')->name('buscar.quitar.calendario');
 
 // Para logear, cerrar sesión y registrar
 Route::post('/intentologin', [LoginController::class, 'login']);
@@ -109,9 +110,9 @@ Route::post('/pelicula/nombre/', [MovieController::class, 'buscarPorNombre'])->m
 
 Route::get('/pelicula', [MovieController::class, 'peliculaAleatoria'])->name('pelicula_random');
 
-Route::get('/pelicula/fav/{id}', [PerfilController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.fav');
+Route::get('/pelicula/fav/{id}', [FavController::class, 'marcarFavorita'])->middleware('auth.user')->name('marcar.fav');
 
-Route::get('/pelicula/quitarfav/{id}', [PerfilController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.fav');
+Route::get('/pelicula/quitarfav/{id}', [FavController::class, 'quitarFavorita'])->middleware('auth.user')->name('quitar.fav');
 
 Route::get('/pelicula/borrar/{id}', [AdminController::class, 'borrarPelicula'])->middleware('auth.admin')->name('borrar.peli');
 
@@ -122,8 +123,6 @@ Route::post('/pelicula/{id}/crearlista', [ListasController::class, 'crearListaMa
 Route::post('/pelicula/guardarlista/', [ListasController::class, 'guardarEnLista'])->middleware('auth.user');
 
 Route::post('/pelicula/borrardelista/{id}', [ListasController::class, 'quitarDeLista'])->middleware('auth.user');
-
-Route::get('/pelicula/borrardelista/card/{id}', [ListasController::class, 'quitarConCard'])->middleware('auth.user');
 
 Route::post('/pelicula/editarlista/{id}', [ListasController::class, 'modificarLista'])->middleware('auth.user')->name('modificar.lista');
 
