@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\CriticasController;
 use App\Models\Critica;
 use App\Models\User;
 use App\Models\Pelicula;
 use App\Models\Lista;
-use App\Models\ListaPelicula;
 use App\Models\Calendario;
 use App\Models\CalendarioPelicula;
 use App\Models\Sugerencia;
-use App\Models\Favorita;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class PerfilController extends Controller
@@ -41,7 +37,14 @@ class PerfilController extends Controller
     public function mostrarCalendario($idUsuario) {
         $usuario = User::find($idUsuario);
         $calendario = Calendario::where('id_usuario', '=', $idUsuario)->first();
-        $meses = CalendarioPelicula::select('mes')->where('id_calendario', '=', $calendario->id)->distinct()->orderBy('mes', 'desc')->paginate(15);
+        $meses = CalendarioPelicula::select('fecha')->where('id_calendario', '=', $calendario->id)->orderBy('fecha', 'desc')->paginate(15);
+        foreach ($meses as $mes) {
+            $mes = date("F", strtotime($mes));
+            echo $mes;
+        }
+        foreach ($meses as $mes) {
+            echo $mes;
+        }
         $calenPeliculas = CalendarioPelicula::where('id_calendario', '=', $calendario->id)->orderby('fecha', 'desc')->get();
         $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
         ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
