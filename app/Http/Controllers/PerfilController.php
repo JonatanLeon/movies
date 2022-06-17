@@ -142,7 +142,6 @@ class PerfilController extends Controller
         $sugerencia = new Sugerencia();
         $sugerencia->texto = $request->pelicula;
         $sugerencia->id_usuario = $idUsuario;
-        $sugerencia->nombre_usuario = Auth::user()->nombre;
         $sugerencia->save();
         Alert::success('Sugerencia enviada', 'Un administrador valorará tu sugerencia');
         return redirect()->back();

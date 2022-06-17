@@ -31,7 +31,11 @@ class AdminController extends Controller
     }
 
     public function listarSugerencias() {
-        $sugerencias = Sugerencia::orderBy('id')->paginate(10);
+        $sugerencias = Sugerencia::join('usuarios', 'usuarios.id', '=', 'sugerencias.id_usuario')
+        ->select('sugerencias.id','sugerencias.id_usuario',
+        'sugerencias.texto', 'usuarios.nombre as nombre_usuario')
+        ->orderBy('id')
+        ->paginate(10);
         return view('listado_sugerencias', compact('sugerencias'));
     }
 
