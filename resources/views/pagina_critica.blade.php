@@ -61,7 +61,7 @@
                                 <div class="col">
                                     <div>
                                         <h4>{{ $critica->titulo }}</h4>
-                                        <h6>Nota: {{ $critica->puntuacion }}/5</h6>
+                                        <h6>Nota: {{ $critica->puntuacion }}/5 <i class="bi bi-star-fill" style="color: var(--bs-yellow);"></i></h6>
                                         @auth
                                             <a href="{{ route('ir.usuario.criticas', $critica->id_usuario) }}">
                                                 <h6 class="text-muted mb-2">Por: {{ $critica->nombre_usuario }}</h6>

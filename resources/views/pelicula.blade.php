@@ -52,9 +52,9 @@
                         style="padding: 53px;padding-left: 23px;">
                     <div class="container-fluid" style="margin-bottom: 14px;">
                         <div class="card" style="width: 245px;border-color: var(--bs-pink);">
-                            <div class="card-body border rounded" style="border-color: var(--bs-pink);">
-                                <h1 class="card-title" style="color: var(--bs-pink);">Nota:
-                                    {{ $peliculaRecogida->nota_media }}/5</h1>
+                            <div class="border rounded" style="border-color: var(--bs-pink);text-align: center;">
+                                <h1 class="card-title" style="color: var(--bs-pink);">
+                                    {{ $peliculaRecogida->nota_media }}/5 <i class="bi bi-star-fill" style="color: var(--bs-yellow);"></i></h1>
                             </div>
                         </div>
                     </div>
