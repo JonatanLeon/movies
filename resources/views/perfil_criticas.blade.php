@@ -31,19 +31,21 @@
             <div class="col-md-8 col-xl-3 text-center mx-auto">
                 <h2>Perfil de {{ $usuario->nombre }}</h2>
                 @auth
-                    @if (auth()->user()->id == $usuario->id)
+                    @if (auth()->user()->id == $usuario->id || auth()->user()->role = "admin")
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a href="#" class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                                 data-bs-toggle="modal" data-bs-target="#editarUsuario">Editar
                                 perfil</a>
                         </div>
+                        @if(auth()->user()->role != "admin")
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a href="#" class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                                 data-bs-toggle="modal" data-bs-target="#modalSugerencia">Enviar
                                 sugerencia</a>
                         </div>
+                        @endif
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a class="btn btn-primary" type="button"
                                 style="width: 245px;font-size: 20px;background: var(--bs-white);border-color: var(--bs-red);color: var(--bs-red);"
