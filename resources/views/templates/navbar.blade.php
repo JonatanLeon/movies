@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 <nav class="navbar navbar-light navbar-expand-md" style="color: var(--bs-indigo);background: var(--bs-pink);">
     <div class="container-fluid"><a class="navbar-brand" href="/"
-            style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MOVIES</a>
+            style="color: var(--bs-body-bg);font-weight: bold;font-style: italic;">MovieShare</a>
         <button data-bs-toggle="collapse" data-bs-target="#navcol-1" class="navbar-toggler"><span
                 class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-1">
