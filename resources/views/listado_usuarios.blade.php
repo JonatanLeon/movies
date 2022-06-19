@@ -35,7 +35,7 @@
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <div class="row form-group">
                     <div style="margin-bottom: 20px;">
-                        <form action="{{ route('ir.usuario.criticas', 0) }}" method="get">
+                        <form action='/busqueda/usuarios/'>
                             {{ csrf_field() }}
                             <input id="auto" class="form-control" type="search" name="usuario"
                                 placeholder="Buscar usuarios..." style="height: 43px;border-color: var(--bs-pink);">
@@ -79,21 +79,5 @@
         {!! $usuarios->appends($_GET)->links() !!}
     </div>
 </body>
-<script type="text/javascript">
-    $("#auto").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "{{ route('buscar.usuario') }}",
-                dataType: 'json',
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    response(data)
-                }
-            });
-        }
-    });
-</script>
 
 </html>

@@ -54,7 +54,8 @@
                         <div class="card" style="width: 245px;border-color: var(--bs-pink);">
                             <div class="border rounded" style="border-color: var(--bs-pink);text-align: center;">
                                 <h1 class="card-title" style="color: var(--bs-pink);">
-                                    {{ $peliculaRecogida->nota_media }}/5 <i class="bi bi-star-fill" style="color: var(--bs-yellow);"></i></h1>
+                                    {{ $peliculaRecogida->nota_media }}/5 <i class="bi bi-star-fill"
+                                        style="color: var(--bs-yellow);"></i></h1>
                             </div>
                         </div>
                     </div>
@@ -109,14 +110,22 @@
                     @else
                         <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
                                 type="button"
+                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Marcar
+                                como favorita <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg></a></div>
+                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login"
+                                class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Escribir
                                 Reseña</a></div>
-                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
-                                type="button"
+                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login"
+                                class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Guardar
                                 en lista</a></div>
-                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login" class="btn btn-primary"
-                                type="button"
+                        <div class="container-fluid" style="margin-bottom: 14px;"><a href="/login"
+                                class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);">Añadir
                                 a calendario</a></div>
                     @endauth
@@ -141,7 +150,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-muted mb-2">Duración</h4>
-                                    <p>{{ $peliculaRecogida->duracion }} minutos</p>
+                                    <p>{{ $peliculaRecogida->duracion }} min.</p>
                                 </div>
                                 <div>
                                     <h4 class="text-muted mb-2">País</h4>
@@ -184,7 +193,9 @@
                                                 <div class="col">
                                                     <div>
                                                         <h4>{{ $critica->titulo }}</h4>
-                                                        <h6>Nota: {{ $critica->puntuacion }}/5 <i class="bi bi-star-fill" style="color: var(--bs-yellow);"></i></h6>
+                                                        <h6>Nota: {{ $critica->puntuacion }}/5 <i
+                                                                class="bi bi-star-fill"
+                                                                style="color: var(--bs-yellow);"></i></h6>
                                                         <h6 class="text-muted mb-2">Por:
                                                             {{ $critica->nombre_usuario }}
                                                         </h6>
@@ -211,7 +222,8 @@
     </section>
 
     <!-- Escribir reseña -->
-    <div class="modal fade" id="criticaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="criticaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -229,7 +241,8 @@
                         </div>
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Texto de la reseña" rows="6" name="texto" required></textarea>
+                                <textarea class="form-control" type="text" placeholder="Texto de la reseña" rows="6" name="texto"
+                                    required></textarea>
                             </div>
                         </div>
                         <div class="row form-group mb-3">
@@ -308,7 +321,8 @@
                         </div>
                         <div class="row form-group mb-3">
                             <div class="col-sm-20 input-column">
-                                <textarea class="form-control" type="text" placeholder="Descripción de la lista" rows="6" name="descripcion" required></textarea>
+                                <textarea class="form-control" type="text" placeholder="Descripción de la lista" rows="6"
+                                    name="descripcion" required></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -336,8 +350,8 @@
                         {{ csrf_field() }}
                         <div class="row form-group">
                             <div class="input-group date" style="margin-bottom: 20px;">
-                                <input type="date" class="form-control" value="{{ $fechaActual }}" name="fecha"
-                                    aria-describedby="button-addon2" required>
+                                <input type="date" class="form-control" value="{{ $fechaActual }}"
+                                    name="fecha" aria-describedby="button-addon2" required>
                             </div>
                         </div>
                         <div class="modal-footer">

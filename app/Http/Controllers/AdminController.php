@@ -19,15 +19,10 @@ class AdminController extends Controller
     }
 
     public function buscarUsuario(Request $request) {
-        $term = $request->get("term");
-        $usuarios = User::where('nombre', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($usuarios as $usuario) {
-            $data[] = [
-                'label' => $usuario->nombre
-            ];
-        }
-        return $data;
+        $usuarios = User::where('nombre', 'like', '%'.$request->usuario.'%')
+        ->orderBy('nombre')
+        ->paginate(10);
+        return view('listado_usuarios', compact('usuarios'));
     }
 
     public function listarSugerencias() {
@@ -40,15 +35,13 @@ class AdminController extends Controller
     }
 
     public function buscarSugerencia(Request $request) {
-        $term = $request->get("term");
-        $sugerencias = Sugerencia::where('texto', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($sugerencias as $sugerencia) {
-            $data[] = [
-                'label' => $sugerencia->texto
-            ];
-        }
-        return $data;
+        $sugerencias = Sugerencia::join('usuarios', 'usuarios.id', '=', 'sugerencias.id_usuario')
+        ->select('sugerencias.id','sugerencias.id_usuario',
+        'sugerencias.texto', 'usuarios.nombre as nombre_usuario')
+        ->where('sugerencias.texto', 'like', '%'.$request->sugerencia.'%')
+        ->orderBy('sugerencias.texto')
+        ->paginate(10);
+        return view('listado_sugerencias', compact('sugerencias'));
     }
 
     public function insertarPelicula(Request $request) {

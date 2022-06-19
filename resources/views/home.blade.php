@@ -50,7 +50,7 @@
     <div class="container py-4 py-xl-5">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
-                <h2>¿Qué puedes hacer con MovieShare?</h2>
+                <h2>¿Qué puedes hacer al iniciar sesión?</h2>
             </div>
         </div>
         <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">

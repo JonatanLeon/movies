@@ -23,15 +23,12 @@ class ListasController extends Controller
     }
 
     public function buscarLista(Request $request) {
-        $term = $request->get("term");
-        $listas = Lista::where('nombre', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($listas as $lista) {
-            $data[] = [
-                'label' => $lista->nombre
-            ];
-        }
-        return $data;
+        $listas = Lista::join('usuarios', 'usuarios.id', '=', 'listas.id_usuario')
+        ->select('listas.id','listas.id_usuario', 'listas.nombre', 'listas.descripcion', 'usuarios.nombre as nombre_usuario')
+        ->where('listas.nombre', 'like', '%'.$request->lista.'%')
+        ->orderBy('nombre')
+        ->paginate(10);
+        return view('listado_listas', compact('listas'));
     }
 
     public function crearLista(Request $request) {

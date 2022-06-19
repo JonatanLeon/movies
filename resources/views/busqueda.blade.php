@@ -44,19 +44,6 @@
             @endif
         </div>
     </div>
-    <div class="row mb-5" style="margin-top: 38px;">
-        <div class="col-md-8 col-xl-6 text-center mx-auto">
-            <div class="row form-group">
-                <div style="margin-bottom: 20px;">
-                    <form action='/pelicula/nombre/' method="post">
-                        {{ csrf_field() }}
-                        <input id="auto" class="form-control" type="search" name="pelicula"
-                            placeholder="Escribe aquí parte del nombre de la película..." style="height: 43px;border-color: var(--bs-pink);">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="d-flex justify-content-center" style="margin-top: 30px;">
         {!! $peliculas->appends($_GET)->links() !!}
     </div>

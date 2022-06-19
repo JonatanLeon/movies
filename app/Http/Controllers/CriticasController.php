@@ -63,15 +63,16 @@ class CriticasController extends Controller
     }
 
     public function buscarCritica(Request $request) {
-        $term = $request->get("term");
-        $criticas = Critica::where('titulo', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($criticas as $critica) {
-            $data[] = [
-                'label' => $critica->titulo
-            ];
-        }
-        return $data;
+        $criticas = Critica::join('peliculas', 'peliculas.id', '=', 'criticas.id_pelicula')
+        ->join('usuarios', 'usuarios.id', '=', 'criticas.id_usuario')
+        ->select('criticas.id','criticas.id_usuario',
+        'criticas.titulo', 'criticas.texto','criticas.puntuacion', 'criticas.fecha', 'peliculas.titulo as nombre_pelicula',
+        'usuarios.nombre as nombre_usuario')
+        ->where('criticas.titulo', 'like', '%'.$request->critica.'%')
+        ->orderBy('criticas.titulo')
+        ->paginate(10);
+
+        return view('listado_criticas', compact('criticas'));
     }
 
     public function mostrarCriticaBuscador(Request $request) {
@@ -112,6 +113,7 @@ class CriticasController extends Controller
             $critica->texto = $request->texto;
             $critica->puntuacion = $request->puntuacion;
             $critica->save();
+            $this->recalcularNota($critica->id_pelicula);
             Alert::success('Hecho', 'Reseña modificada');
             return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
         } catch (\Exception $e) {

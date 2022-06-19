@@ -39,9 +39,9 @@
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <div class="row form-group">
                     <div style="margin-bottom: 20px;">
-                        <form action="{{ route('ir.lista', 0) }}" method="get">
+                        <form action='/busqueda/sugerencias/' method="get">
                             {{ csrf_field() }}
-                            <input id="auto" class="form-control" type="search" name="lista"
+                            <input id="auto" class="form-control" type="search" name="sugerencia"
                                 placeholder="Buscar sugerencias..." style="height: 43px;border-color: var(--bs-pink);">
                         </form>
                     </div>
@@ -199,21 +199,5 @@
     </div>
     </div>
 </body>
-<script type="text/javascript">
-    $("#auto").autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: "{{ route('buscar.sugerencia') }}",
-                dataType: 'json',
-                data: {
-                    term: request.term
-                },
-                success: function(data) {
-                    response(data)
-                }
-            });
-        }
-    });
-</script>
 
 </html>
