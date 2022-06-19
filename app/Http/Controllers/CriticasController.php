@@ -9,11 +9,11 @@ use App\Models\Pelicula;
 use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 /**
- * Controlador que gobierna las acciones del usuario
+ * Controlador que gobierna las acciones relacionadas con las críticas
  */
 class CriticasController extends Controller
 {
-    // Guarda una crítica en la BBDD y mostrarla en la página de la película
+    // Guarda una crítica en la BBDD
     public function publicarCritica(Request $request, $id) {
         $pelicula = Pelicula::find($id);
         $critica = new Critica();
@@ -50,7 +50,7 @@ class CriticasController extends Controller
         }
         $pelicula->save();
     }
-
+    // Muestra todas las críticas ordenadas por fecha en la pestaña de críticas de la navbar
     public function listarTodas() {
         $criticas = Critica::join('peliculas', 'peliculas.id', '=', 'criticas.id_pelicula')
         ->join('usuarios', 'usuarios.id', '=', 'criticas.id_usuario')
@@ -61,7 +61,7 @@ class CriticasController extends Controller
         ->paginate(10);
         return view('listado_criticas', compact('criticas'));
     }
-
+    // Busca una crítica de todas las listadas
     public function buscarCritica(Request $request) {
         $criticas = Critica::join('peliculas', 'peliculas.id', '=', 'criticas.id_pelicula')
         ->join('usuarios', 'usuarios.id', '=', 'criticas.id_usuario')
@@ -74,7 +74,7 @@ class CriticasController extends Controller
 
         return view('listado_criticas', compact('criticas'));
     }
-
+    // Lleva a la crítica seleccionada de todas las listadas
     public function mostrarCriticaBuscador(Request $request) {
         try {
             $critica = Critica::where('titulo', '=', $request->critica)->first();
@@ -84,7 +84,7 @@ class CriticasController extends Controller
             return redirect('/criticas');
         }
     }
-
+    // Carga la página de una crítica específica
     public function cargarCritica(Request $request, $idCritica) {
         if ($idCritica != 0) {
             $critica = Critica::find($idCritica);
@@ -103,7 +103,7 @@ class CriticasController extends Controller
             }
         }
     }
-
+    // Edita una crítica determinada
     public function modificarCritica(Request $request, $idCritica) {
         try {
             $usuario = Auth::user();
@@ -121,7 +121,7 @@ class CriticasController extends Controller
             return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
         }
     }
-
+    // Borra una crítica
     public function borrarCritica($idCritica) {
         try {
             $critica = Critica::find($idCritica);

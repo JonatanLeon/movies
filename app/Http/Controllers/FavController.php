@@ -8,8 +8,13 @@ use App\Models\Favorita;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
+/**
+ * Controlador que contiene los métodos relacionados con la funcionalidad
+ * de marcar películas como favoritas
+ */
 class FavController extends Controller
 {
+    // Buscador con autocompeltar
     public function buscarEnFavs(Request $request, $idUsuario) {
         $term = $request->get("term");
         $peliculas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')
@@ -22,7 +27,7 @@ class FavController extends Controller
         }
         return $data;
     }
-
+    // Permite marcar una película como favorita
     public function marcarFavorita(Request $request, $idPelicula) {
         if ($idPelicula == 0) {
             try {
@@ -40,7 +45,7 @@ class FavController extends Controller
         Alert::success('Hecho', 'Película guardada en Favoritas');
         return redirect()->back();
     }
-
+    // Permite quitar una película de favoritas
     public function quitarFavorita(Request $request, $idPelicula) {
         if ($idPelicula == 0) {
             try {

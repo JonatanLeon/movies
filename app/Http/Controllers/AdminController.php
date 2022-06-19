@@ -11,20 +11,25 @@ use App\Models\Sugerencia;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Database\QueryException;
 
+/**
+ * Controlador para todas las funciones del administrador
+ */
 class AdminController extends Controller
 {
+    // Lista los usuarios al pulsar el botón correspondiente de la navbar
+    // Los usuarios normales también tienen acceso a esta pestaña
     public function listarUsuarios() {
         $usuarios = User::orderBy('nombre')->paginate(10);
         return view('listado_usuarios', compact('usuarios'));
     }
-
+    // Busca un usuario en el listado de usuarios de la navbar
     public function buscarUsuario(Request $request) {
         $usuarios = User::where('nombre', 'like', '%'.$request->usuario.'%')
         ->orderBy('nombre')
         ->paginate(10);
         return view('listado_usuarios', compact('usuarios'));
     }
-
+    // Muestra todas las sugerencias al pulsar el botón correspondiente de la navbar
     public function listarSugerencias() {
         $sugerencias = Sugerencia::join('usuarios', 'usuarios.id', '=', 'sugerencias.id_usuario')
         ->select('sugerencias.id','sugerencias.id_usuario',
@@ -33,7 +38,7 @@ class AdminController extends Controller
         ->paginate(10);
         return view('listado_sugerencias', compact('sugerencias'));
     }
-
+    // Busca una sugerencia concreta
     public function buscarSugerencia(Request $request) {
         $sugerencias = Sugerencia::join('usuarios', 'usuarios.id', '=', 'sugerencias.id_usuario')
         ->select('sugerencias.id','sugerencias.id_usuario',
@@ -43,7 +48,7 @@ class AdminController extends Controller
         ->paginate(10);
         return view('listado_sugerencias', compact('sugerencias'));
     }
-
+    // Añade o edita una película en la base de datos, según desde donde se llame
     public function insertarPelicula(Request $request) {
         try {
             if ($request->get("editar")) {
@@ -82,13 +87,13 @@ class AdminController extends Controller
             return redirect('/pelicula/'.$pelicula->id);
         }
     }
-
+    // Borra una sugerencia determinada
     public function borrarSugerencia($idSugerencia) {
         Sugerencia::find($idSugerencia)->delete();
         Alert::success('Hecho', 'Sugerencia eliminada');
         return redirect()->back();
     }
-
+    // Borra una película determinada
     public function borrarPelicula($idPelicula) {
         Pelicula::find($idPelicula)->delete();
         Alert::success('Hecho', 'Película eliminada');

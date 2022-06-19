@@ -16,9 +16,13 @@ use App\Models\CalendarioPelicula;
 use App\Models\Sugerencia;
 use App\Models\Favorita;
 use RealRashid\SweetAlert\Facades\Alert;
-
+/**
+ * Controlador que lleva a cabo todos los métodos relacionados con
+ * la oágina de perfil del usuario
+ */
 class PerfilController extends Controller
 {
+    // Muestra todas las críticas del usuario en la pestaña críticas
     public function mostrarCriticas(Request $request, $idUsuario) {
         if ($idUsuario == Auth::user()->id) {
             $usuario = Auth::user();
@@ -34,14 +38,13 @@ class PerfilController extends Controller
         ->paginate(10);
         return view('perfil_criticas', compact('usuario', 'criticas'));
     }
-
-
+    // Muestra todas las listas del usuario en la pestaña listas
     public function mostrarListas($idUsuario) {
         $usuario = User::find($idUsuario);
         $listas = Lista::where('id_usuario', '=', $usuario->id)->paginate(10);
         return view('perfil_listas', compact('usuario', 'listas'));
     }
-
+    // Muestra todas las películas del diario del usuario en la pestaña diario
     public function mostrarCalendario($idUsuario) {
         $usuario = User::find($idUsuario);
         $calendario = Calendario::where('id_usuario', '=', $idUsuario)->first();
@@ -51,77 +54,13 @@ class PerfilController extends Controller
         ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->get();
         return view('perfil_calendario', compact('usuario', 'peliculas', 'calenPeliculas', 'meses'));
     }
-
-    public function borrarCritica($idCritica) {
-        try {
-            $critica = Critica::find($idCritica);
-            $idPelicula = $critica->id_pelicula;
-            $idUsuario = $critica->id_usuario;
-            $critica->delete();
-            $controller = new CriticasController;
-            $controller->recalcularNota($idPelicula);
-            Alert::success('Hecho', 'Reseña borrada');
-        } catch (\Exception $e) {
-            Alert::error('Error', 'No se ha podido borrar la reseña');
-        }
-        return redirect('/perfil/criticas/'.$idUsuario);
+    // Muestra las películas favoritas del usuario en la pestaña favoritas
+    public function mostrarFavoritas($idUsuario) {
+        $usuario = User::find($idUsuario);
+        $peliculasFavoritas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')->where('favoritas.id_usuario', '=', $idUsuario)->paginate(10);
+        return view('perfil_favoritas', compact('usuario', 'peliculasFavoritas'));
     }
-
-    // TO-DO que solo la pueda modificar el usuario al que pertenece
-    // if Auth::user->id == $critica->id_usuario o algo así
-    public function modificarCritica(Request $request, $idCritica) {
-        try {
-            $usuario = Auth::user();
-            $critica = Critica::find($idCritica);
-            $peliculaRecogida = Pelicula::find($critica->id_pelicula);
-            $critica->titulo = $request->titulo;
-            $critica->texto = $request->texto;
-            $critica->puntuacion = $request->puntuacion;
-            $critica->save();
-            Alert::success('Hecho', 'Reseña modificada');
-            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
-        } catch (\Exception $e) {
-            Alert::error('Error', 'No se ha podido modificar la reseña');
-            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
-        }
-    }
-
-    public function cargarCritica(Request $request, $idCritica) {
-        $usuario = Auth::user();
-        if ($idCritica != 0) {
-            $critica = Critica::find($idCritica);
-            $peliculaRecogida = Pelicula::find($critica->id_pelicula);
-            return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
-        } else {
-            try {
-                $critica = Critica::where('titulo', '=', $request->critica)->first();
-                $peliculaRecogida = Pelicula::find($critica->id_pelicula);
-                return view('pagina_critica', compact('critica', 'usuario', 'peliculaRecogida'));
-            } catch (\Exception $e) {
-                Alert::error('Error', 'No se ha encontrado la reseña especificada');
-                return redirect('/criticas');
-            }
-        }
-    }
-
-    public function cargarLista(Request $request, $idLista) {
-        $usuario = Auth::user();
-        if ($idLista != 0) {
-            $lista = Lista::find($idLista);
-            $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $idLista)->paginate(10);
-            return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
-        } else {
-            try {
-                $lista = Lista::where('nombre', '=', $request->lista)->first();
-                $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')->where('lista_peliculas.id_lista', '=', $lista->id)->paginate(10);
-            return view('pagina_lista', compact('usuario', 'lista', 'peliculas'));
-            } catch (\Exception $e) {
-                Alert::error('Error', 'No se ha encontrado la lista especificada');
-                return redirect('/listas');
-            }
-        }
-    }
-
+    // Borra por completo al usuario de la base de datos y a todos los registros relacionados en otras tablas
     public function desactivarCuenta($idUsuario) {
         $usuario = User::find($idUsuario);
         if (Auth::user()->id == $idUsuario) {
@@ -137,7 +76,7 @@ class PerfilController extends Controller
             return redirect('/usuarios');
         }
     }
-
+    // Permite al usuario enviar la sugerencia de una película a los administradores
     public function enviarSugerencia(Request $request, $idUsuario) {
         $sugerencia = new Sugerencia();
         $sugerencia->texto = $request->pelicula;
@@ -146,7 +85,7 @@ class PerfilController extends Controller
         Alert::success('Sugerencia enviada', 'Un administrador valorará tu sugerencia');
         return redirect()->back();
     }
-
+    // Permite al usuario editar su propio perfil
     public function editarPerfil(Request $request, $idUsuario) {
         $nombre = $request->nombre;
         $contrasenia = $request->password;
@@ -180,83 +119,5 @@ class PerfilController extends Controller
             Alert::success('Hecho', 'Usuario editado correctamente');
             return redirect()->back();
         }
-    }
-
-    public function mostrarFavoritas($idUsuario) {
-        $usuario = User::find($idUsuario);
-        $peliculasFavoritas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')->where('favoritas.id_usuario', '=', $idUsuario)->paginate(10);
-        return view('perfil_favoritas', compact('usuario', 'peliculasFavoritas'));
-    }
-
-    public function marcarFavorita(Request $request, $idPelicula) {
-        if ($idPelicula == 0) {
-            try {
-                $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
-                $idPelicula = $pelicula->id;
-            } catch(\Exception $e) {
-                Alert::error('Error', 'El nombre de esa película no existe');
-                return redirect()->back();
-            }
-        }
-        $fav = new Favorita();
-        $fav->id_usuario = Auth::user()->id;
-        $fav->id_pelicula = $idPelicula;
-        $fav->save();
-        Alert::success('Hecho', 'Película guardada en Favoritas');
-        return redirect()->back();
-    }
-
-    public function buscarEnFavs(Request $request, $idUsuario) {
-        $term = $request->get("term");
-        $peliculas = Pelicula::join('favoritas', 'favoritas.id_pelicula', '=', 'peliculas.id')
-        ->where('favoritas.id_usuario', '=', $idUsuario)->where('peliculas.titulo', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($peliculas as $pelicula) {
-            $data[] = [
-                'label' => $pelicula->titulo
-            ];
-        }
-        return $data;
-    }
-
-    public function buscarEnCalendario(Request $request, $idUsuario) {
-        $calendario = Calendario::where('id_usuario', '=', $idUsuario)->first();
-        $term = $request->get("term");
-        $peliculas = Pelicula::join('calendario_peliculas', 'calendario_peliculas.id_pelicula', '=', 'peliculas.id')
-        ->where('calendario_peliculas.id_calendario', '=', $calendario->id)->where('peliculas.titulo', 'like', '%'.$term.'%')->get();
-        $data = [];
-        foreach($peliculas as $pelicula) {
-            $data[] = [
-                'label' => $pelicula->titulo
-            ];
-        }
-        return $data;
-    }
-
-    public function quitarDeCalendario(Request $request) {
-        $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
-        $calendario = Calendario::where('id_usuario', '=', Auth::user()->id)->first();
-        if(CalendarioPelicula::where('id_calendario', '=', $calendario->id)->where('id_pelicula', '=', $pelicula->id)->delete()) {
-            Alert::success('Hecho', 'Película quitada de tu diario');
-        } else {
-            Alert::error('Error', 'Esa película no está en tu diario');
-        }
-        return redirect()->back();
-    }
-
-    public function quitarFavorita(Request $request, $idPelicula) {
-        if ($idPelicula == 0) {
-            try {
-                $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
-                $idPelicula = $pelicula->id;
-            } catch(\Exception $e) {
-                Alert::error('Error', 'El nombre de esa película no existe');
-                return redirect()->back();
-            }
-        }
-        $fav = Favorita::where('id_usuario', '=', Auth::user()->id)->where('id_pelicula', '=', $idPelicula)->delete();
-        Alert::success('Hecho', 'Película quitada de Favoritas');
-        return redirect()->back();
-
     }
 }

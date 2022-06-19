@@ -35,7 +35,7 @@ class MovieController extends Controller
             return $data;
         }
     }
-
+    // Método que permite buscar filtrando por diferentes criterios
     public function busquedaAvanzada(Request $request) {
         $radio = $request->gridRadios;
         switch($radio) {
@@ -54,18 +54,18 @@ class MovieController extends Controller
         }
         return view('busqueda', compact('peliculas', 'radio'));
     }
-
+    // Lista todas las películas en el botón de la barra superior
+    public function listarTodas() {
+        $radio = "";
+        $peliculas = Pelicula::orderBy('estreno', 'desc')->paginate(10);
+        return view('busqueda', compact('peliculas', 'radio'));
+    }
+    // Método que permite buscar cualquier película por su nombre en la pestaña "Películas"
+    // de la navbar
     public function buscarPorNombre(Request $request) {
         $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
         return redirect('/pelicula/'.$pelicula->id);
     }
-    // Lista todas las películas en el botón de la barra superior
-    public function listarTodas() {
-        $radio = "";
-        $peliculas = Pelicula::orderBy('titulo')->paginate(10);
-        return view('busqueda', compact('peliculas', 'radio'));
-    }
-
     // Muestra la página de la película seleccionada
     public function verPelicula($id) {
         $favorita = new Favorita();

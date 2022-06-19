@@ -27,7 +27,7 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)) {
             // Crea una sesión para ese usuario
             request()->session()->regenerate();
-
+            Alert::success('Hecho', 'Has iniciado sesión');
             return redirect('/home');
         }
 
@@ -99,6 +99,7 @@ class LoginController extends Controller
             $usuario->password = $pass_fuerte;
             $usuario->role = "user";
             $usuario->save();
+            // Se crea un calendario asociado a este usuario
             $calendario = new Calendario();
             $calendario->id_usuario = $usuario->id;
             $calendario->save();

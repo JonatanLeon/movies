@@ -37,7 +37,7 @@
                     </div>
                     <div class="row form-group mb-3">
                         <div class="col-sm-20 input-column">
-                            <div class="col-sm-20 input-column"><input class="form-control" type="text"
+                            <div class="col-sm-20 input-column"><input class="form-control" type="number"
                                     placeholder="Duración" name="duracion" value="{{ $peliculaRecogida->duracion }}"
                                     required></div>
                         </div>

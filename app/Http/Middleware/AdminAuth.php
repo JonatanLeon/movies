@@ -14,6 +14,8 @@ class AdminAuth
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
+
+    // Middlewhare exclusivo para admins, si no se es admin devuelve a home
     public function handle(Request $request, Closure $next)
     {
         if(auth()->check() && auth()->user()->role == "admin") {

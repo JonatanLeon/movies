@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Representa una película añadida a un calendario concreto
+ */
 class CalendarioPelicula extends Model
 {
     use HasFactory;

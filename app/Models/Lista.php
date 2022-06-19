@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Representa la tabla listas en la BBDD
+ */
 class Lista extends Model
 {
     use HasFactory;

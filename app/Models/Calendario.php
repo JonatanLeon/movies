@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Representa la tabla calendarios en la BBDD
+ */
 class Calendario extends Model
 {
     use HasFactory;

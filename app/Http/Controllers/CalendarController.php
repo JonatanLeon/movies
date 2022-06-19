@@ -9,8 +9,12 @@ use App\Models\Calendario;
 use App\Models\Pelicula;
 use RealRashid\SweetAlert\Facades\Alert;
 
+/**
+ * Controlador con todas las funciones relacionadas con el diario o calendario
+ */
 class CalendarController extends Controller
 {
+    // Añade una película y su fecha asociada al calendario
     public function insertarEnCalendario(Request $request, $idPelicula) {
         $fecha = str_replace('/', '-', $request->fecha);
         $nuevaFecha = date("Y-m-d", strtotime($fecha));
@@ -20,10 +24,10 @@ class CalendarController extends Controller
         $calendarioPelicula->id_pelicula = $idPelicula;
         $calendarioPelicula->fecha = $nuevaFecha;
         $calendarioPelicula->save();
-        Alert::success('Hecho', 'Película añadida a tu calendario');
+        Alert::success('Hecho', 'Película añadida a tu diario');
         return redirect('/pelicula/'.$idPelicula);
     }
-
+    // Busca una película en el diario del usuario para el autocompletar
     public function buscarEnCalendario(Request $request, $idUsuario) {
         $calendario = Calendario::where('id_usuario', '=', $idUsuario)->first();
         $term = $request->get("term");
@@ -37,14 +41,13 @@ class CalendarController extends Controller
         }
         return $data;
     }
-
+    // Borra una película que esté en el diario asociada a una fecha
     public function quitarDeCalendario(Request $request) {
         $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
-        $calendario = Calendario::where('id_usuario', '=', Auth::user()->id)->first();
-        if(CalendarioPelicula::where('id_calendario', '=', $calendario->id)->where('id_pelicula', '=', $pelicula->id)->delete()) {
+        if(CalendarioPelicula::where('fecha', '=', $request->fecha)->where('id_pelicula', '=', $pelicula->id)->delete()) {
             Alert::success('Hecho', 'Película quitada de tu diario');
         } else {
-            Alert::error('Error', 'Esa película no está en tu diario');
+            Alert::error('Error', 'Esa película no está o la fecha no coincide');
         }
         return redirect()->back();
     }

@@ -11,9 +11,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Database\QueryException;
 
 use Illuminate\Support\Facades\Auth;
-
+/**
+ * Controlador que gobierna todos los métodos
+ * relacionados con las listas
+ */
 class ListasController extends Controller
 {
+    // Muestra todas las listas desde la pestaña de la navbar
     public function listarTodas() {
         $listas = Lista::join('usuarios', 'usuarios.id', '=', 'listas.id_usuario')
         ->select('listas.id','listas.id_usuario', 'listas.nombre', 'listas.descripcion', 'usuarios.nombre as nombre_usuario')
@@ -21,7 +25,7 @@ class ListasController extends Controller
         ->paginate(10);
         return view('listado_listas', compact('listas'));
     }
-
+    // Busca entre las listas listadas
     public function buscarLista(Request $request) {
         $listas = Lista::join('usuarios', 'usuarios.id', '=', 'listas.id_usuario')
         ->select('listas.id','listas.id_usuario', 'listas.nombre', 'listas.descripcion', 'usuarios.nombre as nombre_usuario')
@@ -30,7 +34,7 @@ class ListasController extends Controller
         ->paginate(10);
         return view('listado_listas', compact('listas'));
     }
-
+    // Crea una lista a gusto del usuario
     public function crearLista(Request $request) {
         $lista = new Lista();
         $lista->nombre = $request->nombre;
@@ -38,27 +42,32 @@ class ListasController extends Controller
         $lista->id_usuario = Auth::user()->id;
         $lista->save();
     }
-
+    // Al crear una lista te manda a tu perfil
     public function crearListaMandarPerfilLista(Request $request) {
         $this->crearLista($request);
         Alert::success('Hecho', 'Lista creada');
         return redirect('/perfil/listas/'.Auth::user()->id);
     }
-
+    // Al crear una lista desde la película te manda a la página de la película
     public function crearListaMandarPelicula(Request $request, $idPelicula) {
         $this->crearLista($request);
         Alert::success('Hecho', 'Lista creada');
         return redirect('/pelicula/'.$idPelicula);
     }
-
+    // Inserta una película en la lista
     public function guardarEnLista(Request $request) {
         if(!$request->get("insertarEnLista")) {
             $listaPelicula = new ListaPelicula();
             $listaPelicula->id_lista = $request->idLista;
             $listaPelicula->id_pelicula = $request->idPelicula;
+            try {
             $listaPelicula->save();
             Alert::success('Hecho', 'Pelicula añadida a lista');
             return redirect('/pelicula/'.$request->idPelicula);
+            } catch(QueryException $e) {
+                Alert::error('Error', 'Esa película ya está en la lista');
+                return redirect('/pelicula/'.$request->idPelicula);
+            }
         } else {
             $listaPelicula = new ListaPelicula();
             $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
@@ -75,7 +84,7 @@ class ListasController extends Controller
             }
         }
     }
-
+    // carga la página de una lista específica
     public function cargarLista(Request $request, $idLista) {
         if ($idLista != 0) {
             $lista = Lista::find($idLista);
@@ -94,7 +103,7 @@ class ListasController extends Controller
             }
         }
     }
-
+    // Quita una película de la lista
     public function quitarDeLista(Request $request, $idPelicula) {
         if ($idPelicula == 0) {
             $pelicula = Pelicula::where('titulo', '=', $request->pelicula)->first();
@@ -111,7 +120,7 @@ class ListasController extends Controller
             return redirect('/perfil/paginalista/'.$request->idLista);
         }
     }
-
+    // Edita las propiedades de la lista
     public function modificarLista(Request $request, $idLista) {
         $lista = Lista::find($idLista);
         $lista->nombre = $request->nombre;
@@ -120,7 +129,7 @@ class ListasController extends Controller
         Alert::success('Hecho', 'Lista editada');
         return redirect('/perfil/paginalista/'.$lista->id);
     }
-
+    // Buscador con autocompletar de las películas uqe están en la lista
     public function buscarEnLista(Request $request, $idLista) {
         $term = $request->get("term");
         $peliculas = Pelicula::join('lista_peliculas', 'lista_peliculas.id_pelicula', '=', 'peliculas.id')
@@ -133,7 +142,7 @@ class ListasController extends Controller
         }
         return $data;
     }
-
+    // Borra una lista entera
     public function borrarLista($idLista) {
         $lista = Lista::find($idLista);
         $idUsuario = $lista->id_usuario;

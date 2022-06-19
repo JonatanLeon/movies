@@ -36,34 +36,34 @@
             <div class="col-md-8 col-xl-3 text-center mx-auto">
                 <h2>Perfil de {{ $usuario->nombre }}</h2>
                 @auth
-                    @if (auth()->user()->id == $usuario->id || auth()->user()->role == "admin")
+                    @if (auth()->user()->id == $usuario->id || auth()->user()->role == 'admin')
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a href="#" class="btn btn-primary" type="button"
                                 style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
                                 data-bs-toggle="modal" data-bs-target="#editarUsuario">Editar
                                 perfil</a>
                         </div>
-                        @if(auth()->user()->role != "admin")
-                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                            <a href="#" class="btn btn-primary" type="button"
-                                style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
-                                data-bs-toggle="modal" data-bs-target="#modalSugerencia">Enviar
-                                sugerencia</a>
-                        </div>
+                        @if (auth()->user()->role != 'admin')
+                            <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                                <a href="#" class="btn btn-primary" type="button"
+                                    style="width: 245px;background: var(--bs-pink);font-size: 20px;border-color: var(--bs-pink);"
+                                    data-bs-toggle="modal" data-bs-target="#modalSugerencia">Enviar
+                                    sugerencia</a>
+                            </div>
                         @endif
-                        @if(auth()->user()->id == $usuario->id)
-                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                            <a href="#" class="btn btn-primary" type="button"
-                                style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red)"
-                                data-bs-toggle="modal" data-bs-target="#modalBuscador">Añadir a
-                                diario</a>
-                        </div>
-                        <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
-                            <a href="#" class="btn btn-primary" type="button"
-                            style="width: 245px;background: var(--bs-red);font-size: 20px;border-color: var(--bs-yellow);color: var(--bs-white);"
-                                data-bs-toggle="modal" data-bs-target="#quitarPeli">Quitar de
-                                diario</a>
-                        </div>
+                        @if (auth()->user()->id == $usuario->id)
+                            <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                                <a href="#" class="btn btn-primary" type="button"
+                                    style="width: 245px;background: var(--bs-yellow);font-size: 20px;border-color: var(--bs-red);color: var(--bs-red)"
+                                    data-bs-toggle="modal" data-bs-target="#modalBuscador">Añadir a
+                                    diario</a>
+                            </div>
+                            <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
+                                <a href="#" class="btn btn-primary" type="button"
+                                    style="width: 245px;background: var(--bs-red);font-size: 20px;border-color: var(--bs-yellow);color: var(--bs-white);"
+                                    data-bs-toggle="modal" data-bs-target="#quitarPeli">Quitar de
+                                    diario</a>
+                            </div>
                         @endif
                         <div class="container-fluid" style="margin-bottom: 14px;margin-top: 14px;">
                             <a class="btn btn-primary" type="button"
@@ -85,14 +85,14 @@
                             href="{{ route('ir.usuario.favoritas', $usuario->id) }}">Favoritas</a></li>
                 </ul>
                 @if ($calenPeliculas->count() != 0)
-                <?php $mesUsado = null;?>
+                    <?php $mesUsado = null; ?>
                     @foreach ($meses as $mes)
-                        @if(date('F Y', strtotime($mes->fecha)) != $mesUsado)
-                        <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
-                            <h2 style="margin-top: 20px;width: 400px;color: var(--bs-pink);">
-                                {{ date('F Y', strtotime($mes->fecha)) }}</h2>
-                        </div>
-                        <?php $mesUsado = date('F Y', strtotime($mes->fecha))?>
+                        @if (date('F Y', strtotime($mes->fecha)) != $mesUsado)
+                            <div style="border-bottom: 1px solid;border-color: var(--bs-pink);">
+                                <h2 style="margin-top: 20px;width: 400px;color: var(--bs-pink);">
+                                    {{ date('F Y', strtotime($mes->fecha)) }}</h2>
+                            </div>
+                            <?php $mesUsado = date('F Y', strtotime($mes->fecha)); ?>
                         @endif
                         @foreach ($calenPeliculas as $calen)
                             @if ($calen->fecha == $mes->fecha)
@@ -149,7 +149,8 @@
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- Modal de añadir pelicula -->
-    <div class="modal fade" id="modalBuscador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalBuscador" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -164,7 +165,8 @@
                                     type="text" placeholder="Buscar..." name="pelicula" required>
                             </div>
                             <div class="modal-footer" style="margin-top: 25px;">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cerrar</button>
                                 <input class="btn btn-light submit-button" type="submit" value="Añadir"
                                     name="insertarEnLista"
                                     style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
@@ -175,33 +177,38 @@
             </div>
         </div>
     </div>
-        <!-- Modal de quitar pelicula -->
-        <div class="modal fade" id="quitarPeli" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">¿Qué película quieres quitar?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body ui-front">
-                        <form action='/perfil/quitarcalendario/' method="post" class="busquedaPeli">
-                            {{ csrf_field() }}
-                            <div class="row form-group mb-3">
-                                <div class="col-sm-20 input-column"><input id="quitar" class="search form-control p-3"
-                                        type="text" placeholder="Buscar..." name="pelicula" required>
-                                </div>
-                                <div class="modal-footer" style="margin-top: 25px;">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <input class="btn btn-light submit-button" type="submit" value="Añadir"
-                                        name="insertarEnLista"
-                                        style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
-                                </div>
+    <!-- Modal de quitar pelicula -->
+    <div class="modal fade" id="quitarPeli" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Qué película quieres quitar?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ui-front">
+                    <form action='/perfil/quitarcalendario/' method="post" class="busquedaPeli">
+                        {{ csrf_field() }}
+                        <div class="row form-group mb-3">
+                            <div class="col-sm-20 input-column"><input id="quitar" class="search form-control p-3"
+                                    type="text" placeholder="Buscar..." name="pelicula" required>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-sm-20 input-column" style="margin-top: 20px;">
+                                <input type="date" class="form-control"
+                                    name="fecha" aria-describedby="button-addon2" required>
+                            </div>
+                            <div class="modal-footer" style="margin-top: 25px;">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <input class="btn btn-light submit-button" type="submit" value="Añadir"
+                                    name="insertarEnLista"
+                                    style="background: var(--bs-pink);border-color: var(--bs-pink);color: #FFFFFF;" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     <!-- Modal de desactivar cuenta -->
     @include('templates.modal_confirmacion')
     <!-- Modal de sugerencias -->
